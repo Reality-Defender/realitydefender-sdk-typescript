@@ -1,0 +1,15 @@
+{
+  "name": "realitydefender-examples",
+  "version": "1.0.0",
+  "description": "Examples for using the Reality Defender SDK",
+  "private": true,
+  "scripts": {
+    "start": "ts-node basic.ts"
+  },
+  "dependencies": {
+    "realitydefender": "file:../"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.18"
+  }
+}
