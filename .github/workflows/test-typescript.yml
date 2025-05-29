@@ -1,0 +1,39 @@
+name: Test TypeScript SDK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Enable Corepack
+        run: corepack enable
+          
+      - name: Install dependencies
+        run: yarn install
+      
+      - name: Build
+        run: yarn build
+      
+      - name: Run tests with coverage
+        run: yarn test
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          directory: ./coverage
+          flags: typescript
+          fail_ci_if_error: false 
+          token: ${{ secrets.CODECOV_TOKEN }}
