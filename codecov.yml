@@ -12,27 +12,9 @@ coverage:
       default:
         target: auto
         threshold: 1%
-      python:
-        target: auto
-        threshold: 1%
-        flags: 
-          - python
       typescript:
         target: auto
         threshold: 1%
-        flags:
-          - typescript
-      go:
-        target: auto
-        threshold: 1%
-        flags:
-          - go
-      rust:
-        target: auto
-        threshold: 1%
-        flags:
-          - rust
-          
     patch:
       default:
         target: auto
@@ -41,20 +23,6 @@ coverage:
 parsers:
   javascript:
     enable_partials: yes
-
-flags:
-  python:
-    paths:
-      - "python/**"
-  typescript:
-    paths:
-      - "typescript/**"
-  go:
-    paths:
-      - "go/**"
-  rust:
-    paths:
-      - "rust/**"
 
 comment:
   layout: "reach,diff,flags,files,footer"

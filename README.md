@@ -1,5 +1,5 @@
 # Reality Defender SDK for TypeScript
-[![codecov](https://codecov.io/gh/Reality-Defender/eng-sdk/graph/badge.svg?flag=typescript&token=P98RNVB21M)](https://codecov.io/gh/Reality-Defender/eng-sdk)
+[![codecov](https://codecov.io/gh/Reality-Defender/realitydefender-sdk-typescript/graph/badge.svg?token=VP4OMK4708)](https://codecov.io/gh/Reality-Defender/realitydefender-sdk-typescript)
 
 A TypeScript SDK for the Reality Defender API to detect deepfakes and manipulated media.
 
