@@ -22,21 +22,18 @@ jobs:
         run: corepack enable
           
       - name: Install dependencies
-        working-directory: ./typescript
         run: yarn install
       
       - name: Build
-        working-directory: ./typescript
         run: yarn build
       
       - name: Run tests with coverage
-        working-directory: ./typescript
         run: yarn test
       
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
-          directory: ./typescript/coverage
+          directory: ./coverage
           flags: typescript
           fail_ci_if_error: false 
           token: ${{ secrets.CODECOV_TOKEN }}
