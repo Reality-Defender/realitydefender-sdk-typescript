@@ -44,6 +44,7 @@ jobs:
       
       - name: Bump patch version
         run: |
+          git pull origin main
           yarn version patch
           git commit --amend -m "[GitHub Action] Patch Version Bump"
           git push
