@@ -2,7 +2,7 @@ name: Publish Package
 
 on:
   workflow_run:
-    workflows: ["Test TypeScript SDK"]
+    workflows: ["Bump Version"]
     types:
       - completed
     branches: [main]
