@@ -36,8 +36,8 @@ jobs:
           git config --local user.name "GitHub Actions"
           git remote set-url origin git@github.com:${{ github.repository }}.git
       
-      - name: Bump minor version
+      - name: Bump patch version
         run: |
-          npm version minor -m "[GitHub Action] Minor Version Bump"
+          npm version patch -m "[GitHub Action] Patch Version Bump"
           git push
           git push --tags 

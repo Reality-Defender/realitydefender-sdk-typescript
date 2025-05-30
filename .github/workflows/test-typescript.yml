@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # Skip this workflow if the commit was made by GitHub Actions for version bumping
+    if: "!contains(github.event.head_commit.message, '[GitHub Action] Patch Version Bump')"
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || '' }}
     
