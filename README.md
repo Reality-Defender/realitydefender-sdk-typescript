@@ -7,10 +7,10 @@ A TypeScript SDK for the Reality Defender API to detect deepfakes and manipulate
 
 ```bash
 # Using yarn
-yarn add realitydefender
+yarn add @realitydefender/realitydefender
 
 # Using npm
-npm install realitydefender
+npm install @realitydefender/realitydefender
 ```
 
 ## Getting Started
