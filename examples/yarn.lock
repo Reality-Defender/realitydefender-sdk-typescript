@@ -5,12 +5,21 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@realitydefender/realitydefender@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@realitydefender/realitydefender@npm:0.1.1"
+  dependencies:
+    axios: "npm:^1.9.0"
+  checksum: 10c0/17423394ae5051cfdab7c82974c0a7f116fc9690287505a12a0d3ec40d6834a4a7bdb8a0207a7850082b8b4b06837f12d52f2c78e20cf8e3d6e3d9a763f50613
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^22.15.18":
-  version: 22.15.20
-  resolution: "@types/node@npm:22.15.20"
+  version: 22.15.27
+  resolution: "@types/node@npm:22.15.27"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/5137ff16b3090e24953e19dd14d69e7dddbb2ad01f6d7f5fdda3c1d9b3bfa18acd72317701cf983fe591919622e94cab846487b2b0104282ca006522274c58da
+  checksum: 10c0/1057dfabd9dc1a9c0de35b057341f0b22e4b54082d432cca6c30209e16bd67668cdb41a794ea753deaaf15f6d6fdc1e1cb2551afe21a78952e0b82386697b133
   languageName: node
   linkType: hard
 
@@ -227,19 +236,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "realitydefender-examples@workspace:."
   dependencies:
+    "@realitydefender/realitydefender": "npm:^0.1.1"
     "@types/node": "npm:^22.15.18"
-    realitydefender: "file:../"
   languageName: unknown
   linkType: soft
-
-"realitydefender@file:../::locator=realitydefender-examples%40workspace%3A.":
-  version: 1.0.0
-  resolution: "realitydefender@file:../#../::hash=b731d2&locator=realitydefender-examples%40workspace%3A."
-  dependencies:
-    axios: "npm:^1.9.0"
-  checksum: 10c0/c43470f39a62ac27e79f2864d533a59c2f098c0e9ed588adb12ddf52aa814cac420f89c77340e69e78922d0ec1cc13dbda81dd8c18ef156bb44094bff71addd2
-  languageName: node
-  linkType: hard
 
 "undici-types@npm:~6.21.0":
   version: 6.21.0

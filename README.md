@@ -23,7 +23,7 @@ First, you need to obtain an API key from the [Reality Defender Platform](https:
 As an alternative to the event-based approach, you can use async/await with polling:
 
 ```typescript
-import { RealityDefender } from 'realitydefender';
+import { RealityDefender } from '@realitydefender/realitydefender';
 
 // Initialize the SDK with your API key
 const realityDefender = new RealityDefender({
@@ -65,7 +65,7 @@ detectMedia()
 ### Event-driven approach
 
 ```typescript
-import { RealityDefender } from 'realitydefender';
+import { RealityDefender } from '@realitydefender/realitydefender';
 
 // Initialize the SDK with your API key
 const realityDefender = new RealityDefender({
@@ -206,26 +206,29 @@ See the `examples` directory for more detailed usage examples.
 ## Running Examples
 
 To run the example code in this SDK, follow these steps:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Reality-Defender/realitydefender-sdk-typescript.git
+   cd realitydefender-sdk-typescript
+   ```
 
+2. Add a sample image to test with:
+   ```bash
+   # Copy an image file to the examples directory
+   cp /path/to/your/image.jpg examples/sample-image.jpg
+   ```
+   Note: You can use any JPG, PNG, or other supported image file. The example will look for a file named `sample-image.jpg` in the examples directory.
 
-```bash
-# Navigate to the typescript directory
-cd typescript
+3. Set your API key and run the example:
+    ```bash
+    # Navigate to the typescript directory
+    cd examples
 
-# Install dependencies
-yarn install
+    # Install dependencies
+    yarn install
 
-# Build the SDK
-yarn build
-
-# Navigate to examples directory and install dependencies
-cd examples
-yarn install
-
-# Navigate back and run the example
-cd ..
-export REALITY_DEFENDER_API_KEY='<your-api-key>' 
-yarn example
-```
+    export REALITY_DEFENDER_API_KEY='<your-api-key>' 
+    yarn start
+    ```
 
 The example code demonstrates how to upload a sample image and process the detection results.
