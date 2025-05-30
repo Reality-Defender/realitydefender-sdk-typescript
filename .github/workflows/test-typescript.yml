@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || '' }}
     
     steps:
       - uses: actions/checkout@v3
@@ -23,8 +25,6 @@ jobs:
           
       - name: Install dependencies
         run: yarn install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || '' }}
       
       - name: Build
         run: yarn build
