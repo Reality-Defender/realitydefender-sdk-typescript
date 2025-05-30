@@ -7,7 +7,7 @@
     "start": "ts-node basic.ts"
   },
   "dependencies": {
-    "realitydefender": "file:../"
+    "@realitydefender/realitydefender": "^0.1.2"
   },
   "devDependencies": {
     "@types/node": "^22.15.18"
