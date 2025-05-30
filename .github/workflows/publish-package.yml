@@ -10,6 +10,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || '' }}
+
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     steps:
@@ -40,6 +43,3 @@ jobs:
       
       - name: Publish package
         run: yarn npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
