@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: '18'
           
+      - name: Setup Yarn
+        run: corepack enable
+          
       - name: Install SSH key
         uses: webfactory/ssh-agent@v0.7.0
         with:
@@ -36,8 +39,11 @@ jobs:
           git config --local user.name "GitHub Actions"
           git remote set-url origin git@github.com:${{ github.repository }}.git
       
+      - name: Install dependencies
+        run: yarn install
+      
       - name: Bump patch version
         run: |
-          npm version patch -m "[GitHub Action] Patch Version Bump"
+          yarn version patch -m "[GitHub Action] Patch Version Bump"
           git push
           git push --tags 
