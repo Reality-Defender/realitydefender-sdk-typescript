@@ -10,6 +10,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || '' }}
+
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     steps:
@@ -34,6 +37,9 @@ jobs:
         run: |
           echo "registry=https://registry.npmjs.org/" > .npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" >> .npmrc
+          echo "npmAuthToken: \"${{ secrets.NODE_AUTH_TOKEN }}\"" > .yarnrc.yml
+          echo "npmPublishRegistry: \"https://registry.npmjs.org/\"" >> .yarnrc.yml
+          echo "npmAlwaysAuth: true" >> .yarnrc.yml
       
       - name: Publish package
         run: yarn npm publish --access public
