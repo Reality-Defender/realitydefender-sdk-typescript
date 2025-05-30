@@ -44,8 +44,10 @@ jobs:
       
       - name: Bump patch version
         run: |
-          git pull origin main
-          yarn version patch
-          git commit --amend -m "[GitHub Action] Patch Version Bump"
+          NEW_VERSION=$(npm version patch --no-git-tag-version)
+          echo "Bumped version to $NEW_VERSION"
+          git add package.json
+          git commit -m "[GitHub Action] Patch Version Bump"
+          git tag $NEW_VERSION
           git push
-          git push --tags 
+          git push --tags
