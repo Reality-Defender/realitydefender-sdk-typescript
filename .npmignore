@@ -1,0 +1,30 @@
+# Source
+src/
+
+# Tests
+tests/
+coverage/
+jest.config.js
+.jest-cache/
+
+# Development configs
+.github/
+.vscode/
+.editorconfig
+.eslintrc
+.gitignore
+.travis.yml
+tsconfig.json
+tsconfig.*.json
+
+# Examples
+examples/
+
+# Build tools
+node_modules/
+yarn.lock
+package-lock.json
+.yarn/
+
+# Don't ignore compiled output
+!dist/

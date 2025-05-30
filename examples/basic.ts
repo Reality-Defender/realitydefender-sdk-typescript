@@ -1,4 +1,4 @@
-import { RealityDefender, RealityDefenderError, DetectionResult } from 'realitydefender';
+import { RealityDefender, RealityDefenderError, DetectionResult } from '@realitydefender/realitydefender';
 import path from 'path';
 import fs from 'fs';
 
@@ -51,7 +51,7 @@ async function analyzeMediaWithPolling() {
     });
     
     // Listen for results
-    realityDefender.on('result', (result) => {
+    realityDefender.on('result', (result: DetectionResult) => {
       console.log('Analysis complete!');
       console.log(`Status: ${result.status}`);
       console.log(`Score: ${result.score !== null ? result.score : 'N/A'}`);
@@ -100,7 +100,7 @@ async function analyzeMediaWithPromise() {
     result.models.forEach(model => {
       console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score : 'N/A'})`);
     });
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof RealityDefenderError) {
       console.error(`Error during analysis: ${error.message} (${error.code})`);
     } else {

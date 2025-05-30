@@ -4,12 +4,18 @@
   "description": "SDK for the Reality Defender API for deepfake detection",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
   "packageManager": "yarn@4.6.0",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --declaration --declarationMap",
     "test": "jest --coverage --detectOpenHandles --forceExit",
     "prepare": "yarn build",
     "example": "ts-node examples/basic.ts",

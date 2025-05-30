@@ -25,10 +25,16 @@ jobs:
         with:
           node-version: '18'
           
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+          
       - name: Configure Git
         run: |
           git config --local user.email "github-actions@github.com"
           git config --local user.name "GitHub Actions"
+          git remote set-url origin git@github.com:${{ github.repository }}.git
       
       - name: Bump minor version
         run: |
