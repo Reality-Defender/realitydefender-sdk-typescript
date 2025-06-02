@@ -45,7 +45,9 @@ export interface ModelResult {
   /** Normalized prediction value (0-100) */
   normalizedPredictionNumber: number | null;
   /** Rolling average if applicable */
-  rollingAvgNumber: number | null;  
+  rollingAvgNumber: number | null;
+  /** Final score for this model (0-100) */
+  finalScore?: number | null;
 }
 
 /**
