@@ -94,17 +94,17 @@ describe('Results Module', () => {
       
       expect(formattedResult).toEqual({
         status: 'ARTIFICIAL',
-        score: 95,
+        score: 0.95,
         models: [
           {
             name: 'model-1',
             status: 'ARTIFICIAL',
-            score: 95
+            score: 0.95
           },
           {
             name: 'model-3',
             status: 'AUTHENTIC',
-            score: 20
+            score: 0.2
           }
         ]
       });
@@ -120,7 +120,7 @@ describe('Results Module', () => {
       
       expect(formattedResult).toEqual({
         status: 'ARTIFICIAL',
-        score: 95,
+        score: 0.95,
         models: []
       });
     });
@@ -146,7 +146,7 @@ describe('Results Module', () => {
       
       expect(formattedResult).toEqual({
         status: 'ARTIFICIAL',
-        score: 95,
+        score: 0.95,
         models: []
       });
     });
@@ -182,7 +182,7 @@ describe('Results Module', () => {
           {
             name: 'model-1',
             status: 'PROCESSING',
-            score: null
+            score: 0
           }
         ]
       });
@@ -219,12 +219,12 @@ describe('Results Module', () => {
       
       expect(formattedResult).toEqual({
         status: 'ARTIFICIAL',
-        score: 95,
+        score: 0.95,
         models: [
           {
             name: 'model-1',
             status: 'ARTIFICIAL',
-            score: 95
+            score: 0.95
           }
         ]
       });
@@ -240,17 +240,17 @@ describe('Results Module', () => {
       expect(mockClient.get).toHaveBeenCalledWith('/api/media/users/request-123');
       expect(result).toEqual({
         status: 'ARTIFICIAL',
-        score: 95,
+        score: 0.95,
         models: [
           {
             name: 'model-1',
             status: 'ARTIFICIAL',
-            score: 95
+            score: 0.95
           },
           {
             name: 'model-3',
             status: 'AUTHENTIC',
-            score: 20
+            score: 0.2
           }
         ]
       });
@@ -301,7 +301,7 @@ describe('Results Module', () => {
       // Should return the completed result
       expect(result).toEqual({
         status: 'ARTIFICIAL',
-        score: 90,
+        score: 0.9,
         models: expect.any(Array)
       });
     });

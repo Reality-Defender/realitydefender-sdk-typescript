@@ -64,7 +64,7 @@ export interface DetectionResult {
     name: string;
     /** Model status determination */
     status: string;
-    /** Model confidence score (0-100, null if not available) */
+    /** Model confidence score (0-1 range, null if not available) */
     score: number | null;
   }[];
 }

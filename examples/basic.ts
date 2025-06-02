@@ -54,11 +54,11 @@ async function analyzeMediaWithPolling() {
     realityDefender.on('result', (result: DetectionResult) => {
       console.log('Analysis complete!');
       console.log(`Status: ${result.status}`);
-      console.log(`Score: ${result.score !== null ? result.score : 'N/A'}`);
+      console.log(`Score: ${result.score !== null ? result.score.toFixed(2) : 'N/A'}`);
       console.log('Model results:');
       
       result.models.forEach(model => {
-        console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score : 'N/A'})`);
+        console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score.toFixed(2) : 'N/A'})`);
       });
     });
     
@@ -94,11 +94,11 @@ async function analyzeMediaWithPromise() {
     
     console.log('Analysis complete!');
     console.log(`Status: ${result.status}`);
-    console.log(`Score: ${result.score !== null ? result.score : 'N/A'}`);
+    console.log(`Score: ${result.score !== null ? result.score.toFixed(2) : 'N/A'}`);
     console.log('Model results:');
     
     result.models.forEach(model => {
-      console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score : 'N/A'})`);
+      console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score.toFixed(2) : 'N/A'})`);
     });
   } catch (error: unknown) {
     if (error instanceof RealityDefenderError) {
@@ -127,11 +127,11 @@ async function analyzeMediaWithDetect() {
     
     console.log('Analysis complete!');
     console.log(`Status: ${result.status}`);
-    console.log(`Score: ${result.score !== null ? result.score : 'N/A'}`);
+    console.log(`Score: ${result.score !== null ? result.score.toFixed(2) : 'N/A'}`);
     console.log('Model results:');
     
     result.models.forEach(model => {
-      console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score : 'N/A'})`);
+      console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score.toFixed(2) : 'N/A'})`);
     });
   } catch (error: unknown) {
     if (error instanceof RealityDefenderError) {

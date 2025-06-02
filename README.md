@@ -44,7 +44,7 @@ async function detectMedia() {
     
     // Process the results
     console.log(`Status: ${result.status}`);
-    console.log(`Score: ${result.score}`);
+    console.log(`Score: ${result.score}`); // Score is a value between 0 and 1
 
     
     return result;
@@ -84,11 +84,11 @@ async function detectMedia() {
     
     // Process the results
     console.log(`Status: ${result.status}`);
-    console.log(`Score: ${result.score}`);
+    console.log(`Score: ${result.score}`); // Score is a value between 0 and 1
     
     // List model results
     result.models.forEach(model => {
-      console.log(`${model.name}: ${model.status} (${model.score})`);
+      console.log(`${model.name}: ${model.status} (${model.score})`); // Model scores are also between 0 and 1
     });
     
     return result;
@@ -132,11 +132,11 @@ realityDefender.pollForResults(requestId, {
 // Event-based approach to get results
 realityDefender.on('result', (result) => {
   console.log(`Status: ${result.status}`);
-  console.log(`Score: ${result.score}`);
+  console.log(`Score: ${result.score}`); // Score is a value between 0 and 1
   
   // List model results
   result.models.forEach(model => {
-    console.log(`${model.name}: ${model.status} (${model.score})`);
+    console.log(`${model.name}: ${model.status} (${model.score})`); // Model scores are also between 0 and 1
   });
 });
 
@@ -202,13 +202,14 @@ Returns a `DetectionResult` object:
 ```typescript
 {
   status: string,       // Overall status (e.g., "ARTIFICIAL", "AUTHENTIC", etc.)
-  score: number,        // Overall confidence score (0-100)
-  models: [             // Array of model-specific results
+  score: number,        // Overall confidence score (0-1 range, null if processing)
+  models: [             // Array of model-specific results (DEPRECATED: individual model scores will no longer be returned in the future)
     {
       name: string,     // Model name
       status: string,   // Model-specific status
-      score: number     // Model-specific score
+      score: number     // Model-specific score (0-1 range, null if not available)
     }
+    
   ]
 }
 ```
