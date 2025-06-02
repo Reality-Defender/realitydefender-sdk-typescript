@@ -109,6 +109,39 @@ async function analyzeMediaWithPromise() {
   }
 }
 
+/**
+ * Example 3: Simplified approach with detect method
+ */
+async function analyzeMediaWithDetect() {
+  try {
+    console.log('--- EXAMPLE 3: SIMPLIFIED DETECT METHOD ---');
+    console.log(`Analyzing file: ${filePath}`);
+    
+    // Upload and get results in a single operation
+    const result = await realityDefender.detect({
+      filePath
+    }, {
+      maxAttempts: Number.MAX_SAFE_INTEGER,
+      pollingInterval: 3000
+    });
+    
+    console.log('Analysis complete!');
+    console.log(`Status: ${result.status}`);
+    console.log(`Score: ${result.score !== null ? result.score : 'N/A'}`);
+    console.log('Model results:');
+    
+    result.models.forEach(model => {
+      console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score : 'N/A'})`);
+    });
+  } catch (error: unknown) {
+    if (error instanceof RealityDefenderError) {
+      console.error(`Error during analysis: ${error.message} (${error.code})`);
+    } else {
+      console.error(`Error during analysis: ${error}`);
+    }
+  }
+}
+
 // Run the selected example based on user input
 async function runExamples() {
   const readline = require('readline');
@@ -120,9 +153,10 @@ async function runExamples() {
   console.log('Which example would you like to run?');
   console.log('1) Polling-based approach (event listeners)');
   console.log('2) Promise-based approach');
+  console.log('3) Simplified detect method');
   
   const answer = await new Promise<string>(resolve => {
-    rl.question('Enter 1 or 2: ', resolve);
+    rl.question('Enter 1, 2, or 3: ', resolve);
   });
   
   rl.close();
@@ -134,8 +168,11 @@ async function runExamples() {
     case '2':
       await analyzeMediaWithPromise();
       break;
+    case '3':
+      await analyzeMediaWithDetect();
+      break;
     default:
-      console.log('Invalid option. Please run again and enter 1 or 2.');
+      console.log('Invalid option. Please run again and enter 1, 2, or 3.');
   }
 }
 

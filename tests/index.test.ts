@@ -191,6 +191,118 @@ describe('RealityDefender SDK', () => {
     });
   });
   
+  describe('detect', () => {
+    it('should chain upload and getResult methods', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+      
+      // Mock upload result
+      const mockUploadResult = {
+        requestId: 'request-123',
+        mediaId: 'media-123'
+      };
+      
+      // Mock detection result
+      const mockDetectionResult = {
+        status: 'ARTIFICIAL',
+        score: 95,
+        models: [
+          {
+            name: 'model-1',
+            status: 'ARTIFICIAL',
+            score: 95
+          }
+        ]
+      };
+      
+      // Setup mocks
+      mockUploadFile.mockResolvedValueOnce(mockUploadResult);
+      mockGetDetectionResult.mockResolvedValueOnce(mockDetectionResult);
+      
+      // Call the detect method
+      const result = await sdk.detect({ filePath: '/path/to/test-file.jpg' });
+      
+      // Verify upload was called with correct parameters
+      expect(mockUploadFile).toHaveBeenCalledWith(
+        mockHttpClient,
+        { filePath: '/path/to/test-file.jpg' }
+      );
+      
+      // Verify getDetectionResult was called with correct parameters
+      expect(mockGetDetectionResult).toHaveBeenCalledWith(
+        mockHttpClient,
+        'request-123',
+        {}
+      );
+      
+      // Verify final result is the detection result
+      expect(result).toEqual(mockDetectionResult);
+    });
+    
+    it('should pass result options to getResult method', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+      
+      // Mock results
+      mockUploadFile.mockResolvedValueOnce({
+        requestId: 'request-123',
+        mediaId: 'media-123'
+      });
+      mockGetDetectionResult.mockResolvedValueOnce({
+        status: 'ARTIFICIAL',
+        score: 95,
+        models: []
+      });
+      
+      // Custom result options
+      const resultOptions = {
+        maxAttempts: 5,
+        pollingInterval: 2000
+      };
+      
+      // Call detect with result options
+      await sdk.detect({ filePath: '/path/to/test-file.jpg' }, resultOptions);
+      
+      // Verify options were passed to getDetectionResult
+      expect(mockGetDetectionResult).toHaveBeenCalledWith(
+        mockHttpClient,
+        'request-123',
+        resultOptions
+      );
+    });
+    
+    it('should propagate upload errors', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+      
+      // Mock upload error
+      const uploadError = new RealityDefenderError('Invalid file', 'invalid_file');
+      mockUploadFile.mockRejectedValueOnce(uploadError);
+      
+      // Call detect and expect it to throw the upload error
+      await expect(sdk.detect({ filePath: '/path/to/test-file.jpg' }))
+        .rejects.toThrow(uploadError);
+        
+      // Verify getDetectionResult was not called
+      expect(mockGetDetectionResult).not.toHaveBeenCalled();
+    });
+    
+    it('should propagate getResult errors', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+      
+      // Mock successful upload but failed result
+      mockUploadFile.mockResolvedValueOnce({
+        requestId: 'request-123',
+        mediaId: 'media-123'
+      });
+      
+      // Mock result error
+      const resultError = new RealityDefenderError('Result not available', 'not_found');
+      mockGetDetectionResult.mockRejectedValueOnce(resultError);
+      
+      // Call detect and expect it to throw the result error
+      await expect(sdk.detect({ filePath: '/path/to/test-file.jpg' }))
+        .rejects.toThrow(resultError);
+    });
+  });
+  
   describe('pollForResults', () => {
     it('should call _pollForResults with correct parameters', async () => {
       const sdk = new RealityDefender({ apiKey: 'test-api-key' });
