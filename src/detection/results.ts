@@ -46,14 +46,20 @@ export function formatResult(response: MediaResponse): DetectionResult {
     ? 'ARTIFICIAL' 
     : response.resultsSummary.status;
 
+  // Normalize the final score from 0-100 to 0-1 range
+  const normalizedScore = response.resultsSummary.metadata.finalScore !== null
+    ? response.resultsSummary.metadata.finalScore / 100
+    : null;
+
   return {
     status: status,
-    score: response.resultsSummary.metadata.finalScore,
+    score: normalizedScore,
     models: activeModels.map(model => ({
       name: model.name,
       // Replace FAKE with ARTIFICIAL in model status
       status: model.status === 'FAKE' ? 'ARTIFICIAL' : model.status,
-      score: model.finalScore
+      // Score between 0-1 range or null if not available
+      score: model.predictionNumber
     }))
   };
 }

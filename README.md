@@ -17,6 +17,12 @@ npm install @realitydefender/realitydefender
 
 First, you need to obtain an API key from the [Reality Defender Platform](https://app.realitydefender.ai).
 
+To generate an API key:
+1. Log in to your account on the [Reality Defender Platform](https://app.realitydefender.ai)
+2. Click on your profile icon and select "Settings" from the dropdown menu
+3. Look for the `API Keys` option
+4. Click on `Add API Key`
+
 ### Quick Start
 
 The simplest way to detect manipulated media is to use the `detect` method, which handles both upload and analysis in a single call:
@@ -38,7 +44,7 @@ async function detectMedia() {
     
     // Process the results
     console.log(`Status: ${result.status}`);
-    console.log(`Score: ${result.score}`);
+    console.log(`Score: ${result.score}`); // Score is a value between 0 and 1
 
     
     return result;
@@ -78,11 +84,11 @@ async function detectMedia() {
     
     // Process the results
     console.log(`Status: ${result.status}`);
-    console.log(`Score: ${result.score}`);
+    console.log(`Score: ${result.score}`); // Score is a value between 0 and 1
     
     // List model results
     result.models.forEach(model => {
-      console.log(`${model.name}: ${model.status} (${model.score})`);
+      console.log(`${model.name}: ${model.status} (${model.score})`); // Model scores are also between 0 and 1
     });
     
     return result;
@@ -126,11 +132,11 @@ realityDefender.pollForResults(requestId, {
 // Event-based approach to get results
 realityDefender.on('result', (result) => {
   console.log(`Status: ${result.status}`);
-  console.log(`Score: ${result.score}`);
+  console.log(`Score: ${result.score}`); // Score is a value between 0 and 1
   
   // List model results
   result.models.forEach(model => {
-    console.log(`${model.name}: ${model.status} (${model.score})`);
+    console.log(`${model.name}: ${model.status} (${model.score})`); // Model scores are also between 0 and 1
   });
 });
 
@@ -161,6 +167,18 @@ const realityDefender = new RealityDefender({
 });
 ```
 
+
+### Detect Media (Upload and Analyze in One Step)
+
+```typescript
+const result = await realityDefender.detect({
+  filePath: string,                 // Required: Path to the file to analyze
+}, {
+  maxAttempts?: number,             // Optional: Maximum polling attempts
+  pollingInterval?: number          // Optional: Interval in ms to poll for results (default: 5000)
+});
+```
+
 ### Upload Media for Analysis
 
 ```typescript
@@ -184,26 +202,16 @@ Returns a `DetectionResult` object:
 ```typescript
 {
   status: string,       // Overall status (e.g., "ARTIFICIAL", "AUTHENTIC", etc.)
-  score: number,        // Overall confidence score (0-100)
-  models: [             // Array of model-specific results
+  score: number,        // Overall confidence score (0-1 range, null if processing)
+  models: [             // Array of model-specific results (DEPRECATED: individual model scores will no longer be returned in the future)
     {
       name: string,     // Model name
       status: string,   // Model-specific status
-      score: number     // Model-specific score
+      score: number     // Model-specific score (0-1 range, null if not available)
     }
+    
   ]
 }
-```
-
-### Detect Media (Upload and Analyze in One Step)
-
-```typescript
-const result = await realityDefender.detect({
-  filePath: string,                 // Required: Path to the file to analyze
-}, {
-  maxAttempts?: number,             // Optional: Maximum polling attempts
-  pollingInterval?: number          // Optional: Interval in ms to poll for results (default: 5000)
-});
 ```
 
 Returns the same `DetectionResult` object as `getResult()`.
@@ -231,29 +239,6 @@ try {
 }
 ```
 
-## Advanced Usage
-
-If you need more control, you can directly use some of the internal modules:
-
-```typescript
-import { createHttpClient } from 'reality-defender-sdk/dist/client';
-import { uploadFile } from 'reality-defender-sdk/dist/detection/upload';
-import { getDetectionResult } from 'reality-defender-sdk/dist/detection/results';
-
-// Create an HTTP client
-const client = createHttpClient({ apiKey: 'your-api-key' });
-
-// Upload a file
-const { requestId } = await uploadFile(client, { filePath: '/path/to/file.jpg' });
-
-// Get results
-const results = await getDetectionResult(client, requestId);
-```
-
-## Examples
-
-See the `examples` directory for more detailed usage examples.
-
 ## Running Examples
 
 To run the example code in this SDK, follow these steps:
@@ -263,12 +248,12 @@ To run the example code in this SDK, follow these steps:
    cd realitydefender-sdk-typescript
    ```
 
-2. Add a sample image to test with:
+2. Add a sample file to test with:
    ```bash
    # Copy an image file to the examples directory
    cp /path/to/your/image.jpg examples/sample-image.jpg
    ```
-   Note: You can use any JPG, PNG, or other supported image file. The example will look for a file named `sample-image.jpg` in the examples directory.
+   Note: You can use any common image, video, audio, text file, or other supported media formats. The example will look for a file named `sample-image.jpg` in the examples directory.
 
 3. Set your API key and run the example:
     ```bash
