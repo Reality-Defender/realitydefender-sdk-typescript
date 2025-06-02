@@ -17,10 +17,46 @@ npm install @realitydefender/realitydefender
 
 First, you need to obtain an API key from the [Reality Defender Platform](https://app.realitydefender.ai).
 
+### Quick Start
 
-### Async/Await Approach
+The simplest way to detect manipulated media is to use the `detect` method, which handles both upload and analysis in a single call:
 
-As an alternative to the event-based approach, you can use async/await with polling:
+```typescript
+import { RealityDefender } from '@realitydefender/realitydefender';
+
+// Initialize the SDK with your API key
+const realityDefender = new RealityDefender({
+  apiKey: 'your-api-key',
+});
+
+async function detectMedia() {
+  try {
+    // Upload and analyze in one step
+    const result = await realityDefender.detect({
+      filePath: '/path/to/your/file.jpg',
+    });
+    
+    // Process the results
+    console.log(`Status: ${result.status}`);
+    console.log(`Score: ${result.score}`);
+
+    
+    return result;
+  } catch (error) {
+    console.error(`Error: ${error.message} (${error.code})`);
+    throw error;
+  }
+}
+
+// Call the function
+detectMedia()
+  .then(result => console.log('Detection completed successfully'))
+  .catch(error => console.error('Detection failed'));
+```
+
+### Two-Step Upload and Analysis Approach
+
+This two-step approach (separate upload and getResult calls) gives you more control over the process and allows you to store the requestId for later retrieval, which is useful for implementing progress tracking or resuming analysis in long-running applications:
 
 ```typescript
 import { RealityDefender } from '@realitydefender/realitydefender';
@@ -63,6 +99,8 @@ detectMedia()
 ```
 
 ### Event-driven approach
+The event-driven approach is preferable in scenarios where you need to handle long-running operations without blocking the main thread.
+Here's how to implement an event-driven approach:
 
 ```typescript
 import { RealityDefender } from '@realitydefender/realitydefender';
@@ -156,6 +194,19 @@ Returns a `DetectionResult` object:
   ]
 }
 ```
+
+### Detect Media (Upload and Analyze in One Step)
+
+```typescript
+const result = await realityDefender.detect({
+  filePath: string,                 // Required: Path to the file to analyze
+}, {
+  maxAttempts?: number,             // Optional: Maximum polling attempts
+  pollingInterval?: number          // Optional: Interval in ms to poll for results (default: 5000)
+});
+```
+
+Returns the same `DetectionResult` object as `getResult()`.
 
 ### Events
 

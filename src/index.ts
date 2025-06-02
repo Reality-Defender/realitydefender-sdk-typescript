@@ -84,6 +84,24 @@ export class RealityDefender extends TypedEventEmitter {
   }
 
   /**
+   * Upload a file and get detection results in a single operation
+   * 
+   * @param options Upload options including file path
+   * @param resultOptions Optional parameters for polling results
+   * @returns Promise with the detection result
+   */
+  public async detect(
+    options: UploadOptions,
+    resultOptions: GetResultOptions = {}
+  ): Promise<DetectionResult> {
+    // First upload the file
+    const uploadResult = await this.upload(options);
+    
+    // Then get the results using the request ID from the upload
+    return this.getResult(uploadResult.requestId, resultOptions);
+  }
+
+  /**
    * Start polling for results with event-based callback
    * 
    * @param requestId The request ID to poll for
@@ -154,10 +172,6 @@ export class RealityDefender extends TypedEventEmitter {
     }
   }
 }
-
-// Export the individual functions for direct usage
-export { uploadFile } from './detection/upload';
-export { getDetectionResult } from './detection/results';
 
 // Export necessary types for consumer use
 export {
