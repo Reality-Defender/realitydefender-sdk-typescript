@@ -1,4 +1,3 @@
-yarn.lock
 .yarn/*
 !.yarn/patches
 !.yarn/plugins

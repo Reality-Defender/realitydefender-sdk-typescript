@@ -19,13 +19,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+          cache: 'yarn'
 
       - name: Enable Corepack
         run: corepack enable
 
       - name: Install dependencies
         run: |
-          yarn install
+          yarn install --immutable
 
       - name: Lint and format checks
         run: |

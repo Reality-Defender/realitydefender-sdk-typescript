@@ -29,12 +29,22 @@ jobs:
         run: |
           echo "SDK_VERSION=${{ env.SDK_VERSION }}+git$(date +'%Y%m%d').$(git rev-parse --short HEAD)-${{ github.GITHUB_RUN_ATTEMPT }}" >> $GITHUB_ENV
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Set the package version.
         run: |
           yarn version -i ${{ env.SDK_VERSION }}
 
       - name: Build
         run: |
+          yarn install --immutable
           yarn build     
 
       - name: Share artifacts.
