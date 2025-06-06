@@ -44,12 +44,12 @@ jobs:
       - name: Build
         run: |
           yarn install --immutable
-          yarn build     
+          yarn build
 
       - name: Share artifacts.
         uses: actions/upload-artifact@v4
         with:
-          name: "realitydefender-sdk-typescript-${{ env.SDK_VERSION }}"
+          name: 'realitydefender-sdk-typescript-${{ env.SDK_VERSION }}'
           path: |
             package.tgz
           compression-level: 0

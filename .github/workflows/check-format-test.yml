@@ -46,4 +46,3 @@ jobs:
           flags: typescript
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: ${{ inputs.is-release }}
-
