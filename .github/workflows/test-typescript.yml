@@ -28,8 +28,10 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build
-        run: yarn build
+      - name: Lint and format checks
+        run: |
+          yarn run lint
+          yarn run format
 
       - name: Run tests with coverage
         run: yarn test
