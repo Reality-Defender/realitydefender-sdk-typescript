@@ -340,7 +340,6 @@ describe('RealityDefender SDK', () => {
       sdk = new RealityDefender({ apiKey: 'test-api-key' });
 
       // Mock the sleep function to resolve immediately
-      originalSleep = jest.requireActual('../src/utils/async').sleep;
       mockSleep = jest.fn().mockResolvedValue(undefined);
       jest.spyOn(require('../src/utils/async'), 'sleep').mockImplementation(mockSleep);
 

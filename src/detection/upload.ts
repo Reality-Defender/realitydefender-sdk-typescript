@@ -45,7 +45,7 @@ export async function uploadToSignedUrl(
 ): Promise<void> {
   try {
     const fileContent = readFileContent(filePath);
-    await client.put<void>(signedUrl, fileContent);
+    await client.put(signedUrl, fileContent);
   } catch (error) {
     if (error instanceof RealityDefenderError) {
       throw error;

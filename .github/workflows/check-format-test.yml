@@ -1,21 +1,19 @@
-name: Test TypeScript SDK
+name: Format, check, and test Typescript SDK
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_call:
+    inputs:
+      is-release:
+        default: false
+        type: boolean
+        description: Whether this is a release run or not.
 
 jobs:
-  test:
+  check-format-test-typescript-sdk:
     runs-on: ubuntu-latest
-    # Skip this workflow if the commit was made by GitHub Actions for version bumping
-    if: "!contains(github.event.head_commit.message, '[GitHub Action] Patch Version Bump')"
-    env:
-      NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || '' }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -26,12 +24,17 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        run: yarn install
+        run: |
+          yarn install
 
       - name: Lint and format checks
         run: |
           yarn run lint
           yarn run format
+
+      - name: Typecheck
+        run: |
+          yarn run types
 
       - name: Run tests with coverage
         run: yarn test
@@ -41,5 +44,6 @@ jobs:
         with:
           directory: ./coverage
           flags: typescript
-          fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: ${{ inputs.is-release }}
+
