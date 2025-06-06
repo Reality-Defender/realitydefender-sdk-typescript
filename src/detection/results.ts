@@ -16,7 +16,7 @@ import { sleep } from '../utils/async';
  * @returns Raw media response
  */
 export async function getMediaResult(
-  client: HttpClient, 
+  client: HttpClient,
   requestId: string
 ): Promise<MediaResponse> {
   try {
@@ -26,7 +26,10 @@ export async function getMediaResult(
     if (error instanceof RealityDefenderError) {
       throw error;
     }
-    throw new RealityDefenderError(`Failed to get result: ${(error as Error).message}`, 'unknown_error');
+    throw new RealityDefenderError(
+      `Failed to get result: ${(error as Error).message}`,
+      'unknown_error'
+    );
   }
 }
 
@@ -37,19 +40,19 @@ export async function getMediaResult(
  */
 export function formatResult(response: MediaResponse): DetectionResult {
   // Extract active models (not NOT_APPLICABLE)
-  const activeModels = response.models.filter(model => 
-    model.status !== 'NOT_APPLICABLE' && model.code !== 'not_applicable'
+  const activeModels = response.models.filter(
+    model => model.status !== 'NOT_APPLICABLE' && model.code !== 'not_applicable'
   );
 
   // Replace FAKE with ARTIFICIAL in response status
-  const status = response.resultsSummary.status === 'FAKE' 
-    ? 'ARTIFICIAL' 
-    : response.resultsSummary.status;
+  const status =
+    response.resultsSummary.status === 'FAKE' ? 'ARTIFICIAL' : response.resultsSummary.status;
 
   // Normalize the final score from 0-100 to 0-1 range
-  const normalizedScore = response.resultsSummary.metadata.finalScore !== null
-    ? response.resultsSummary.metadata.finalScore / 100
-    : null;
+  const normalizedScore =
+    response.resultsSummary.metadata.finalScore !== null
+      ? response.resultsSummary.metadata.finalScore / 100
+      : null;
 
   return {
     status: status,
@@ -59,8 +62,8 @@ export function formatResult(response: MediaResponse): DetectionResult {
       // Replace FAKE with ARTIFICIAL in model status
       status: model.status === 'FAKE' ? 'ARTIFICIAL' : model.status,
       // Score between 0-1 range or null if not available
-      score: model.predictionNumber
-    }))
+      score: model.predictionNumber,
+    })),
   };
 }
 
@@ -72,33 +75,31 @@ export function formatResult(response: MediaResponse): DetectionResult {
  * @returns Detection results
  */
 export async function getDetectionResult(
-  client: HttpClient, 
+  client: HttpClient,
   requestId: string,
   options: Partial<DetectionOptions> = {}
 ): Promise<DetectionResult> {
   let attempts = 0;
-  const { 
-    maxAttempts = Number.MAX_SAFE_INTEGER, 
-    pollingInterval = DEFAULT_POLLING_INTERVAL 
-  } = options;
-  
+  const { maxAttempts = Number.MAX_SAFE_INTEGER, pollingInterval = DEFAULT_POLLING_INTERVAL } =
+    options;
+
   while (attempts < maxAttempts) {
     const mediaResult = await getMediaResult(client, requestId);
-    
+
     // If the status is not ANALYZING, return the results immediately
     if (mediaResult.resultsSummary.status !== 'ANALYZING') {
       return formatResult(mediaResult);
     }
-    
+
     // If we've reached the maximum attempts, return the results even if still analyzing
     if (++attempts >= maxAttempts) {
       return formatResult(mediaResult);
     }
-    
+
     // Wait for the polling interval before trying again
     await sleep(pollingInterval);
   }
-  
+
   // This should never be reached, but TypeScript needs it
   const mediaResult = await getMediaResult(client, requestId);
   return formatResult(mediaResult);

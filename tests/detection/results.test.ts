@@ -18,8 +18,8 @@ describe('Results Module', () => {
     resultsSummary: {
       status: 'ARTIFICIAL',
       metadata: {
-        finalScore: 95
-      }
+        finalScore: 95,
+      },
     },
     models: [
       {
@@ -29,7 +29,7 @@ describe('Results Module', () => {
         predictionNumber: 0.95,
         normalizedPredictionNumber: 95,
         rollingAvgNumber: null,
-        finalScore: 95
+        finalScore: 95,
       },
       {
         name: 'model-2',
@@ -39,7 +39,7 @@ describe('Results Module', () => {
         predictionNumber: null,
         normalizedPredictionNumber: null,
         rollingAvgNumber: null,
-        finalScore: null
+        finalScore: null,
       },
       {
         name: 'model-3',
@@ -48,9 +48,9 @@ describe('Results Module', () => {
         predictionNumber: 0.2,
         normalizedPredictionNumber: 20,
         rollingAvgNumber: null,
-        finalScore: 20
-      }
-    ]
+        finalScore: 20,
+      },
+    ],
   };
 
   beforeEach(() => {
@@ -60,9 +60,9 @@ describe('Results Module', () => {
   describe('getMediaResult', () => {
     it('should get media results successfully', async () => {
       mockClient.get.mockResolvedValueOnce(mockMediaResponse);
-      
+
       const result = await getMediaResult(mockClient, 'request-123');
-      
+
       expect(mockClient.get).toHaveBeenCalledWith('/api/media/users/request-123');
       expect(result).toEqual(mockMediaResponse);
     });
@@ -70,28 +70,27 @@ describe('Results Module', () => {
     it('should handle RealityDefenderError errors', async () => {
       const error = new RealityDefenderError('Not found', 'not_found');
       mockClient.get.mockRejectedValueOnce(error);
-      
-      await expect(getMediaResult(mockClient, 'request-123'))
-        .rejects.toThrow(error);
+
+      await expect(getMediaResult(mockClient, 'request-123')).rejects.toThrow(error);
     });
 
     it('should handle generic errors', async () => {
       const error = new Error('Network error');
       mockClient.get.mockRejectedValueOnce(error);
-      
-      await expect(getMediaResult(mockClient, 'request-123'))
-        .rejects.toThrow(RealityDefenderError);
-      
+
+      await expect(getMediaResult(mockClient, 'request-123')).rejects.toThrow(RealityDefenderError);
+
       mockClient.get.mockRejectedValueOnce(error);
-      await expect(getMediaResult(mockClient, 'request-123'))
-        .rejects.toThrow('Failed to get result: Network error');
+      await expect(getMediaResult(mockClient, 'request-123')).rejects.toThrow(
+        'Failed to get result: Network error'
+      );
     });
   });
 
   describe('formatResult', () => {
     it('should format results correctly', () => {
       const formattedResult = formatResult(mockMediaResponse);
-      
+
       expect(formattedResult).toEqual({
         status: 'ARTIFICIAL',
         score: 0.95,
@@ -99,29 +98,29 @@ describe('Results Module', () => {
           {
             name: 'model-1',
             status: 'ARTIFICIAL',
-            score: 0.95
+            score: 0.95,
           },
           {
             name: 'model-3',
             status: 'AUTHENTIC',
-            score: 0.2
-          }
-        ]
+            score: 0.2,
+          },
+        ],
       });
     });
 
     it('should handle empty models array', () => {
       const emptyResponse = {
         ...mockMediaResponse,
-        models: []
+        models: [],
       };
-      
+
       const formattedResult = formatResult(emptyResponse);
-      
+
       expect(formattedResult).toEqual({
         status: 'ARTIFICIAL',
         score: 0.95,
-        models: []
+        models: [],
       });
     });
 
@@ -137,17 +136,17 @@ describe('Results Module', () => {
             predictionNumber: null,
             normalizedPredictionNumber: null,
             rollingAvgNumber: null,
-            finalScore: null
-          }
-        ]
+            finalScore: null,
+          },
+        ],
       };
-      
+
       const formattedResult = formatResult(onlyNotApplicableResponse);
-      
+
       expect(formattedResult).toEqual({
         status: 'ARTIFICIAL',
         score: 0.95,
-        models: []
+        models: [],
       });
     });
 
@@ -157,8 +156,8 @@ describe('Results Module', () => {
         resultsSummary: {
           status: 'PROCESSING',
           metadata: {
-            finalScore: null
-          }
+            finalScore: null,
+          },
         },
         models: [
           {
@@ -168,13 +167,13 @@ describe('Results Module', () => {
             predictionNumber: 0,
             normalizedPredictionNumber: 0,
             rollingAvgNumber: null,
-            finalScore: null
-          }
-        ]
+            finalScore: null,
+          },
+        ],
       } as unknown as MediaResponse; // Type assertion to handle null finalScore
-      
+
       const formattedResult = formatResult(nullScoreResponse);
-      
+
       expect(formattedResult).toEqual({
         status: 'PROCESSING',
         score: null,
@@ -182,9 +181,9 @@ describe('Results Module', () => {
           {
             name: 'model-1',
             status: 'PROCESSING',
-            score: 0
-          }
-        ]
+            score: 0,
+          },
+        ],
       });
     });
 
@@ -199,7 +198,7 @@ describe('Results Module', () => {
             predictionNumber: 0.95,
             normalizedPredictionNumber: 95,
             rollingAvgNumber: null,
-            finalScore: 95
+            finalScore: 95,
           } as ModelResult,
           // Model with no code but NOT_APPLICABLE status
           {
@@ -210,13 +209,13 @@ describe('Results Module', () => {
             predictionNumber: null,
             normalizedPredictionNumber: null,
             rollingAvgNumber: null,
-            finalScore: null
-          } as ModelResult
-        ]
+            finalScore: null,
+          } as ModelResult,
+        ],
       };
-      
+
       const formattedResult = formatResult(missingCodeResponse);
-      
+
       expect(formattedResult).toEqual({
         status: 'ARTIFICIAL',
         score: 0.95,
@@ -224,9 +223,9 @@ describe('Results Module', () => {
           {
             name: 'model-1',
             status: 'ARTIFICIAL',
-            score: 0.95
-          }
-        ]
+            score: 0.95,
+          },
+        ],
       });
     });
   });
@@ -234,9 +233,12 @@ describe('Results Module', () => {
   describe('getDetectionResult', () => {
     it('should get and format detection results', async () => {
       mockClient.get.mockResolvedValueOnce(mockMediaResponse);
-      
-      const result = await getDetectionResult(mockClient, 'request-123', { maxAttempts: 1, pollingInterval: 100 });
-      
+
+      const result = await getDetectionResult(mockClient, 'request-123', {
+        maxAttempts: 1,
+        pollingInterval: 100,
+      });
+
       expect(mockClient.get).toHaveBeenCalledWith('/api/media/users/request-123');
       expect(result).toEqual({
         status: 'ARTIFICIAL',
@@ -245,14 +247,14 @@ describe('Results Module', () => {
           {
             name: 'model-1',
             status: 'ARTIFICIAL',
-            score: 0.95
+            score: 0.95,
           },
           {
             name: 'model-3',
             status: 'AUTHENTIC',
-            score: 0.2
-          }
-        ]
+            score: 0.2,
+          },
+        ],
       });
     });
 
@@ -263,46 +265,42 @@ describe('Results Module', () => {
         resultsSummary: {
           status: 'ANALYZING',
           metadata: {
-            finalScore: null
-          }
-        }
+            finalScore: null,
+          },
+        },
       };
-      
+
       // Second call returns completed result
       const completedResponse = {
         ...mockMediaResponse,
         resultsSummary: {
           status: 'ARTIFICIAL',
           metadata: {
-            finalScore: 90
-          }
-        }
+            finalScore: 90,
+          },
+        },
       };
-      
+
       // Setup the mock to return analyzing first, then completed
       mockClient.get
         .mockResolvedValueOnce(analyzingResponse)
         .mockResolvedValueOnce(completedResponse);
-      
+
       // Call with maxAttempts=2 to allow for retry
-      const result = await getDetectionResult(
-        mockClient, 
-        'request-123', 
-        {
-          maxAttempts: 2,
-          pollingInterval: 100
-        }
-      );
-      
+      const result = await getDetectionResult(mockClient, 'request-123', {
+        maxAttempts: 2,
+        pollingInterval: 100,
+      });
+
       // Should have called the API twice
       expect(mockClient.get).toHaveBeenCalledTimes(2);
       expect(mockClient.get).toHaveBeenCalledWith('/api/media/users/request-123');
-      
+
       // Should return the completed result
       expect(result).toEqual({
         status: 'ARTIFICIAL',
         score: 0.9,
-        models: expect.any(Array)
+        models: expect.any(Array),
       });
     });
 
@@ -313,48 +311,45 @@ describe('Results Module', () => {
         resultsSummary: {
           status: 'ANALYZING',
           metadata: {
-            finalScore: null
-          }
+            finalScore: null,
+          },
         },
         models: [
           {
             ...mockMediaResponse.models[0],
             status: 'ANALYZING',
-            finalScore: null
-          }
-        ]
+            finalScore: null,
+          },
+        ],
       };
-      
+
       // Mock to always return analyzing
       mockClient.get.mockResolvedValue(analyzingResponse);
-      
+
       // Call with maxAttempts=3
-      const result = await getDetectionResult(
-        mockClient, 
-        'request-123', 
-        {
-          maxAttempts: 3,
-          pollingInterval: 100
-        }
-      );
-      
+      const result = await getDetectionResult(mockClient, 'request-123', {
+        maxAttempts: 3,
+        pollingInterval: 100,
+      });
+
       // Should have called the API 3 times
       expect(mockClient.get).toHaveBeenCalledTimes(3);
-      
+
       // Should still return the analyzing result after max attempts
       expect(result).toEqual({
         status: 'ANALYZING',
         score: null,
-        models: expect.any(Array)
+        models: expect.any(Array),
       });
     });
 
     it('should handle errors during getMediaResult', async () => {
       const error = new Error('API error');
       mockClient.get.mockRejectedValueOnce(error);
-      
-      await expect(getDetectionResult(mockClient, 'request-123', { maxAttempts: 1, pollingInterval: 100 }))
-        .rejects.toThrow();
+
+      await expect(
+        getDetectionResult(mockClient, 'request-123', { maxAttempts: 1, pollingInterval: 100 })
+      ).rejects.toThrow();
     });
   });
-}); 
+});

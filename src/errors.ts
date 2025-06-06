@@ -5,7 +5,7 @@
 /**
  * Error codes returned by the SDK
  */
-export type ErrorCode = 
+export type ErrorCode =
   /** Invalid or missing API key */
   | 'unauthorized'
   /** Server-side error occurred */
@@ -29,7 +29,7 @@ export class RealityDefenderError extends Error {
    * Error code indicating the type of error
    */
   code: ErrorCode;
-  
+
   /**
    * Creates a new SDK error
    * @param message Human-readable error message
@@ -39,7 +39,7 @@ export class RealityDefenderError extends Error {
     super(message);
     this.code = code;
     this.name = 'RealityDefenderError';
-    
+
     // Ensure proper prototype chain for instanceof checks
     Object.setPrototypeOf(this, RealityDefenderError.prototype);
   }

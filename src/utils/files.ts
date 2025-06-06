@@ -16,13 +16,13 @@ export function readFileContent(filePath: string): Buffer {
   if (!fs.existsSync(filePath)) {
     throw new RealityDefenderError(`File not found: ${filePath}`, 'invalid_file');
   }
-  
+
   try {
     // Read file content
     return fs.readFileSync(filePath);
   } catch (error) {
     throw new RealityDefenderError(
-      `Failed to read file: ${(error as Error).message}`, 
+      `Failed to read file: ${(error as Error).message}`,
       'invalid_file'
     );
   }

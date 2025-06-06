@@ -2,9 +2,9 @@ name: Test TypeScript SDK
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
@@ -13,31 +13,31 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[GitHub Action] Patch Version Bump')"
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || '' }}
-    
+
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          
+          node-version-file: '.nvmrc'
+
       - name: Enable Corepack
         run: corepack enable
-          
+
       - name: Install dependencies
         run: yarn install
-      
+
       - name: Build
         run: yarn build
-      
+
       - name: Run tests with coverage
         run: yarn test
-      
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
           directory: ./coverage
           flags: typescript
-          fail_ci_if_error: false 
+          fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}

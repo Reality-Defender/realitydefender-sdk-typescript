@@ -3,6 +3,7 @@
  */
 
 // Suppress Node.js unhandled promise rejection warnings
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 process.on('unhandledRejection', (reason, promise) => {
   // During tests we expect some unhandled rejections for testing error scenarios
   // console.log('Unhandled Rejection at:', promise, 'reason:', reason);
@@ -21,13 +22,13 @@ jest.mock('axios', () => {
     put: jest.MockedFunction<any>;
     isAxiosError: jest.MockedFunction<any>;
   };
-  
+
   const mockAxios: MockAxiosType = {
     create: jest.fn(() => mockAxios),
     get: jest.fn(),
     post: jest.fn(),
     put: jest.fn(),
-    isAxiosError: jest.fn()
+    isAxiosError: jest.fn(),
   };
   return mockAxios;
 });
@@ -35,14 +36,14 @@ jest.mock('axios', () => {
 // Mock fs
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
-  readFileSync: jest.fn()
+  readFileSync: jest.fn(),
 }));
 
 // Create a client mock that tests can use when needed
 export const mockClient = {
   get: jest.fn(),
   post: jest.fn(),
-  put: jest.fn()
+  put: jest.fn(),
 };
 
 // DO NOT mock detection modules or client module - use the real implementations
@@ -53,4 +54,4 @@ jest.unmock('../src/detection/results');
 // Explicitly unmock the client module if it was mocked elsewhere
 jest.unmock('../src/client');
 
-// If you need to mock specific responses, do it in the individual test files 
+// If you need to mock specific responses, do it in the individual test files
