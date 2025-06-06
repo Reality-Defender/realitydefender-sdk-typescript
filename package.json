@@ -14,6 +14,9 @@
   "directories": {
     "test": "tests"
   },
+  "engines": {
+    "node": ">=20.0.0 <=25.0.0"
+  },
   "scripts": {
     "build": "tsc --declaration --declarationMap",
     "test": "jest --coverage --detectOpenHandles --forceExit",
