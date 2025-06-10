@@ -27,7 +27,7 @@ jobs:
       - name: Create nightly version, if applicable.
         if: ${{ inputs.is-release == false }}
         run: |
-          echo "SDK_VERSION=${{ env.SDK_VERSION }}+git$(date +'%Y%m%d').$(git rev-parse --short HEAD)-${{ github.GITHUB_RUN_ATTEMPT }}" >> $GITHUB_ENV
+          echo "SDK_VERSION=${{ env.SDK_VERSION }}+git$(date +'%Y%m%d').$(git rev-parse --short HEAD)-${{ github.run_attempt }}" >> $GITHUB_ENV
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -45,6 +45,7 @@ jobs:
         run: |
           yarn install --immutable
           yarn build
+          yarn pack
 
       - name: Share artifacts.
         uses: actions/upload-artifact@v4
