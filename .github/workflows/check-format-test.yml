@@ -1,0 +1,50 @@
+name: Format, check, and test Typescript SDK
+
+on:
+  workflow_call:
+    inputs:
+      is-release:
+        default: false
+        type: boolean
+        description: Whether this is a release run or not.
+
+jobs:
+  check-format-test-typescript-sdk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: |
+          yarn install --immutable
+
+      - name: Lint and format checks
+        run: |
+          yarn run lint
+          yarn run format
+
+      - name: Typecheck
+        run: |
+          yarn run types
+
+      - name: Run tests with coverage
+        run: yarn test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./coverage
+          flags: typescript
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: ${{ inputs.is-release }}

@@ -2,8 +2,6 @@
  * Type definitions for test environment
  */
 
-import { jest } from '@jest/globals';
-
 declare global {
   // Extend NodeJS namespace
   namespace NodeJS {

@@ -4,8 +4,7 @@
 import axios from 'axios';
 import { createHttpClient, createAxiosClient, handleAxiosError } from '../../src/client';
 import { DEFAULT_BASE_URL } from '../../src/core/constants';
-import { RealityDefenderError } from '../../src/errors';
-import { mockClient } from '../setupTests';
+import { RealityDefenderError } from '../../src';
 
 // Get the mocked axios
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -18,7 +17,7 @@ describe('HTTP Client', () => {
   describe('createAxiosClient', () => {
     it('should create client with default base URL when not provided', () => {
       const client = createAxiosClient({ apiKey: 'test-key' });
-      
+
       expect(client.baseUrl).toBe(DEFAULT_BASE_URL);
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: DEFAULT_BASE_URL,
@@ -31,11 +30,11 @@ describe('HTTP Client', () => {
 
     it('should create client with custom base URL when provided', () => {
       const customUrl = 'https://custom-api.example.com';
-      const client = createAxiosClient({ 
+      const client = createAxiosClient({
         apiKey: 'test-key',
-        baseUrl: customUrl
+        baseUrl: customUrl,
       });
-      
+
       expect(client.baseUrl).toBe(customUrl);
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: customUrl,
@@ -50,7 +49,7 @@ describe('HTTP Client', () => {
   describe('createHttpClient', () => {
     it('should create HTTP client with get, post and put methods', () => {
       const client = createHttpClient({ apiKey: 'test-key' });
-      
+
       expect(client).toHaveProperty('get');
       expect(client).toHaveProperty('post');
       expect(client).toHaveProperty('put');
@@ -60,12 +59,12 @@ describe('HTTP Client', () => {
       const mockData = { test: 'data' };
       const mockResponse = { data: mockData };
       mockedAxios.create.mockReturnValueOnce({
-        get: jest.fn().mockResolvedValueOnce(mockResponse)
+        get: jest.fn().mockResolvedValueOnce(mockResponse),
       } as any);
-      
+
       const client = createHttpClient({ apiKey: 'test-key' });
       const result = await client.get('/test-path', { param: 'value' });
-      
+
       expect(result).toEqual(mockData);
     });
 
@@ -73,12 +72,12 @@ describe('HTTP Client', () => {
       const mockData = { test: 'data' };
       const mockResponse = { data: mockData };
       mockedAxios.create.mockReturnValueOnce({
-        get: jest.fn().mockResolvedValueOnce(mockResponse)
+        get: jest.fn().mockResolvedValueOnce(mockResponse),
       } as any);
-      
+
       const client = createHttpClient({ apiKey: 'test-key' });
       const result = await client.get('/test-path');
-      
+
       expect(result).toEqual(mockData);
     });
 
@@ -86,13 +85,13 @@ describe('HTTP Client', () => {
       const mockData = { id: '123' };
       const mockResponse = { data: mockData };
       mockedAxios.create.mockReturnValueOnce({
-        post: jest.fn().mockResolvedValueOnce(mockResponse)
+        post: jest.fn().mockResolvedValueOnce(mockResponse),
       } as any);
-      
+
       const client = createHttpClient({ apiKey: 'test-key' });
       const postData = { name: 'test' };
       const result = await client.post('/test-path', postData);
-      
+
       expect(result).toEqual(mockData);
     });
 
@@ -100,33 +99,33 @@ describe('HTTP Client', () => {
       const mockData = { success: true };
       const mockResponse = { data: mockData };
       mockedAxios.create.mockReturnValueOnce({
-        post: jest.fn().mockResolvedValueOnce(mockResponse)
+        post: jest.fn().mockResolvedValueOnce(mockResponse),
       } as any);
-      
+
       const client = createHttpClient({ apiKey: 'test-key' });
       const result = await client.post('/test-path');
-      
+
       expect(result).toEqual(mockData);
     });
 
     it('should handle successful PUT requests', async () => {
       mockedAxios.put.mockResolvedValueOnce({} as any);
       mockedAxios.create.mockReturnValueOnce({} as any);
-      
+
       const client = createHttpClient({ apiKey: 'test-key' });
       const putData = Buffer.from('test-data');
       const url = 'https://example.com/upload';
-      
+
       await client.put(url, putData);
-      
+
       // Verify the call was made
       expect(mockedAxios.put).toHaveBeenCalledWith(
         url,
         putData,
         expect.objectContaining({
           headers: {
-            'Content-Type': 'application/octet-stream'
-          }
+            'Content-Type': 'application/octet-stream',
+          },
         })
       );
     });
@@ -134,22 +133,22 @@ describe('HTTP Client', () => {
     it('should handle PUT requests with custom content type', async () => {
       mockedAxios.put.mockResolvedValueOnce({} as any);
       mockedAxios.create.mockReturnValueOnce({} as any);
-      
+
       const client = createHttpClient({ apiKey: 'test-key' });
       const putData = { test: 'data' };
       const url = 'https://example.com/upload';
       const contentType = 'application/json';
-      
+
       await client.put(url, putData, contentType);
-      
+
       // Verify the call was made
       expect(mockedAxios.put).toHaveBeenCalledWith(
         url,
         putData,
         expect.objectContaining({
           headers: {
-            'Content-Type': contentType
-          }
+            'Content-Type': contentType,
+          },
         })
       );
     });
@@ -157,22 +156,22 @@ describe('HTTP Client', () => {
     it('should handle errors in GET requests', async () => {
       const error = new Error('Network error');
       mockedAxios.create.mockReturnValueOnce({
-        get: jest.fn().mockRejectedValueOnce(error)
+        get: jest.fn().mockRejectedValueOnce(error),
       } as any);
-      
+
       const client = createHttpClient({ apiKey: 'test-key' });
-      
+
       await expect(client.get('/test-path')).rejects.toThrow();
     });
 
     it('should handle errors in POST requests', async () => {
       const error = new Error('API error');
       mockedAxios.create.mockReturnValueOnce({
-        post: jest.fn().mockRejectedValueOnce(error)
+        post: jest.fn().mockRejectedValueOnce(error),
       } as any);
-      
+
       const client = createHttpClient({ apiKey: 'test-key' });
-      
+
       await expect(client.post('/test-path', { data: 'test' })).rejects.toThrow();
     });
 
@@ -180,9 +179,9 @@ describe('HTTP Client', () => {
       const error = new Error('Upload error');
       mockedAxios.put.mockRejectedValueOnce(error);
       mockedAxios.create.mockReturnValueOnce({} as any);
-      
+
       const client = createHttpClient({ apiKey: 'test-key' });
-      
+
       await expect(client.put('https://example.com/upload', Buffer.from('test'))).rejects.toThrow();
     });
   });
@@ -194,12 +193,12 @@ describe('HTTP Client', () => {
         response: { status: 401 },
         message: 'Unauthorized',
         config: {},
-        request: {}
+        request: {},
       };
       mockedAxios.isAxiosError.mockReturnValueOnce(true);
-      
+
       const result = handleAxiosError(error);
-      
+
       expect(result).toBeInstanceOf(RealityDefenderError);
       expect(result.code).toBe('unauthorized');
     });
@@ -210,12 +209,12 @@ describe('HTTP Client', () => {
         response: { status: 404 },
         message: 'Not Found',
         config: { url: '/test/url' },
-        request: {}
+        request: {},
       };
       mockedAxios.isAxiosError.mockReturnValueOnce(true);
-      
+
       const result = handleAxiosError(error);
-      
+
       expect(result).toBeInstanceOf(RealityDefenderError);
       expect(result.code).toBe('not_found');
     });
@@ -226,12 +225,12 @@ describe('HTTP Client', () => {
         response: { status: 404 },
         message: 'Not Found',
         config: {},
-        request: {}
+        request: {},
       };
       mockedAxios.isAxiosError.mockReturnValueOnce(true);
-      
+
       const result = handleAxiosError(error);
-      
+
       expect(result).toBeInstanceOf(RealityDefenderError);
       expect(result.code).toBe('not_found');
     });
@@ -242,12 +241,12 @@ describe('HTTP Client', () => {
         response: { status: 415 },
         message: 'Unsupported Media Type',
         config: {},
-        request: {}
+        request: {},
       };
       mockedAxios.isAxiosError.mockReturnValueOnce(true);
-      
+
       const result = handleAxiosError(error);
-      
+
       expect(result).toBeInstanceOf(RealityDefenderError);
       expect(result.code).toBe('invalid_file');
     });
@@ -258,12 +257,12 @@ describe('HTTP Client', () => {
         response: { status: 500 },
         message: 'Internal Server Error',
         config: {},
-        request: {}
+        request: {},
       };
       mockedAxios.isAxiosError.mockReturnValueOnce(true);
-      
+
       const result = handleAxiosError(error);
-      
+
       expect(result).toBeInstanceOf(RealityDefenderError);
       expect(result.code).toBe('server_error');
     });
@@ -274,12 +273,12 @@ describe('HTTP Client', () => {
         response: { status: 429 },
         message: 'Too Many Requests',
         config: {},
-        request: {}
+        request: {},
       };
       mockedAxios.isAxiosError.mockReturnValueOnce(true);
-      
+
       const result = handleAxiosError(error);
-      
+
       expect(result).toBeInstanceOf(RealityDefenderError);
       expect(result.code).toBe('unknown_error');
     });
@@ -289,12 +288,12 @@ describe('HTTP Client', () => {
         isAxiosError: true,
         message: 'Network Error',
         config: {},
-        request: {}
+        request: {},
       };
       mockedAxios.isAxiosError.mockReturnValueOnce(true);
-      
+
       const result = handleAxiosError(error);
-      
+
       expect(result).toBeInstanceOf(RealityDefenderError);
       expect(result.code).toBe('unknown_error');
     });
@@ -302,11 +301,11 @@ describe('HTTP Client', () => {
     it('should handle non-axios errors', () => {
       const error = new Error('Generic Error');
       mockedAxios.isAxiosError.mockReturnValueOnce(false);
-      
+
       const result = handleAxiosError(error);
-      
+
       expect(result).toBeInstanceOf(RealityDefenderError);
       expect(result.code).toBe('unknown_error');
     });
   });
-}); 
+});

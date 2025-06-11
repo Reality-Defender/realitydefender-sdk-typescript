@@ -16,7 +16,7 @@ import { RealityDefenderError } from '../errors';
  * @returns Signed URL response
  */
 export async function getSignedUrl(
-  client: HttpClient, 
+  client: HttpClient,
   fileName: string
 ): Promise<SignedUrlResponse> {
   try {
@@ -25,7 +25,10 @@ export async function getSignedUrl(
     if (error instanceof RealityDefenderError) {
       throw error;
     }
-    throw new RealityDefenderError(`Failed to get signed URL: ${(error as Error).message}`, 'unknown_error');
+    throw new RealityDefenderError(
+      `Failed to get signed URL: ${(error as Error).message}`,
+      'unknown_error'
+    );
   }
 }
 
@@ -36,13 +39,13 @@ export async function getSignedUrl(
  * @param filePath Path to the file to upload
  */
 export async function uploadToSignedUrl(
-  client: HttpClient, 
-  signedUrl: string, 
+  client: HttpClient,
+  signedUrl: string,
   filePath: string
 ): Promise<void> {
   try {
     const fileContent = readFileContent(filePath);
-    await client.put<void>(signedUrl, fileContent);
+    await client.put(signedUrl, fileContent);
   } catch (error) {
     if (error instanceof RealityDefenderError) {
       throw error;
@@ -58,23 +61,23 @@ export async function uploadToSignedUrl(
  * @returns Upload result with request and media IDs
  */
 export async function uploadFile(
-  client: HttpClient, 
+  client: HttpClient,
   options: UploadOptions
 ): Promise<UploadResult> {
   const { filePath } = options;
-  
+
   // Get the filename
   const fileName = getFileName(filePath);
-  
+
   // Get signed URL
   const signedUrlResponse = await getSignedUrl(client, fileName);
-  
+
   // Upload to signed URL
   await uploadToSignedUrl(client, signedUrlResponse.response.signedUrl, filePath);
-  
+
   // Return result for tracking
   return {
     requestId: signedUrlResponse.requestId,
     mediaId: signedUrlResponse.mediaId,
   };
-} 
+}

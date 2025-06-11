@@ -4,14 +4,13 @@ module.exports = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['./tests/setupTests.ts'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
-  collectCoverageFrom: [
-    'src/**/*.ts',    
-    '!src/**/*.d.ts',
-    '!src/types/*.ts',
-  ],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/types/*.ts'],
   transform: {
-    '^.+\\.ts$': ['ts-jest', {
-      tsconfig: 'tsconfig.jest.json'
-    }]
-  }
-}; 
+    '^.+\\.ts$': [
+      'ts-jest',
+      {
+        tsconfig: 'tsconfig.jest.json',
+      },
+    ],
+  },
+};

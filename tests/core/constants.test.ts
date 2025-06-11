@@ -5,7 +5,7 @@ import {
   DEFAULT_BASE_URL,
   DEFAULT_POLLING_INTERVAL,
   DEFAULT_TIMEOUT,
-  API_PATHS
+  API_PATHS,
 } from '../../src/core/constants';
 
 describe('Constants', () => {
@@ -24,8 +24,7 @@ describe('Constants', () => {
   it('should export the correct API paths', () => {
     expect(API_PATHS).toEqual({
       SIGNED_URL: '/api/files/aws-presigned',
-      MEDIA_RESULT: '/api/media/users'
+      MEDIA_RESULT: '/api/media/users',
     });
   });
 });
- 

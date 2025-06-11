@@ -26,12 +26,12 @@ export class TypedEventEmitter extends EventEmitter {
    * @returns Whether the event had listeners
    */
   public emit<K extends EventName>(
-    event: K, 
+    event: K,
     ...args: Parameters<RealityDefenderEvents[K]>
   ): boolean {
     return super.emit(event, ...args);
   }
-  
+
   /**
    * Remove all listeners for all events, or for a specific event
    * @param event Optional event name

@@ -1,4 +1,8 @@
-import { RealityDefender, RealityDefenderError, DetectionResult } from '@realitydefender/realitydefender';
+import {
+  RealityDefender,
+  RealityDefenderError,
+  DetectionResult,
+} from '@realitydefender/realitydefender';
 import path from 'path';
 import fs from 'fs';
 
@@ -22,7 +26,7 @@ if (!fs.existsSync(filePath)) {
   if (!fs.existsSync(sampleDir)) {
     fs.mkdirSync(sampleDir, { recursive: true });
   }
-  
+
   // Create an empty file for demonstration
   fs.writeFileSync(filePath, Buffer.from(''));
   console.log(`Created sample file at ${filePath}`);
@@ -35,33 +39,35 @@ async function analyzeMediaWithPolling() {
   try {
     console.log('--- EXAMPLE 1: POLLING-BASED APPROACH ---');
     console.log(`Uploading file: ${filePath}`);
-    
+
     // Upload the file for analysis
     const { requestId } = await realityDefender.upload({
-      filePath
+      filePath,
     });
-    
+
     console.log(`Upload successful. Request ID: ${requestId}`);
     console.log('Waiting for analysis results...');
-    
+
     // Start event-based polling
     realityDefender.pollForResults(requestId, {
       pollingInterval: 3000,
-      timeout: 60000
+      timeout: 60000,
     });
-    
+
     // Listen for results
     realityDefender.on('result', (result: DetectionResult) => {
       console.log('Analysis complete!');
       console.log(`Status: ${result.status}`);
       console.log(`Score: ${result.score !== null ? result.score.toFixed(2) : 'N/A'}`);
       console.log('Model results:');
-      
+
       result.models.forEach(model => {
-        console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score.toFixed(2) : 'N/A'})`);
+        console.log(
+          `- ${model.name}: ${model.status} (${model.score !== null ? model.score.toFixed(2) : 'N/A'})`
+        );
       });
     });
-    
+
     realityDefender.on('error', (error: RealityDefenderError) => {
       console.error(`Error during analysis: ${error.message} (${error.code})`);
     });
@@ -77,28 +83,30 @@ async function analyzeMediaWithPromise() {
   try {
     console.log('--- EXAMPLE 2: PROMISE-BASED APPROACH ---');
     console.log(`Uploading file: ${filePath}`);
-    
+
     // Upload the file for analysis
     const { requestId } = await realityDefender.upload({
-      filePath
+      filePath,
     });
-    
+
     console.log(`Upload successful. Request ID: ${requestId}`);
     console.log('Waiting for analysis results...');
-    
+
     // Get the result using promise-based API
     const result = await realityDefender.getResult(requestId, {
       maxAttempts: Number.MAX_SAFE_INTEGER,
-      pollingInterval: 3000
+      pollingInterval: 3000,
     });
-    
+
     console.log('Analysis complete!');
     console.log(`Status: ${result.status}`);
     console.log(`Score: ${result.score !== null ? result.score.toFixed(2) : 'N/A'}`);
     console.log('Model results:');
-    
+
     result.models.forEach(model => {
-      console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score.toFixed(2) : 'N/A'})`);
+      console.log(
+        `- ${model.name}: ${model.status} (${model.score !== null ? model.score.toFixed(2) : 'N/A'})`
+      );
     });
   } catch (error: unknown) {
     if (error instanceof RealityDefenderError) {
@@ -116,22 +124,27 @@ async function analyzeMediaWithDetect() {
   try {
     console.log('--- EXAMPLE 3: SIMPLIFIED DETECT METHOD ---');
     console.log(`Analyzing file: ${filePath}`);
-    
+
     // Upload and get results in a single operation
-    const result = await realityDefender.detect({
-      filePath
-    }, {
-      maxAttempts: Number.MAX_SAFE_INTEGER,
-      pollingInterval: 3000
-    });
-    
+    const result = await realityDefender.detect(
+      {
+        filePath,
+      },
+      {
+        maxAttempts: Number.MAX_SAFE_INTEGER,
+        pollingInterval: 3000,
+      }
+    );
+
     console.log('Analysis complete!');
     console.log(`Status: ${result.status}`);
     console.log(`Score: ${result.score !== null ? result.score.toFixed(2) : 'N/A'}`);
     console.log('Model results:');
-    
+
     result.models.forEach(model => {
-      console.log(`- ${model.name}: ${model.status} (${model.score !== null ? model.score.toFixed(2) : 'N/A'})`);
+      console.log(
+        `- ${model.name}: ${model.status} (${model.score !== null ? model.score.toFixed(2) : 'N/A'})`
+      );
     });
   } catch (error: unknown) {
     if (error instanceof RealityDefenderError) {
@@ -147,21 +160,21 @@ async function runExamples() {
   const readline = require('readline');
   const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
   });
 
   console.log('Which example would you like to run?');
   console.log('1) Polling-based approach (event listeners)');
   console.log('2) Promise-based approach');
   console.log('3) Simplified detect method');
-  
+
   const answer = await new Promise<string>(resolve => {
     rl.question('Enter 1, 2, or 3: ', resolve);
   });
-  
+
   rl.close();
-  
-  switch(answer.trim()) {
+
+  switch (answer.trim()) {
     case '1':
       await analyzeMediaWithPolling();
       break;
@@ -176,4 +189,4 @@ async function runExamples() {
   }
 }
 
-runExamples(); 
+runExamples();

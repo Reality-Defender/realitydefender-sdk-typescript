@@ -2,8 +2,8 @@
  * HTTP client type definitions
  */
 
-import { AxiosInstance, AxiosError } from 'axios';
-import { RealityDefenderConfig } from '../types/sdk';
+import { AxiosInstance } from 'axios';
+import { RealityDefenderConfig } from '../types';
 
 /**
  * HTTP client interface for API communication
@@ -16,7 +16,7 @@ export interface HttpClient {
    * @returns Promise resolving to the response data
    */
   get<T>(path: string, params?: Record<string, any>): Promise<T>;
-  
+
   /**
    * Send a POST request
    * @param path API endpoint path
@@ -24,7 +24,7 @@ export interface HttpClient {
    * @returns Promise resolving to the response data
    */
   post<T>(path: string, data?: any): Promise<T>;
-  
+
   /**
    * Send a PUT request
    * @param url Full URL for the request
@@ -32,7 +32,7 @@ export interface HttpClient {
    * @param contentType Optional content type
    * @returns Promise resolving to the response data
    */
-  put<T>(url: string, data: any, contentType?: string): Promise<void>;
+  put(url: string, data: any, contentType?: string): Promise<void>;
 }
 
 /**
@@ -48,9 +48,9 @@ export interface AxiosClientInstance {
    * Axios HTTP client
    */
   client: AxiosInstance;
-  
+
   /**
    * Base URL for API requests
    */
   baseUrl: string;
-} 
+}
