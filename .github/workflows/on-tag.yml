@@ -10,6 +10,7 @@ jobs:
     uses: ./.github/workflows/check-format-test.yml
     with:
       is-release: true
+    secrets:
       codecov-token: ${{ secrets.CODECOV_TOKEN }}
 
   build-publish:
@@ -17,4 +18,5 @@ jobs:
     uses: ./.github/workflows/build-publish.yml
     with:
       is-release: true
+    secrets: 
       node-auth-token: ${{ secrets.NODE_AUTH_TOKEN }}
