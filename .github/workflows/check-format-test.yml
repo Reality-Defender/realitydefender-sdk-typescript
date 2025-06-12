@@ -7,6 +7,10 @@ on:
         default: false
         type: boolean
         description: Whether this is a release run or not.
+    secrets:
+      codecov-token:
+        required: true
+        description: A token required by Codecov to upload code coverage to their platform.
 
 jobs:
   check-format-test-typescript-sdk:
@@ -46,5 +50,5 @@ jobs:
         with:
           directory: ./coverage
           flags: typescript
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ secrets.codecov-token }}
           fail_ci_if_error: ${{ inputs.is-release }}

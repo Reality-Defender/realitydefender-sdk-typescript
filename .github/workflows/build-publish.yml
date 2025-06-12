@@ -6,6 +6,10 @@ on:
         default: false
         type: boolean
         description: Whether this is a release package ready to be published or not.
+    secrets:
+      node-auth-token:
+        required: false
+        description: A token required by the Node registry to publish packages.
 
   workflow_dispatch:
     inputs:
@@ -63,8 +67,8 @@ jobs:
         if: ${{ inputs.is-release == true }}
         run: |
           echo "registry=https://registry.npmjs.org/" > .npmrc
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" >> .npmrc
-          echo "npmAuthToken: \"${{ secrets.NODE_AUTH_TOKEN }}\"" > .yarnrc.yml
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.node-auth-token }}" >> .npmrc
+          echo "npmAuthToken: \"${{ secrets.node-auth-token }}\"" > .yarnrc.yml
           echo "npmPublishRegistry: \"https://registry.npmjs.org/\"" >> .yarnrc.yml
           echo "npmAlwaysAuth: true" >> .yarnrc.yml
           yarn npm publish --access public
