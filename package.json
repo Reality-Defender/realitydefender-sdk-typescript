@@ -25,7 +25,7 @@
     }
   },
   "scripts": {
-    "build": "tsc --declaration --declarationMap",
+    "build": "rm -rf dist && tsc",
     "test": "jest --coverage --detectOpenHandles --forceExit",
     "prepare": "yarn build",
     "example": "ts-node examples/basic.ts",
