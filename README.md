@@ -48,7 +48,7 @@ async function detectMedia() {
 
     
     return result;
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error: ${error.message} (${error.code})`);
     throw error;
   }
@@ -92,7 +92,7 @@ async function detectMedia() {
     });
     
     return result;
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error: ${error.message} (${error.code})`);
     throw error;
   }
@@ -111,38 +111,43 @@ Here's how to implement an event-driven approach:
 ```typescript
 import { RealityDefender } from '@realitydefender/realitydefender';
 
-// Initialize the SDK with your API key
-const realityDefender = new RealityDefender({
-  apiKey: 'your-api-key',
-  // Optional: custom base URL if needed
-  // baseUrl: 'https://api.dev.realitydefender.xyz'
-});
-
-// Upload a file for analysis
-const { requestId } = await realityDefender.upload({
-  filePath: '/path/to/your/file.jpg',
-});
-
-// Start polling
-realityDefender.pollForResults(requestId, {
-  pollingInterval: 3000,
-  timeout: 60000
-});
-
-// Event-based approach to get results
-realityDefender.on('result', (result) => {
-  console.log(`Status: ${result.status}`);
-  console.log(`Score: ${result.score}`); // Score is a value between 0 and 1
-  
-  // List model results
-  result.models.forEach(model => {
-    console.log(`${model.name}: ${model.status} (${model.score})`); // Model scores are also between 0 and 1
+async function detectMedia() {
+  // Initialize the SDK with your API key
+  const realityDefender = new RealityDefender({
+    apiKey: 'your-api-key'
   });
-});
 
-realityDefender.on('error', (error) => {
-  console.error(`Error: ${error.message} (${error.code})`);
-});
+  // Upload a file for analysis
+  const {requestId} = await realityDefender.upload({
+    filePath: '/path/to/your/file.jpg',
+  });
+
+  // Start polling
+  realityDefender.pollForResults(requestId, {
+    pollingInterval: 3000,
+    timeout: 60000
+  });
+
+  // Event-based approach to get results
+  realityDefender.on('result', (result) => {
+    console.log(`Status: ${result.status}`);
+    console.log(`Score: ${result.score}`); // Score is a value between 0 and 1
+
+    // List model results
+    result.models.forEach(model => {
+      console.log(`${model.name}: ${model.status} (${model.score})`); // Model scores are also between 0 and 1
+    });
+  });
+
+  realityDefender.on('error', (error) => {
+    console.error(`Error: ${error.message} (${error.code})`);
+  });
+}
+
+// Call the function
+detectMedia()
+  .then(result => console.log('Waiting for result'))
+  .catch(error => console.error('Detection failed'));
 ```
 
 
