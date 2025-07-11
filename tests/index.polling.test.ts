@@ -31,7 +31,7 @@ describe('RealityDefender SDK Polling Tests', () => {
       mockGetDetectionResult
         .mockRejectedValueOnce(new RealityDefenderError('Not found', 'not_found'))
         .mockResolvedValueOnce({
-          status: 'MANIPULATED',
+          status: 'FAKE',
           score: 95,
           models: [],
         });

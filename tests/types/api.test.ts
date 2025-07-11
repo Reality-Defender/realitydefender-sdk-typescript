@@ -24,10 +24,10 @@ describe('API Types', () => {
       name: 'model-1',
       data: {
         score: 0.95,
-        decision: 'MANIPULATED',
+        decision: 'FAKE',
         raw_score: 0.95,
       },
-      status: 'MANIPULATED',
+      status: 'FAKE',
       predictionNumber: 0.95,
       normalizedPredictionNumber: 95,
       rollingAvgNumber: null,
@@ -41,7 +41,7 @@ describe('API Types', () => {
 
   it('should create a ResultsSummary object', () => {
     const resultsSummary: ResultsSummary = {
-      status: 'MANIPULATED',
+      status: 'FAKE',
       metadata: {
         finalScore: 95,
       },
@@ -59,9 +59,9 @@ describe('API Types', () => {
       requestId: 'request-123',
       uploadedDate: '2023-06-25T12:34:56Z',
       mediaType: 'IMAGE',
-      overallStatus: 'MANIPULATED',
+      overallStatus: 'FAKE',
       resultsSummary: {
-        status: 'MANIPULATED',
+        status: 'FAKE',
         metadata: {
           finalScore: 95,
         },
@@ -69,8 +69,8 @@ describe('API Types', () => {
       models: [
         {
           name: 'model-1',
-          data: { score: 0.95, decision: 'MANIPULATED', raw_score: 0.95 },
-          status: 'MANIPULATED',
+          data: { score: 0.95, decision: 'FAKE', raw_score: 0.95 },
+          status: 'FAKE',
           predictionNumber: 0.95,
           normalizedPredictionNumber: 95,
           rollingAvgNumber: null,
