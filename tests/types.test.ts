@@ -48,7 +48,7 @@ describe('Type Definitions', () => {
     };
 
     expect(modelResult.name).toBe('model-1');
-    expect(modelResult.status).toBe('MANIPULATED');
+    expect(modelResult.status).toBe('FAKE');
     expect(modelResult.data?.score).toBe(0.95);
   });
 
@@ -60,7 +60,7 @@ describe('Type Definitions', () => {
       },
     };
 
-    expect(resultsSummary.status).toBe('MANIPULATED');
+    expect(resultsSummary.status).toBe('FAKE');
     expect(resultsSummary.metadata.finalScore).toBe(95);
   });
 
