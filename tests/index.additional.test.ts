@@ -56,7 +56,7 @@ describe('RealityDefender SDK Additional Tests', () => {
 
       // Simulate error and result events
       const error = new RealityDefenderError('Test error', 'unknown_error');
-      const result = { status: 'FAKE', score: 95, models: [] };
+      const result = { status: 'MANIPULATED', score: 95, models: [] };
 
       sdk.emit('error', error);
       sdk.emit('result', result);
@@ -128,7 +128,7 @@ describe('RealityDefender SDK Additional Tests', () => {
 
     it('should handle immediate result availability', async () => {
       // Setup mock response
-      const mockResult = { status: 'FAKE', score: 95, models: [] };
+      const mockResult = { status: 'MANIPULATED', score: 95, models: [] };
       mockGetDetectionResult.mockResolvedValueOnce(mockResult);
 
       // Create a listener

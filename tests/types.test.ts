@@ -37,10 +37,10 @@ describe('Type Definitions', () => {
       name: 'model-1',
       data: {
         score: 0.95,
-        decision: 'MANIPULATED',
+        decision: 'FAKE',
         raw_score: 0.95,
       },
-      status: 'MANIPULATED',
+      status: 'FAKE',
       predictionNumber: 0.95,
       normalizedPredictionNumber: 95,
       rollingAvgNumber: null,
@@ -54,7 +54,7 @@ describe('Type Definitions', () => {
 
   it('should create a ResultsSummary object', () => {
     const resultsSummary: ResultsSummary = {
-      status: 'MANIPULATED',
+      status: 'FAKE',
       metadata: {
         finalScore: 95,
       },
@@ -119,12 +119,12 @@ describe('Type Definitions', () => {
 
     const detectionResult: DetectionResult = {
       status: 'MANIPULATED',
-      score: 95,
+      score: 0.95,
       models: [
         {
           name: 'model-1',
           status: 'MANIPULATED',
-          score: 95,
+          score: 0.95,
         },
       ],
     };
