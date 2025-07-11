@@ -85,7 +85,6 @@ export async function getDetectionResult(
 
   while (attempts < maxAttempts) {
     const mediaResult = await getMediaResult(client, requestId);
-    console.log({mediaResult})
 
     // If the status is not ANALYZING, return the results immediately
     if (mediaResult.resultsSummary.status !== 'ANALYZING') {
