@@ -14,9 +14,9 @@ describe('Results Module', () => {
     requestId: 'request-123',
     uploadedDate: '2023-06-25T12:34:56Z',
     mediaType: 'IMAGE',
-    overallStatus: 'ARTIFICIAL',
+    overallStatus: 'MANIPULATED',
     resultsSummary: {
-      status: 'ARTIFICIAL',
+      status: 'MANIPULATED',
       metadata: {
         finalScore: 95,
       },
@@ -24,8 +24,8 @@ describe('Results Module', () => {
     models: [
       {
         name: 'model-1',
-        data: { score: 0.95, decision: 'ARTIFICIAL', raw_score: 0.95 },
-        status: 'ARTIFICIAL',
+        data: { score: 0.95, decision: 'MANIPULATED', raw_score: 0.95 },
+        status: 'MANIPULATED',
         predictionNumber: 0.95,
         normalizedPredictionNumber: 95,
         rollingAvgNumber: null,
@@ -92,12 +92,12 @@ describe('Results Module', () => {
       const formattedResult = formatResult(mockMediaResponse);
 
       expect(formattedResult).toEqual({
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 0.95,
         models: [
           {
             name: 'model-1',
-            status: 'ARTIFICIAL',
+            status: 'MANIPULATED',
             score: 0.95,
           },
           {
@@ -109,7 +109,7 @@ describe('Results Module', () => {
       });
     });
 
-    it('should convert FAKE status to ARTIFICIAL in response status', () => {
+    it('should convert FAKE status to MANIPULATED in response status', () => {
       const fakeStatusResponse = {
         ...mockMediaResponse,
         resultsSummary: {
@@ -122,10 +122,10 @@ describe('Results Module', () => {
 
       const formattedResult = formatResult(fakeStatusResponse);
 
-      expect(formattedResult.status).toBe('ARTIFICIAL');
+      expect(formattedResult.status).toBe('MANIPULATED');
     });
 
-    it('should convert FAKE status to ARTIFICIAL in model status', () => {
+    it('should convert FAKE status to MANIPULATED in model status', () => {
       const fakeModelResponse = {
         ...mockMediaResponse,
         models: [
@@ -143,7 +143,7 @@ describe('Results Module', () => {
 
       const formattedResult = formatResult(fakeModelResponse);
 
-      expect(formattedResult.models[0].status).toBe('ARTIFICIAL');
+      expect(formattedResult.models[0].status).toBe('MANIPULATED');
     });
 
     it('should handle models with code attribute set to not_applicable', () => {
@@ -152,8 +152,8 @@ describe('Results Module', () => {
         models: [
           {
             name: 'model-1',
-            data: { score: 0.95, decision: 'ARTIFICIAL', raw_score: 0.95 },
-            status: 'ARTIFICIAL',
+            data: { score: 0.95, decision: 'MANIPULATED', raw_score: 0.95 },
+            status: 'MANIPULATED',
             code: 'applicable',
             predictionNumber: 0.95,
             normalizedPredictionNumber: 95,
@@ -188,7 +188,7 @@ describe('Results Module', () => {
       const formattedResult = formatResult(emptyResponse);
 
       expect(formattedResult).toEqual({
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 0.95,
         models: [],
       });
@@ -214,7 +214,7 @@ describe('Results Module', () => {
       const formattedResult = formatResult(onlyNotApplicableResponse);
 
       expect(formattedResult).toEqual({
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 0.95,
         models: [],
       });
@@ -263,8 +263,8 @@ describe('Results Module', () => {
         models: [
           {
             name: 'model-1',
-            data: { score: 0.95, decision: 'ARTIFICIAL', raw_score: 0.95 },
-            status: 'ARTIFICIAL',
+            data: { score: 0.95, decision: 'MANIPULATED', raw_score: 0.95 },
+            status: 'MANIPULATED',
             predictionNumber: 0.95,
             normalizedPredictionNumber: 95,
             rollingAvgNumber: null,
@@ -287,12 +287,12 @@ describe('Results Module', () => {
       const formattedResult = formatResult(missingCodeResponse);
 
       expect(formattedResult).toEqual({
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 0.95,
         models: [
           {
             name: 'model-1',
-            status: 'ARTIFICIAL',
+            status: 'MANIPULATED',
             score: 0.95,
           },
         ],
@@ -339,12 +339,12 @@ describe('Results Module', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith('/api/media/users/request-123');
       expect(result).toEqual({
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 0.95,
         models: [
           {
             name: 'model-1',
-            status: 'ARTIFICIAL',
+            status: 'MANIPULATED',
             score: 0.95,
           },
           {
@@ -381,7 +381,7 @@ describe('Results Module', () => {
       const completedResponse = {
         ...mockMediaResponse,
         resultsSummary: {
-          status: 'ARTIFICIAL',
+          status: 'MANIPULATED',
           metadata: {
             finalScore: 90,
           },
@@ -405,7 +405,7 @@ describe('Results Module', () => {
 
       // Should return the completed result
       expect(result).toEqual({
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 0.9,
         models: expect.any(Array),
       });
@@ -503,7 +503,7 @@ describe('Results Module', () => {
       const completedResponse = {
         ...mockMediaResponse,
         resultsSummary: {
-          status: 'ARTIFICIAL',
+          status: 'MANIPULATED',
           metadata: {
             finalScore: 85,
           },
@@ -523,7 +523,7 @@ describe('Results Module', () => {
       });
 
       expect(mockClient.get).toHaveBeenCalledTimes(4);
-      expect(result.status).toBe('ARTIFICIAL');
+      expect(result.status).toBe('MANIPULATED');
       expect(result.score).toBe(0.85);
     });
 

@@ -56,7 +56,7 @@ describe('RealityDefender SDK Additional Tests', () => {
 
       // Simulate error and result events
       const error = new RealityDefenderError('Test error', 'unknown_error');
-      const result = { status: 'ARTIFICIAL', score: 95, models: [] };
+      const result = { status: 'MANIPULATED', score: 95, models: [] };
 
       sdk.emit('error', error);
       sdk.emit('result', result);
@@ -106,7 +106,7 @@ describe('RealityDefender SDK Additional Tests', () => {
 
       // Simulate events
       sdk.emit('error', new RealityDefenderError('Test error', 'unknown_error'));
-      sdk.emit('result', { status: 'ARTIFICIAL', score: 95, models: [] });
+      sdk.emit('result', { status: 'MANIPULATED', score: 95, models: [] });
 
       // Verify result handler was not called, but error handler was
       expect(resultHandler).not.toHaveBeenCalled();
@@ -128,7 +128,7 @@ describe('RealityDefender SDK Additional Tests', () => {
 
     it('should handle immediate result availability', async () => {
       // Setup mock response
-      const mockResult = { status: 'ARTIFICIAL', score: 95, models: [] };
+      const mockResult = { status: 'MANIPULATED', score: 95, models: [] };
       mockGetDetectionResult.mockResolvedValueOnce(mockResult);
 
       // Create a listener

@@ -14,12 +14,12 @@ describe('TypedEventEmitter', () => {
 
   it('should register and emit a result event with typed parameters', () => {
     const mockResult: DetectionResult = {
-      status: 'ARTIFICIAL',
+      status: 'MANIPULATED',
       score: 95,
       models: [
         {
           name: 'model-1',
-          status: 'ARTIFICIAL',
+          status: 'MANIPULATED',
           score: 95,
         },
       ],
@@ -79,7 +79,7 @@ describe('TypedEventEmitter', () => {
 
   it('should not emit events to incorrect event types', () => {
     const mockResult: DetectionResult = {
-      status: 'ARTIFICIAL',
+      status: 'MANIPULATED',
       score: 95,
       models: [],
     };

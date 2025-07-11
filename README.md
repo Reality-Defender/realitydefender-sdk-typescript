@@ -206,7 +206,7 @@ Returns a `DetectionResult` object:
 
 ```typescript
 {
-  status: string,       // Overall status (e.g., "ARTIFICIAL", "AUTHENTIC", etc.)
+  status: string,       // Overall status (e.g., "MANIPULATED", "AUTHENTIC", etc.)
   score: number,        // Overall confidence score (0-1 range, null if processing)
   models: [             // Array of model-specific results (DEPRECATED: individual model scores will no longer be returned in the future)
     {

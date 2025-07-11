@@ -37,10 +37,10 @@ describe('Type Definitions', () => {
       name: 'model-1',
       data: {
         score: 0.95,
-        decision: 'ARTIFICIAL',
+        decision: 'MANIPULATED',
         raw_score: 0.95,
       },
-      status: 'ARTIFICIAL',
+      status: 'MANIPULATED',
       predictionNumber: 0.95,
       normalizedPredictionNumber: 95,
       rollingAvgNumber: null,
@@ -48,19 +48,19 @@ describe('Type Definitions', () => {
     };
 
     expect(modelResult.name).toBe('model-1');
-    expect(modelResult.status).toBe('ARTIFICIAL');
+    expect(modelResult.status).toBe('MANIPULATED');
     expect(modelResult.data?.score).toBe(0.95);
   });
 
   it('should create a ResultsSummary object', () => {
     const resultsSummary: ResultsSummary = {
-      status: 'ARTIFICIAL',
+      status: 'MANIPULATED',
       metadata: {
         finalScore: 95,
       },
     };
 
-    expect(resultsSummary.status).toBe('ARTIFICIAL');
+    expect(resultsSummary.status).toBe('MANIPULATED');
     expect(resultsSummary.metadata.finalScore).toBe(95);
   });
 
@@ -72,9 +72,9 @@ describe('Type Definitions', () => {
       requestId: 'request-123',
       uploadedDate: '2023-06-25T12:34:56Z',
       mediaType: 'IMAGE',
-      overallStatus: 'ARTIFICIAL',
+      overallStatus: 'MANIPULATED',
       resultsSummary: {
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         metadata: {
           finalScore: 95,
         },
@@ -82,8 +82,8 @@ describe('Type Definitions', () => {
       models: [
         {
           name: 'model-1',
-          data: { score: 0.95, decision: 'ARTIFICIAL', raw_score: 0.95 },
-          status: 'ARTIFICIAL',
+          data: { score: 0.95, decision: 'MANIPULATED', raw_score: 0.95 },
+          status: 'MANIPULATED',
           predictionNumber: 0.95,
           normalizedPredictionNumber: 95,
           rollingAvgNumber: null,
@@ -118,12 +118,12 @@ describe('Type Definitions', () => {
     };
 
     const detectionResult: DetectionResult = {
-      status: 'ARTIFICIAL',
+      status: 'MANIPULATED',
       score: 95,
       models: [
         {
           name: 'model-1',
-          status: 'ARTIFICIAL',
+          status: 'MANIPULATED',
           score: 95,
         },
       ],

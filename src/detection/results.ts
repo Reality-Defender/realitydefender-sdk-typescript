@@ -44,9 +44,9 @@ export function formatResult(response: MediaResponse): DetectionResult {
     model => model.status !== 'NOT_APPLICABLE' && model.code !== 'not_applicable'
   );
 
-  // Replace FAKE with ARTIFICIAL in response status
+  // Replace FAKE with MANIPULATED in response status
   const status =
-    response.resultsSummary.status === 'FAKE' ? 'ARTIFICIAL' : response.resultsSummary.status;
+    response.resultsSummary.status === 'FAKE' ? 'MANIPULATED' : response.resultsSummary.status;
 
   // Normalize the final score from 0-100 to 0-1 range
   const normalizedScore =
@@ -59,8 +59,8 @@ export function formatResult(response: MediaResponse): DetectionResult {
     score: normalizedScore,
     models: activeModels.map(model => ({
       name: model.name,
-      // Replace FAKE with ARTIFICIAL in model status
-      status: model.status === 'FAKE' ? 'ARTIFICIAL' : model.status,
+      // Replace FAKE with MANIPULATED in model status
+      status: model.status === 'FAKE' ? 'MANIPULATED' : model.status,
       // Score between 0-1 range or null if not available
       score: model.predictionNumber,
     })),
@@ -85,6 +85,7 @@ export async function getDetectionResult(
 
   while (attempts < maxAttempts) {
     const mediaResult = await getMediaResult(client, requestId);
+    console.log({mediaResult})
 
     // If the status is not ANALYZING, return the results immediately
     if (mediaResult.resultsSummary.status !== 'ANALYZING') {
