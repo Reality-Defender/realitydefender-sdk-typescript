@@ -54,7 +54,7 @@ export interface UploadResult {
  * Detection result with status and scores
  */
 export interface DetectionResult {
-  /** Overall status determination (e.g., "ARTIFICIAL", "AUTHENTIC") */
+  /** Overall status determination (e.g., "MANIPULATED", "AUTHENTIC") */
   status: string;
   /** Confidence score (0-1 range, null if processing) */
   score: number | null;

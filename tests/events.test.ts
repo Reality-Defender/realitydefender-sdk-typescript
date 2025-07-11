@@ -19,7 +19,7 @@ describe('TypedEventEmitter', () => {
 
     // Create mock data
     const mockResult: DetectionResult = {
-      status: 'ARTIFICIAL',
+      status: 'MANIPULATED',
       score: 95,
       models: [],
     };
@@ -47,7 +47,7 @@ describe('TypedEventEmitter', () => {
     (emitter as any).removeListener('result', handler);
 
     // Emit event
-    emitter.emit('result', { status: 'ARTIFICIAL', score: 90, models: [] });
+    emitter.emit('result', { status: 'MANIPULATED', score: 90, models: [] });
 
     // Verify handler was not called
     expect(handler).not.toHaveBeenCalled();
@@ -60,7 +60,7 @@ describe('TypedEventEmitter', () => {
     emitter.on('result', () => {});
 
     // Check return value of emit()
-    const result = emitter.emit('result', { status: 'ARTIFICIAL', score: 90, models: [] });
+    const result = emitter.emit('result', { status: 'MANIPULATED', score: 90, models: [] });
 
     expect(result).toBe(true);
   });
@@ -71,7 +71,7 @@ describe('TypedEventEmitter', () => {
     // No handlers registered
 
     // Check return value of emit()
-    const result = emitter.emit('result', { status: 'ARTIFICIAL', score: 90, models: [] });
+    const result = emitter.emit('result', { status: 'MANIPULATED', score: 90, models: [] });
 
     expect(result).toBe(false);
   });
@@ -113,7 +113,7 @@ describe('TypedEventEmitter', () => {
     (emitter as any).removeAllListeners('result');
 
     // Emit events
-    emitter.emit('result', { status: 'ARTIFICIAL', score: 90, models: [] });
+    emitter.emit('result', { status: 'MANIPULATED', score: 90, models: [] });
 
     // Create the error before emitting
     const testError = new RealityDefenderError('Test error', 'unknown_error');

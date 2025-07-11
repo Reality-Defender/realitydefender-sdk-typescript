@@ -123,12 +123,12 @@ describe('RealityDefender SDK', () => {
       const sdk = new RealityDefender({ apiKey: 'test-api-key' });
 
       const mockResult = {
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 95,
         models: [
           {
             name: 'model-1',
-            status: 'ARTIFICIAL',
+            status: 'MANIPULATED',
             score: 95,
           },
         ],
@@ -201,12 +201,12 @@ describe('RealityDefender SDK', () => {
 
       // Mock detection result
       const mockDetectionResult = {
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 95,
         models: [
           {
             name: 'model-1',
-            status: 'ARTIFICIAL',
+            status: 'MANIPULATED',
             score: 95,
           },
         ],
@@ -240,7 +240,7 @@ describe('RealityDefender SDK', () => {
         mediaId: 'media-123',
       });
       mockGetDetectionResult.mockResolvedValueOnce({
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 95,
         models: [],
       });
@@ -347,7 +347,7 @@ describe('RealityDefender SDK', () => {
       sdk.on('error', jest.fn());
       sdk.on('result', jest.fn());
 
-      // Mock getResult to return ANALYZING status once then ARTIFICIAL
+      // Mock getResult to return ANALYZING status once then MANIPULATED
       mockGetDetectionResult.mockReset();
       mockGetDetectionResult.mockResolvedValueOnce({
         status: 'ANALYZING',
@@ -355,7 +355,7 @@ describe('RealityDefender SDK', () => {
         models: [],
       });
       mockGetDetectionResult.mockResolvedValueOnce({
-        status: 'ARTIFICIAL',
+        status: 'MANIPULATED',
         score: 95,
         models: [],
       });

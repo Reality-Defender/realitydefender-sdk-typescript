@@ -57,12 +57,12 @@ describe('SDK Types', () => {
 
   it('should create a DetectionResult object', () => {
     const result: DetectionResult = {
-      status: 'ARTIFICIAL',
+      status: 'MANIPULATED',
       score: 95,
       models: [
         {
           name: 'model-1',
-          status: 'ARTIFICIAL',
+          status: 'MANIPULATED',
           score: 95,
         },
         {
@@ -73,7 +73,7 @@ describe('SDK Types', () => {
       ],
     };
 
-    expect(result.status).toBe('ARTIFICIAL');
+    expect(result.status).toBe('MANIPULATED');
     expect(result.score).toBe(95);
     expect(result.models.length).toBe(2);
     expect(result.models[0].name).toBe('model-1');

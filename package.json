@@ -31,7 +31,7 @@
     "example": "ts-node examples/basic.ts",
     "lint": "eslint src tests --ext .ts",
     "lint:fix": "eslint src tests --ext .ts --fix",
-    "format": "prettier --check .",
+    "format": "prettier --config .prettierrc --check .",
     "format:fix": "prettier --write .",
     "types": "tsc --noEmit --skipLibCheck",
     "clean": "rimraf dist",

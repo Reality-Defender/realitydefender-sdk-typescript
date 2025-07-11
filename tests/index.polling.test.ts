@@ -31,8 +31,8 @@ describe('RealityDefender SDK Polling Tests', () => {
       mockGetDetectionResult
         .mockRejectedValueOnce(new RealityDefenderError('Not found', 'not_found'))
         .mockResolvedValueOnce({
-          status: 'ARTIFICIAL',
-          score: 95,
+          status: 'MANIPULATED',
+          score: 0.95,
           models: [],
         });
 
@@ -48,8 +48,8 @@ describe('RealityDefender SDK Polling Tests', () => {
       // Should have emitted a result when the second call succeeded
       expect(resultHandler).toHaveBeenCalledWith(
         expect.objectContaining({
-          status: 'ARTIFICIAL',
-          score: 95,
+          status: 'MANIPULATED',
+          score: 0.95,
         })
       );
 

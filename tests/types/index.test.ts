@@ -22,7 +22,7 @@ describe('Types Index Module', () => {
     };
 
     const testResult: TypesIndex.DetectionResult = {
-      status: 'ARTIFICIAL',
+      status: 'MANIPULATED',
       score: 95,
       models: [],
     };
@@ -30,6 +30,6 @@ describe('Types Index Module', () => {
     // Verify we can construct these objects
     expect(testConfig.apiKey).toBe('test-key');
     expect(testOptions.filePath).toBe('/path/test.jpg');
-    expect(testResult.status).toBe('ARTIFICIAL');
+    expect(testResult.status).toBe('MANIPULATED');
   });
 });
