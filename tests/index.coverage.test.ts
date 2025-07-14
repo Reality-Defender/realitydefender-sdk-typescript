@@ -20,7 +20,7 @@ describe('Index Coverage', () => {
 
     // Access inherited EventEmitter methods with type assertions
     (sdk as any).once('error', handlerFn);
-    sdk.emit('result', { status: 'ARTIFICIAL', score: 95, models: [] });
+    sdk.emit('result', { status: 'MANIPULATED', score: 95, models: [] });
     (sdk as any).removeAllListeners();
 
     // These methods might not show full coverage because they're inherited

@@ -38,7 +38,7 @@ export interface ModelResult {
   } | null;
   /** Status code (e.g., "not_applicable") */
   code?: string;
-  /** Status string (e.g., "ARTIFICIAL", "AUTHENTIC", "NOT_APPLICABLE") */
+  /** Status string (e.g., "MANIPULATED", "AUTHENTIC", "NOT_APPLICABLE") */
   status: string;
   /** Raw prediction number */
   predictionNumber: number | null;
