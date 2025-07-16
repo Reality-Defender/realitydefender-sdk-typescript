@@ -86,3 +86,16 @@ export interface MediaResponse {
   /** Individual model results */
   models: ModelResult[];
 }
+
+export interface AllMediaResponse {
+  /** The total number of media items available. **/
+  totalItems?: number;
+  /** The total number of pages based on the current pagination strategy. **/
+  totalPages?: number;
+  /** The index of the current page **/
+  currentPage?: number;
+  /** The number of media items present on the current page. **/
+  currentPageItemsCount?: number;
+  /** An array of `MediaResponse` objects, where each object contains details about an individual media item. **/
+  mediaList?: MediaResponse[];
+}

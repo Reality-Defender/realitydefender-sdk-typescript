@@ -4,8 +4,8 @@
 
 import { HttpClient } from '../client/types';
 import { API_PATHS, DEFAULT_POLLING_INTERVAL } from '../core/constants';
-import { MediaResponse } from '../types/api';
-import { DetectionResult, DetectionOptions } from '../types/sdk';
+import { AllMediaResponse, MediaResponse } from '../types/api';
+import { DetectionResult, DetectionOptions, DetectionResultList } from '../types/sdk';
 import { RealityDefenderError } from '../errors';
 import { sleep } from '../utils/async';
 
@@ -28,6 +28,41 @@ export async function getMediaResult(
     }
     throw new RealityDefenderError(
       `Failed to get result: ${(error as Error).message}`,
+      'unknown_error'
+    );
+  }
+}
+
+export async function getMediaResults(
+  client: HttpClient,
+  pageNumber: number = 0,
+  size: number = 10,
+  name: string | null = null,
+  startDate: Date | null = null,
+  endDate: Date | null = null
+): Promise<AllMediaResponse> {
+  try {
+    const path = `${API_PATHS.ALL_MEDIA_RESULTS}/${pageNumber}`;
+    const params: Record<string, unknown> = {
+      size: size,
+    };
+    if (name) {
+      params['name'] = name;
+    }
+    if (startDate) {
+      params['startDate'] =
+        `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`;
+    }
+    if (endDate) {
+      params['endDate'] = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`;
+    }
+    return await client.get<AllMediaResponse>(path, params);
+  } catch (error) {
+    if (error instanceof RealityDefenderError) {
+      throw error;
+    }
+    throw new RealityDefenderError(
+      `Failed to get paginated results: ${(error as Error).message}`,
       'unknown_error'
     );
   }
@@ -68,6 +103,29 @@ export function formatResult(response: MediaResponse): DetectionResult {
 }
 
 /**
+ * Format the all media API response into a user-friendly result
+ * @param response Raw API response
+ * @returns Simplified detection result list
+ */
+export function formatResults(response: AllMediaResponse): DetectionResultList {
+  const result: DetectionResultList = {
+    totalItems: response.totalItems ?? 0,
+    currentPageItemsCount: response.currentPageItemsCount ?? 0,
+    totalPages: response.totalPages ?? 0,
+    currentPage: response.currentPage ?? 0,
+    items: [],
+  };
+
+  if (response.mediaList) {
+    for (const item of response.mediaList) {
+      result.items.push(formatResult(item));
+    }
+  }
+
+  return result;
+}
+
+/**
  * Get detection results for a media request
  * @param client HTTP client
  * @param requestId Request ID
@@ -103,4 +161,47 @@ export async function getDetectionResult(
   // This should never be reached, but TypeScript needs it
   const mediaResult = await getMediaResult(client, requestId);
   return formatResult(mediaResult);
+}
+
+export async function getDetectionResults(
+  client: HttpClient,
+  pageNumber: number = 0,
+  size: number = 10,
+  name: string | null = null,
+  startDate: Date | null = null,
+  endDate: Date | null = null,
+  options: Partial<DetectionOptions> = {}
+): Promise<DetectionResultList> {
+  let attempts = 0;
+  const { maxAttempts = Number.MAX_SAFE_INTEGER, pollingInterval = DEFAULT_POLLING_INTERVAL } =
+    options;
+
+  while (attempts < maxAttempts) {
+    try {
+      const mediaResults = await getMediaResults(
+        client,
+        pageNumber,
+        size,
+        name,
+        startDate,
+        endDate
+      );
+
+      return formatResults(mediaResults);
+    } catch (error) {
+      if (++attempts >= maxAttempts) {
+        throw new RealityDefenderError(
+          `Failed to get paginated results: ${(error as Error).message}`,
+          'unknown_error'
+        );
+      }
+      // Wait for the polling interval before trying again
+      await sleep(pollingInterval);
+    }
+  }
+
+  throw new RealityDefenderError(
+    `Failed to get detection result list after ${attempts} attempts`,
+    'timeout'
+  );
 }
