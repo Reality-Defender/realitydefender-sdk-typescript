@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "Examples for using the Reality Defender SDK",
   "private": true,
+  "packageManager": "yarn@4.6.0",
+  "engines": {
+    "node": ">=20.0.0 <=25.0.0"
+  },
   "scripts": {
-    "start": "ts-node basic.ts"
+    "example:basic": "ts-node basic.ts",
+    "example:getresults": "ts-node get_results.ts"
   },
   "dependencies": {
-    "@realitydefender/realitydefender": "^0.1.7"
+    "@realitydefender/realitydefender": "file:./../"
   },
   "devDependencies": {
     "@types/node": "^22.15.18"
