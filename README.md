@@ -269,7 +269,8 @@ To run the example code in this SDK, follow these steps:
     yarn install
 
     export REALITY_DEFENDER_API_KEY='<your-api-key>' 
-    yarn start
+    yarn example:basic
+    yarn example:getresults
     ```
 
 The example code demonstrates how to upload a sample image and process the detection results.

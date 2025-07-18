@@ -25,4 +25,6 @@ export const API_PATHS = {
   SIGNED_URL: '/api/files/aws-presigned',
   /** Path for retrieving media results */
   MEDIA_RESULT: '/api/media/users',
+  /** Path for retrieving all media results */
+  ALL_MEDIA_RESULTS: '/api/v2/media/users/pages',
 };

@@ -23,6 +23,7 @@ describe('Constants', () => {
 
   it('should export the correct API paths', () => {
     expect(API_PATHS).toEqual({
+      ALL_MEDIA_RESULTS: '/api/v2/media/users/pages',
       SIGNED_URL: '/api/files/aws-presigned',
       MEDIA_RESULT: '/api/media/users',
     });

@@ -4,9 +4,10 @@
 import { RealityDefender } from '../src';
 import { createHttpClient } from '../src/client';
 import { uploadFile } from '../src/detection/upload';
-import { getDetectionResult } from '../src/detection/results';
+import { getDetectionResult, getDetectionResults } from '../src/detection/results';
 import { RealityDefenderError } from '../src';
 import { DEFAULT_POLLING_INTERVAL, DEFAULT_TIMEOUT } from '../src/core/constants';
+import { DetectionResultList } from '../src/types';
 
 // Mock the modules we depend on
 jest.mock('../src/client');
@@ -186,6 +187,217 @@ describe('RealityDefender SDK', () => {
       mockGetDetectionResult.mockRejectedValueOnce(genericError);
 
       await expect(sdk.getResult('request-123')).rejects.toEqual(genericError);
+    });
+  });
+
+  const mockGetDetectionResults = getDetectionResults as jest.MockedFunction<
+    typeof getDetectionResults
+  >;
+
+  describe('getResults', () => {
+    it('should handle partial parameters correctly', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+
+      const mockResults: DetectionResultList = {
+        items: [
+          {
+            status: 'AUTHENTIC',
+            score: 15,
+            models: [],
+          },
+          {
+            status: 'AUTHENTIC',
+            score: 15,
+            models: [],
+          },
+          {
+            status: 'AUTHENTIC',
+            score: 15,
+            models: [],
+          },
+          {
+            status: 'AUTHENTIC',
+            score: 15,
+            models: [],
+          },
+          {
+            status: 'AUTHENTIC',
+            score: 15,
+            models: [],
+          },
+        ],
+        totalItems: 5,
+        currentPage: 2,
+        currentPageItemsCount: 5,
+        totalPages: 1,
+      };
+
+      mockGetDetectionResults.mockResolvedValueOnce(mockResults);
+
+      const result = await sdk.getResults(2, 5);
+
+      expect(mockGetDetectionResults).toHaveBeenCalledWith(
+        mockHttpClient,
+        2,
+        5,
+        null,
+        null,
+        null,
+        {}
+      );
+
+      expect(result).toEqual(mockResults);
+    });
+
+    it('should handle date filters without name filter', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+
+      const mockResults: DetectionResultList = {
+        items: [
+          {
+            status: 'AUTHENTIC',
+            score: 15,
+            models: [],
+          },
+        ],
+        totalItems: 1,
+        currentPage: 0,
+        currentPageItemsCount: 1,
+        totalPages: 1,
+      };
+
+      mockGetDetectionResults.mockResolvedValueOnce(mockResults);
+
+      const startDate = new Date('2025-07-01');
+      const endDate = new Date('2025-07-15');
+
+      const result = await sdk.getResults(0, 10, null, startDate, endDate);
+
+      expect(mockGetDetectionResults).toHaveBeenCalledWith(
+        mockHttpClient,
+        0,
+        10,
+        null,
+        startDate,
+        endDate,
+        {}
+      );
+
+      expect(result).toEqual(mockResults);
+    });
+
+    it('should call getDetectionResults with correct parameters', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+
+      const mockResults: DetectionResultList = {
+        totalItems: 1,
+        currentPageItemsCount: 1,
+        totalPages: 1,
+        currentPage: 0,
+        items: [
+          {
+            status: 'MANIPULATED',
+            score: 95,
+            models: [],
+          },
+        ],
+      };
+
+      mockGetDetectionResults.mockResolvedValueOnce(mockResults);
+
+      const result = await sdk.getResults(
+        1,
+        20,
+        'test-name',
+        new Date('2025-07-01'),
+        new Date('2025-07-16')
+      );
+
+      expect(mockGetDetectionResults).toHaveBeenCalledWith(
+        mockHttpClient,
+        1,
+        20,
+        'test-name',
+        new Date('2025-07-01'),
+        new Date('2025-07-16'),
+        {}
+      );
+
+      expect(result).toEqual(mockResults);
+    });
+
+    it('should use default parameters when not provided', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+
+      const mockResults: DetectionResultList = {
+        items: [],
+        totalItems: 0,
+        currentPageItemsCount: 0,
+        totalPages: 0,
+        currentPage: 0,
+      };
+
+      mockGetDetectionResults.mockResolvedValueOnce(mockResults);
+
+      const result = await sdk.getResults();
+
+      expect(mockGetDetectionResults).toHaveBeenCalledWith(
+        mockHttpClient,
+        0,
+        10,
+        null,
+        null,
+        null,
+        {}
+      );
+
+      expect(result).toEqual(mockResults);
+    });
+
+    it('should pass options parameter correctly', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+
+      const mockResults: DetectionResultList = {
+        items: [],
+        totalItems: 0,
+        currentPageItemsCount: 0,
+        totalPages: 0,
+        currentPage: 0,
+      };
+
+      mockGetDetectionResults.mockResolvedValueOnce(mockResults);
+
+      const options = { maxAttempts: 5, pollingInterval: 2000 };
+
+      await sdk.getResults(0, 10, null, null, null, options);
+
+      expect(mockGetDetectionResults).toHaveBeenCalledWith(
+        mockHttpClient,
+        0,
+        10,
+        null,
+        null,
+        null,
+        options
+      );
+    });
+
+    it('should handle RealityDefenderError from getDetectionResults', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+
+      const error = new RealityDefenderError('Server error', 'server_error');
+      mockGetDetectionResults.mockRejectedValueOnce(error);
+
+      await expect(sdk.getResults()).rejects.toThrow(error);
+    });
+
+    it('should handle generic errors from getDetectionResults', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+
+      const error = new Error('Network error');
+      mockGetDetectionResults.mockRejectedValueOnce(error);
+
+      await expect(sdk.getResults()).rejects.toThrow(error);
     });
   });
 

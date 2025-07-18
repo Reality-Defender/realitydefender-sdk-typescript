@@ -8,12 +8,16 @@ import { createHttpClient } from './client';
 import { DEFAULT_POLLING_INTERVAL, DEFAULT_TIMEOUT } from './core/constants';
 import { TypedEventEmitter } from './core/events';
 import { uploadFile as internalUploadFile } from './detection/upload';
-import { getDetectionResult as internalGetDetectionResult } from './detection/results';
+import {
+  getDetectionResult as internalGetDetectionResult,
+  getDetectionResults,
+} from './detection/results';
 import { RealityDefenderError } from './errors';
 
 // Import types from the types directory
 import {
   DetectionResult,
+  DetectionResultList,
   GetResultOptions,
   RealityDefenderConfig,
   UploadOptions,
@@ -75,6 +79,28 @@ export class RealityDefender extends TypedEventEmitter {
     options: GetResultOptions = {}
   ): Promise<DetectionResult> {
     return internalGetDetectionResult(this.client, requestId, options);
+  }
+
+  /**
+   * Retrieves a paginated list of detection results based on the specified parameters.
+   *
+   * @param {number} pageNumber - The page number to retrieve. Defaults to 0.
+   * @param {number} size - The number of results per page. Defaults to 10.
+   * @param {string | null} name - An optional name filter for the results. Pass null to ignore this filter.
+   * @param {Date | null} startDate - The start date to filter the results. Pass null to ignore this filter.
+   * @param {Date | null} endDate - The end date to filter the results. Pass null to ignore this filter.
+   * @param {GetResultOptions} options - Optional additional options for customizing the results.
+   * @return {Promise<DetectionResult>} A Promise that resolves to the detection results.
+   */
+  public async getResults(
+    pageNumber: number = 0,
+    size: number = 10,
+    name: string | null = null,
+    startDate: Date | null = null,
+    endDate: Date | null = null,
+    options: GetResultOptions = {}
+  ): Promise<DetectionResultList> {
+    return getDetectionResults(this.client, pageNumber, size, name, startDate, endDate, options);
   }
 
   /**

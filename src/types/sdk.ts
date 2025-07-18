@@ -68,3 +68,20 @@ export interface DetectionResult {
     score: number | null;
   }[];
 }
+
+export interface DetectionResultList {
+  /** Total number of detection results **/
+  totalItems: number;
+
+  /** Number of detection results on the current page **/
+  currentPageItemsCount: number;
+
+  /** Total number of pages **/
+  totalPages: number;
+
+  /** Current page number **/
+  currentPage: number;
+
+  /** List of detection results **/
+  items: DetectionResult[];
+}
