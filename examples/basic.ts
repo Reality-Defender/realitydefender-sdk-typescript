@@ -2,7 +2,7 @@ import {
   RealityDefender,
   RealityDefenderError,
   DetectionResult,
-} from '@realitydefender/realitydefender';
+} from '../src';
 import path from 'path';
 import fs from 'fs';
 

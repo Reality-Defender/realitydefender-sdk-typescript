@@ -1,4 +1,4 @@
-import { RealityDefender } from '@realitydefender/realitydefender';
+import { RealityDefender } from '../src';
 
 /**
  * Example: List Detection Results
