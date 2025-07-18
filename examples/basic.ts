@@ -1,8 +1,4 @@
-import {
-  RealityDefender,
-  RealityDefenderError,
-  DetectionResult,
-} from '../src';
+import { RealityDefender, RealityDefenderError, DetectionResult } from '../src';
 import path from 'path';
 import fs from 'fs';
 
