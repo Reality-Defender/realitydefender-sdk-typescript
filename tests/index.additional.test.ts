@@ -28,7 +28,9 @@ describe('RealityDefender SDK Additional Tests', () => {
   };
 
   // Mock the createHttpClient function
-  const mockCreateHttpClient = createHttpClient as jest.MockedFunction<typeof createHttpClient>;
+  const mockCreateHttpClient = createHttpClient as jest.MockedFunction<
+    typeof createHttpClient
+  >;
 
   // Mock the results functions
   const mockGetDetectionResult = getDetectionResult as jest.MockedFunction<

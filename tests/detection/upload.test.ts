@@ -57,7 +57,9 @@ describe('Upload Module', () => {
       const error = new Error('Network error');
       mockClient.post.mockRejectedValueOnce(error);
 
-      await expect(getSignedUrl(mockClient, 'test-file.jpg')).rejects.toThrow(RealityDefenderError);
+      await expect(getSignedUrl(mockClient, 'test-file.jpg')).rejects.toThrow(
+        RealityDefenderError
+      );
 
       mockClient.post.mockRejectedValueOnce(error);
       await expect(getSignedUrl(mockClient, 'test-file.jpg')).rejects.toThrow(
@@ -70,10 +72,17 @@ describe('Upload Module', () => {
     it('should upload file content to signed URL successfully', async () => {
       mockClient.put.mockResolvedValueOnce(undefined);
 
-      await uploadToSignedUrl(mockClient, 'https://example.com/upload', '/path/to/test-file.jpg');
+      await uploadToSignedUrl(
+        mockClient,
+        'https://example.com/upload',
+        '/path/to/test-file.jpg'
+      );
 
       expect(readFileContent).toHaveBeenCalledWith('/path/to/test-file.jpg');
-      expect(mockClient.put).toHaveBeenCalledWith('https://example.com/upload', mockFileContent);
+      expect(mockClient.put).toHaveBeenCalledWith(
+        'https://example.com/upload',
+        mockFileContent
+      );
     });
 
     it('should handle RealityDefenderError errors', async () => {
@@ -122,7 +131,10 @@ describe('Upload Module', () => {
       });
 
       // Verify file content was uploaded
-      expect(mockClient.put).toHaveBeenCalledWith('https://example.com/upload', expect.any(Buffer));
+      expect(mockClient.put).toHaveBeenCalledWith(
+        'https://example.com/upload',
+        expect.any(Buffer)
+      );
 
       // Verify the result
       expect(result).toEqual({
