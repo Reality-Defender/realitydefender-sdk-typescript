@@ -60,7 +60,11 @@ describe('TypedEventEmitter', () => {
     emitter.on('result', () => {});
 
     // Check return value of emit()
-    const result = emitter.emit('result', { status: 'MANIPULATED', score: 90, models: [] });
+    const result = emitter.emit('result', {
+      status: 'MANIPULATED',
+      score: 90,
+      models: [],
+    });
 
     expect(result).toBe(true);
   });
@@ -71,7 +75,11 @@ describe('TypedEventEmitter', () => {
     // No handlers registered
 
     // Check return value of emit()
-    const result = emitter.emit('result', { status: 'MANIPULATED', score: 90, models: [] });
+    const result = emitter.emit('result', {
+      status: 'MANIPULATED',
+      score: 90,
+      models: [],
+    });
 
     expect(result).toBe(false);
   });

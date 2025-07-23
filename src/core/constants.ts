@@ -28,3 +28,13 @@ export const API_PATHS = {
   /** Path for retrieving all media results */
   ALL_MEDIA_RESULTS: '/api/v2/media/users/pages',
 };
+
+export const SUPPORTED_FILE_TYPES = [
+  { extensions: ['.mp4', '.mov'], size_limit: 262144000 },
+  { extensions: ['.jpg', '.png', '.jpeg', '.gif', '.webp'], size_limit: 52428800 },
+  {
+    extensions: ['.flac', '.wav', '.mp3', '.m4a', '.aac', '.alac', '.ogg'],
+    size_limit: 20971520,
+  },
+  { extensions: ['.txt'], size_limit: 5242880 },
+];

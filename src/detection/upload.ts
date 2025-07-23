@@ -50,7 +50,10 @@ export async function uploadToSignedUrl(
     if (error instanceof RealityDefenderError) {
       throw error;
     }
-    throw new RealityDefenderError(`Upload failed: ${(error as Error).message}`, 'upload_failed');
+    throw new RealityDefenderError(
+      `Upload failed: ${(error as Error).message}`,
+      'upload_failed'
+    );
   }
 }
 

@@ -14,6 +14,8 @@ export type ErrorCode =
   | 'timeout'
   /** File not found or invalid format */
   | 'invalid_file'
+  /**  File too large to upload. */
+  | 'file_too_large'
   /** Failed to upload the file */
   | 'upload_failed'
   /** Requested resource not found */

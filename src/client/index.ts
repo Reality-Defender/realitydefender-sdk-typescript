@@ -65,7 +65,11 @@ export function createHttpClient(config: HttpClientConfig): HttpClient {
     /**
      * Send a PUT request
      */
-    async put(url: string, data: any, contentType = 'application/octet-stream'): Promise<void> {
+    async put(
+      url: string,
+      data: any,
+      contentType = 'application/octet-stream'
+    ): Promise<void> {
       try {
         const config: AxiosRequestConfig = {
           headers: {
@@ -110,5 +114,8 @@ export function handleAxiosError(error: unknown): RealityDefenderError {
     return new RealityDefenderError(`API error: ${axiosError.message}`, 'unknown_error');
   }
 
-  return new RealityDefenderError(`Request failed: ${(error as Error).message}`, 'unknown_error');
+  return new RealityDefenderError(
+    `Request failed: ${(error as Error).message}`,
+    'unknown_error'
+  );
 }

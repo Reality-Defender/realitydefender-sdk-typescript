@@ -1,7 +1,11 @@
 /**
  * Tests for the results module
  */
-import { getMediaResult, formatResult, getDetectionResult } from '../../src/detection/results';
+import {
+  getMediaResult,
+  formatResult,
+  getDetectionResult,
+} from '../../src/detection/results';
 import { RealityDefenderError } from '../../src';
 import { MediaResponse, ModelResult } from '../../src/types';
 import { mockClient } from '../setupTests';
@@ -78,7 +82,9 @@ describe('Results Module', () => {
       const error = new Error('Network error');
       mockClient.get.mockRejectedValueOnce(error);
 
-      await expect(getMediaResult(mockClient, 'request-123')).rejects.toThrow(RealityDefenderError);
+      await expect(getMediaResult(mockClient, 'request-123')).rejects.toThrow(
+        RealityDefenderError
+      );
 
       mockClient.get.mockRejectedValueOnce(error);
       await expect(getMediaResult(mockClient, 'request-123')).rejects.toThrow(
@@ -485,7 +491,10 @@ describe('Results Module', () => {
       mockClient.get.mockRejectedValueOnce(error);
 
       await expect(
-        getDetectionResult(mockClient, 'request-123', { maxAttempts: 1, pollingInterval: 100 })
+        getDetectionResult(mockClient, 'request-123', {
+          maxAttempts: 1,
+          pollingInterval: 100,
+        })
       ).rejects.toThrow();
     });
 

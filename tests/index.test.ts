@@ -23,7 +23,9 @@ describe('RealityDefender SDK', () => {
   };
 
   // Mock the createHttpClient function
-  const mockCreateHttpClient = createHttpClient as jest.MockedFunction<typeof createHttpClient>;
+  const mockCreateHttpClient = createHttpClient as jest.MockedFunction<
+    typeof createHttpClient
+  >;
 
   // Mock the upload functions
   const mockUploadFile = uploadFile as jest.MockedFunction<typeof uploadFile>;
@@ -171,7 +173,10 @@ describe('RealityDefender SDK', () => {
     it('should handle unauthorized errors in getResult', async () => {
       const sdk = new RealityDefender({ apiKey: 'test-api-key' });
 
-      const authError = new RealityDefenderError('Unauthorized: Invalid API key', 'unauthorized');
+      const authError = new RealityDefenderError(
+        'Unauthorized: Invalid API key',
+        'unauthorized'
+      );
       mockGetDetectionResult.mockRejectedValueOnce(authError);
 
       await expect(sdk.getResult('request-123')).rejects.toEqual(authError);
@@ -437,7 +442,11 @@ describe('RealityDefender SDK', () => {
       });
 
       // Verify getDetectionResult was called with correct parameters
-      expect(mockGetDetectionResult).toHaveBeenCalledWith(mockHttpClient, 'request-123', {});
+      expect(mockGetDetectionResult).toHaveBeenCalledWith(
+        mockHttpClient,
+        'request-123',
+        {}
+      );
 
       // Verify final result is the detection result
       expect(result).toEqual(mockDetectionResult);
@@ -482,7 +491,9 @@ describe('RealityDefender SDK', () => {
       mockUploadFile.mockRejectedValueOnce(uploadError);
 
       // Call detect and expect it to throw the upload error
-      await expect(sdk.detect({ filePath: '/path/to/test-file.jpg' })).rejects.toThrow(uploadError);
+      await expect(sdk.detect({ filePath: '/path/to/test-file.jpg' })).rejects.toThrow(
+        uploadError
+      );
 
       // Verify getDetectionResult was not called
       expect(mockGetDetectionResult).not.toHaveBeenCalled();
@@ -502,7 +513,9 @@ describe('RealityDefender SDK', () => {
       mockGetDetectionResult.mockRejectedValueOnce(resultError);
 
       // Call detect and expect it to throw the result error
-      await expect(sdk.detect({ filePath: '/path/to/test-file.jpg' })).rejects.toThrow(resultError);
+      await expect(sdk.detect({ filePath: '/path/to/test-file.jpg' })).rejects.toThrow(
+        resultError
+      );
     });
   });
 

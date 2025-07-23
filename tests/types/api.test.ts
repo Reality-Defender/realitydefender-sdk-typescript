@@ -1,7 +1,12 @@
 /**
  * Tests for API types
  */
-import { SignedUrlResponse, ModelResult, ResultsSummary, MediaResponse } from '../../src/types/api';
+import {
+  SignedUrlResponse,
+  ModelResult,
+  ResultsSummary,
+  MediaResponse,
+} from '../../src/types/api';
 
 describe('API Types', () => {
   it('should create a SignedUrlResponse object', () => {

@@ -182,7 +182,9 @@ describe('HTTP Client', () => {
 
       const client = createHttpClient({ apiKey: 'test-key' });
 
-      await expect(client.put('https://example.com/upload', Buffer.from('test'))).rejects.toThrow();
+      await expect(
+        client.put('https://example.com/upload', Buffer.from('test'))
+      ).rejects.toThrow();
     });
   });
 

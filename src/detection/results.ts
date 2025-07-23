@@ -54,7 +54,8 @@ export async function getMediaResults(
         `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`;
     }
     if (endDate) {
-      params['endDate'] = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`;
+      params['endDate'] =
+        `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`;
     }
     return await client.get<AllMediaResponse>(path, params);
   } catch (error) {
@@ -81,7 +82,9 @@ export function formatResult(response: MediaResponse): DetectionResult {
 
   // Replace FAKE with MANIPULATED in response status
   const status =
-    response.resultsSummary.status === 'FAKE' ? 'MANIPULATED' : response.resultsSummary.status;
+    response.resultsSummary.status === 'FAKE'
+      ? 'MANIPULATED'
+      : response.resultsSummary.status;
 
   // Normalize the final score from 0-100 to 0-1 range
   const normalizedScore =
@@ -138,8 +141,10 @@ export async function getDetectionResult(
   options: Partial<DetectionOptions> = {}
 ): Promise<DetectionResult> {
   let attempts = 0;
-  const { maxAttempts = Number.MAX_SAFE_INTEGER, pollingInterval = DEFAULT_POLLING_INTERVAL } =
-    options;
+  const {
+    maxAttempts = Number.MAX_SAFE_INTEGER,
+    pollingInterval = DEFAULT_POLLING_INTERVAL,
+  } = options;
 
   while (attempts < maxAttempts) {
     const mediaResult = await getMediaResult(client, requestId);
@@ -173,8 +178,10 @@ export async function getDetectionResults(
   options: Partial<DetectionOptions> = {}
 ): Promise<DetectionResultList> {
   let attempts = 0;
-  const { maxAttempts = Number.MAX_SAFE_INTEGER, pollingInterval = DEFAULT_POLLING_INTERVAL } =
-    options;
+  const {
+    maxAttempts = Number.MAX_SAFE_INTEGER,
+    pollingInterval = DEFAULT_POLLING_INTERVAL,
+  } = options;
 
   while (attempts < maxAttempts) {
     try {

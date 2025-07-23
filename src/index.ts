@@ -63,7 +63,10 @@ export class RealityDefender extends TypedEventEmitter {
       if (error instanceof RealityDefenderError) {
         throw error;
       }
-      throw new RealityDefenderError(`Upload failed: ${(error as Error).message}`, 'upload_failed');
+      throw new RealityDefenderError(
+        `Upload failed: ${(error as Error).message}`,
+        'upload_failed'
+      );
     }
   }
 
@@ -100,7 +103,15 @@ export class RealityDefender extends TypedEventEmitter {
     endDate: Date | null = null,
     options: GetResultOptions = {}
   ): Promise<DetectionResultList> {
-    return getDetectionResults(this.client, pageNumber, size, name, startDate, endDate, options);
+    return getDetectionResults(
+      this.client,
+      pageNumber,
+      size,
+      name,
+      startDate,
+      endDate,
+      options
+    );
   }
 
   /**
@@ -132,7 +143,8 @@ export class RealityDefender extends TypedEventEmitter {
     requestId: string,
     options: { pollingInterval?: number; timeout?: number } = {}
   ): Promise<void> {
-    const { pollingInterval = DEFAULT_POLLING_INTERVAL, timeout = DEFAULT_TIMEOUT } = options;
+    const { pollingInterval = DEFAULT_POLLING_INTERVAL, timeout = DEFAULT_TIMEOUT } =
+      options;
 
     return this._pollForResults(requestId, pollingInterval, timeout);
   }
