@@ -1,7 +1,7 @@
 /**
  * Tests for HTTP client module
  */
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { createHttpClient, createAxiosClient, handleAxiosError } from '../../src/client';
 import { DEFAULT_BASE_URL } from '../../src/core/constants';
 import { RealityDefenderError } from '../../src';
@@ -189,6 +189,48 @@ describe('HTTP Client', () => {
   });
 
   describe('handleAxiosError', () => {
+    it('should handle 400 error with free-tier-not-allowed code', () => {
+      const mockAxiosError = {
+        isAxiosError: true,
+        response: {
+          status: 400,
+          data: {
+            code: 'free-tier-not-allowed',
+            message: 'Free tier access not allowed',
+          },
+        },
+        message: 'Request failed with status code 400',
+      } as AxiosError;
+
+      jest.spyOn(axios, 'isAxiosError').mockReturnValue(true);
+
+      const result = handleAxiosError(mockAxiosError);
+
+      expect(result).toBeInstanceOf(RealityDefenderError);
+      expect(result.message).toBe('Unauthorized: Paid plan required');
+    });
+
+    it('should handle 400 error without free-tier-not-allowed code', () => {
+      const mockAxiosError = {
+        isAxiosError: true,
+        response: {
+          status: 400,
+          data: {
+            code: 'validation-error',
+            message: 'Invalid request parameters',
+          },
+        },
+        message: 'Request failed with status code 400',
+      } as AxiosError;
+
+      jest.spyOn(axios, 'isAxiosError').mockReturnValue(true);
+
+      const result = handleAxiosError(mockAxiosError);
+
+      expect(result).toBeInstanceOf(RealityDefenderError);
+      expect(result.message).toContain('API error:');
+    });
+
     it('should handle unauthorized errors (401)', () => {
       const error = {
         isAxiosError: true,
