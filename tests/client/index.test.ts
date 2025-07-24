@@ -196,7 +196,7 @@ describe('HTTP Client', () => {
           status: 400,
           data: {
             code: 'free-tier-not-allowed',
-            message: 'Free tier access not allowed',
+            message: 'Error: paid plan required',
           },
         },
         message: 'Request failed with status code 400',
@@ -207,7 +207,7 @@ describe('HTTP Client', () => {
       const result = handleAxiosError(mockAxiosError);
 
       expect(result).toBeInstanceOf(RealityDefenderError);
-      expect(result.message).toBe('Unauthorized: Paid plan required');
+      expect(result.message).toBe('Error: paid plan required');
     });
 
     it('should handle 400 error without free-tier-not-allowed code', () => {

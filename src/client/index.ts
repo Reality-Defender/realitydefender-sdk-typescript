@@ -101,7 +101,7 @@ export function handleAxiosError(error: unknown): RealityDefenderError {
 
       if (status === 400 && responseData.code?.includes('free-tier-not-allowed')) {
         return new RealityDefenderError(
-          'Unauthorized: Paid plan required',
+          responseData.message || 'Free tier not allowed',
           'unauthorized'
         );
       } else if (status === 401) {
