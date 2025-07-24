@@ -98,6 +98,7 @@ describe('Results Module', () => {
       const formattedResult = formatResult(mockMediaResponse);
 
       expect(formattedResult).toEqual({
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 0.95,
         models: [
@@ -157,6 +158,7 @@ describe('Results Module', () => {
         ...mockMediaResponse,
         models: [
           {
+            requestId: 'request-123',
             name: 'model-1',
             data: { score: 0.95, decision: 'FAKE', raw_score: 0.95 },
             status: 'FAKE',
@@ -167,6 +169,7 @@ describe('Results Module', () => {
             finalScore: 95,
           },
           {
+            requestId: 'request-456',
             name: 'model-not-applicable',
             data: null,
             code: 'not_applicable',
@@ -194,6 +197,7 @@ describe('Results Module', () => {
       const formattedResult = formatResult(emptyResponse);
 
       expect(formattedResult).toEqual({
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 0.95,
         models: [],
@@ -220,6 +224,7 @@ describe('Results Module', () => {
       const formattedResult = formatResult(onlyNotApplicableResponse);
 
       expect(formattedResult).toEqual({
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 0.95,
         models: [],
@@ -251,6 +256,7 @@ describe('Results Module', () => {
       const formattedResult = formatResult(nullScoreResponse);
 
       expect(formattedResult).toEqual({
+        requestId: 'request-123',
         status: 'PROCESSING',
         score: null,
         models: [
@@ -293,6 +299,7 @@ describe('Results Module', () => {
       const formattedResult = formatResult(missingCodeResponse);
 
       expect(formattedResult).toEqual({
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 0.95,
         models: [
@@ -345,6 +352,7 @@ describe('Results Module', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith('/api/media/users/request-123');
       expect(result).toEqual({
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 0.95,
         models: [
@@ -411,6 +419,7 @@ describe('Results Module', () => {
 
       // Should return the completed result
       expect(result).toEqual({
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 0.9,
         models: expect.any(Array),
@@ -450,6 +459,7 @@ describe('Results Module', () => {
 
       // Should still return the analyzing result after max attempts
       expect(result).toEqual({
+        requestId: 'request-123',
         status: 'ANALYZING',
         score: null,
         models: expect.any(Array),

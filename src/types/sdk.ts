@@ -50,10 +50,9 @@ export interface UploadResult {
   mediaId: string;
 }
 
-/**
- * Detection result with status and scores
- */
 export interface DetectionResult {
+  /** The request ID that initiated the detection process */
+  requestId: string;
   /** Overall status determination (e.g., "MANIPULATED", "AUTHENTIC") */
   status: string;
   /** Confidence score (0-1 range, null if processing) */

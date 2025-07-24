@@ -93,6 +93,7 @@ export function formatResult(response: MediaResponse): DetectionResult {
       : null;
 
   return {
+    requestId: response.requestId,
     status: status,
     score: normalizedScore,
     models: activeModels.map(model => ({
