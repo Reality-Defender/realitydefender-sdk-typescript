@@ -4,8 +4,8 @@
 
 import { HttpClient } from '../client/types';
 import { API_PATHS } from '../core/constants';
-import { SignedUrlResponse } from '../types/api';
-import { UploadOptions, UploadResult } from '../types/sdk';
+import { SignedUrlResponse } from '../types';
+import { UploadOptions, UploadResult } from '../types';
 import { readFileContent, getFileName } from '../utils/files';
 import { RealityDefenderError } from '../errors';
 

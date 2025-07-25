@@ -126,6 +126,7 @@ describe('RealityDefender SDK', () => {
       const sdk = new RealityDefender({ apiKey: 'test-api-key' });
 
       const mockResult = {
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 95,
         models: [
@@ -206,26 +207,31 @@ describe('RealityDefender SDK', () => {
       const mockResults: DetectionResultList = {
         items: [
           {
+            requestId: 'test-123',
             status: 'AUTHENTIC',
             score: 15,
             models: [],
           },
           {
+            requestId: 'test-456',
             status: 'AUTHENTIC',
             score: 15,
             models: [],
           },
           {
+            requestId: 'test-789',
             status: 'AUTHENTIC',
             score: 15,
             models: [],
           },
           {
+            requestId: 'test-321',
             status: 'AUTHENTIC',
             score: 15,
             models: [],
           },
           {
+            requestId: 'test-654',
             status: 'AUTHENTIC',
             score: 15,
             models: [],
@@ -260,6 +266,7 @@ describe('RealityDefender SDK', () => {
       const mockResults: DetectionResultList = {
         items: [
           {
+            requestId: 'test-123',
             status: 'AUTHENTIC',
             score: 15,
             models: [],
@@ -301,6 +308,7 @@ describe('RealityDefender SDK', () => {
         currentPage: 0,
         items: [
           {
+            requestId: 'test-123',
             status: 'MANIPULATED',
             score: 95,
             models: [],
@@ -418,6 +426,7 @@ describe('RealityDefender SDK', () => {
 
       // Mock detection result
       const mockDetectionResult = {
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 95,
         models: [
@@ -461,6 +470,7 @@ describe('RealityDefender SDK', () => {
         mediaId: 'media-123',
       });
       mockGetDetectionResult.mockResolvedValueOnce({
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 95,
         models: [],
@@ -575,11 +585,13 @@ describe('RealityDefender SDK', () => {
       // Mock getResult to return ANALYZING status once then MANIPULATED
       mockGetDetectionResult.mockReset();
       mockGetDetectionResult.mockResolvedValueOnce({
+        requestId: 'request-123',
         status: 'ANALYZING',
         score: 0,
         models: [],
       });
       mockGetDetectionResult.mockResolvedValueOnce({
+        requestId: 'request-123',
         status: 'MANIPULATED',
         score: 95,
         models: [],

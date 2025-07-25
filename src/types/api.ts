@@ -2,19 +2,24 @@
  * API response types for the Reality Defender service
  */
 
+export interface BasicResponse {
+  /** Status code from the API */
+  code?: string;
+  /** Error number (0 if successful) */
+  errno?: number;
+  /** Response message, if any **/
+  message?: string;
+}
+
 /**
  * Response from the signed URL request
  */
-export interface SignedUrlResponse {
-  /** Status code from the API */
-  code: string;
+export interface SignedUrlResponse extends BasicResponse {
   /** Response containing the signed URL for upload */
   response: {
     /** URL where the file should be uploaded */
     signedUrl: string;
   };
-  /** Error number (0 if successful) */
-  errno: number;
   /** ID assigned to the media */
   mediaId: string;
   /** Request ID to track the analysis */
@@ -36,7 +41,7 @@ export interface ModelResult {
     /** Raw score value */
     raw_score?: number;
   } | null;
-  /** Status code (e.g., "not_applicable") */
+  /** Status code (e.g., "not_applicable")  */
   code?: string;
   /** Status string (e.g., "MANIPULATED", "AUTHENTIC", "NOT_APPLICABLE") */
   status: string;
