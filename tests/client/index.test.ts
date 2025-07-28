@@ -234,6 +234,28 @@ describe('HTTP Client', () => {
       expect(result.message).toContain('Upload limit reached');
     });
 
+    it('should handle not found errors (404)', () => {
+      const error = {
+        isAxiosError: true,
+        response: {
+          status: 404,
+          data: {
+            code: 'not-found',
+            response: 'Resource not found',
+          },
+        },
+        message: 'Not Found',
+        config: { url: '/test/url' },
+        request: {},
+      };
+      mockedAxios.isAxiosError.mockReturnValueOnce(true);
+
+      const result = handleAxiosError(error);
+
+      expect(result).toBeInstanceOf(RealityDefenderError);
+      expect(result.code).toBe('not_found');
+    });
+
     it('should handle generic 400 error', () => {
       const mockAxiosError = {
         isAxiosError: true,

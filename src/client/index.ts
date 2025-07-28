@@ -115,7 +115,9 @@ export function handleAxiosError(error: unknown): RealityDefenderError {
           );
         }
       } else if (status === 401) {
-        return new RealityDefenderError('Unauthorized: Invalid API key', 'unauthorized');
+        return new RealityDefenderError('Invalid API key', 'unauthorized');
+      } else if (status === 404) {
+        return new RealityDefenderError('Resource not found', 'not_found');
       } else {
         return new RealityDefenderError(
           `API error: ${responseData.response || 'Unknown error'}`,
