@@ -4,8 +4,8 @@
 
 import { HttpClient } from '../client/types';
 import { API_PATHS, DEFAULT_POLLING_INTERVAL } from '../core/constants';
-import { AllMediaResponse, MediaResponse } from '../types/api';
-import { DetectionResult, DetectionOptions, DetectionResultList } from '../types/sdk';
+import { AllMediaResponse, MediaResponse } from '../types';
+import { DetectionResult, DetectionOptions, DetectionResultList } from '../types';
 import { RealityDefenderError } from '../errors';
 import { sleep } from '../utils/async';
 
