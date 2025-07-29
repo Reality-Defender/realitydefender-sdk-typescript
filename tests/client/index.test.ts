@@ -5,6 +5,7 @@ import axios, { AxiosError } from 'axios';
 import { createHttpClient, createAxiosClient, handleAxiosError } from '../../src/client';
 import { DEFAULT_BASE_URL } from '../../src/core/constants';
 import { RealityDefenderError } from '../../src';
+import { expect } from '@jest/globals';
 
 // Get the mocked axios
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -196,7 +197,7 @@ describe('HTTP Client', () => {
           status: 400,
           data: {
             code: 'free-tier-not-allowed',
-            message: 'Error: paid plan required',
+            response: 'Error: paid plan required',
           },
         },
         message: 'Request failed with status code 400',
@@ -207,10 +208,55 @@ describe('HTTP Client', () => {
       const result = handleAxiosError(mockAxiosError);
 
       expect(result).toBeInstanceOf(RealityDefenderError);
+      expect(result.code).toBe('unauthorized');
       expect(result.message).toBe('Error: paid plan required');
     });
 
-    it('should handle 400 error without free-tier-not-allowed code', () => {
+    it('should handle 400 error with upload-limit-reached code', () => {
+      const mockAxiosError = {
+        isAxiosError: true,
+        response: {
+          status: 400,
+          data: {
+            code: 'upload-limit-reached',
+            response: 'Upload limit reached',
+          },
+        },
+        message: 'Request failed with status code 400',
+      } as AxiosError;
+
+      jest.spyOn(axios, 'isAxiosError').mockReturnValue(true);
+
+      const result = handleAxiosError(mockAxiosError);
+
+      expect(result).toBeInstanceOf(RealityDefenderError);
+      expect(result.code).toBe('unauthorized');
+      expect(result.message).toContain('Upload limit reached');
+    });
+
+    it('should handle not found errors (404)', () => {
+      const error = {
+        isAxiosError: true,
+        response: {
+          status: 404,
+          data: {
+            code: 'not-found',
+            response: 'Resource not found',
+          },
+        },
+        message: 'Not Found',
+        config: { url: '/test/url' },
+        request: {},
+      };
+      mockedAxios.isAxiosError.mockReturnValueOnce(true);
+
+      const result = handleAxiosError(error);
+
+      expect(result).toBeInstanceOf(RealityDefenderError);
+      expect(result.code).toBe('not_found');
+    });
+
+    it('should handle generic 400 error', () => {
       const mockAxiosError = {
         isAxiosError: true,
         response: {
@@ -228,7 +274,7 @@ describe('HTTP Client', () => {
       const result = handleAxiosError(mockAxiosError);
 
       expect(result).toBeInstanceOf(RealityDefenderError);
-      expect(result.message).toContain('API error:');
+      expect(result.message).toContain('Invalid request: Unknown error');
     });
 
     it('should handle unauthorized errors (401)', () => {
@@ -247,58 +293,12 @@ describe('HTTP Client', () => {
       expect(result.code).toBe('unauthorized');
     });
 
-    it('should handle not found errors (404)', () => {
-      const error = {
-        isAxiosError: true,
-        response: { status: 404 },
-        message: 'Not Found',
-        config: { url: '/test/url' },
-        request: {},
-      };
-      mockedAxios.isAxiosError.mockReturnValueOnce(true);
-
-      const result = handleAxiosError(error);
-
-      expect(result).toBeInstanceOf(RealityDefenderError);
-      expect(result.code).toBe('not_found');
-    });
-
-    it('should handle not found errors without URL', () => {
-      const error = {
-        isAxiosError: true,
-        response: { status: 404 },
-        message: 'Not Found',
-        config: {},
-        request: {},
-      };
-      mockedAxios.isAxiosError.mockReturnValueOnce(true);
-
-      const result = handleAxiosError(error);
-
-      expect(result).toBeInstanceOf(RealityDefenderError);
-      expect(result.code).toBe('not_found');
-    });
-
-    it('should handle unsupported file type errors (415)', () => {
-      const error = {
-        isAxiosError: true,
-        response: { status: 415 },
-        message: 'Unsupported Media Type',
-        config: {},
-        request: {},
-      };
-      mockedAxios.isAxiosError.mockReturnValueOnce(true);
-
-      const result = handleAxiosError(error);
-
-      expect(result).toBeInstanceOf(RealityDefenderError);
-      expect(result.code).toBe('invalid_file');
-    });
-
     it('should handle server errors (5xx)', () => {
       const error = {
         isAxiosError: true,
-        response: { status: 500 },
+        response: {
+          data: { errno: 500, code: 'server_error', response: 'Internal Server Error' },
+        },
         message: 'Internal Server Error',
         config: {},
         request: {},
@@ -314,7 +314,9 @@ describe('HTTP Client', () => {
     it('should handle other response status codes', () => {
       const error = {
         isAxiosError: true,
-        response: { status: 429 },
+        response: {
+          data: { errno: 429, code: 'too_many_requests', response: 'Too Many Requests' },
+        },
         message: 'Too Many Requests',
         config: {},
         request: {},
@@ -324,7 +326,7 @@ describe('HTTP Client', () => {
       const result = handleAxiosError(error);
 
       expect(result).toBeInstanceOf(RealityDefenderError);
-      expect(result.code).toBe('unknown_error');
+      expect(result.code).toBe('server_error');
     });
 
     it('should handle axios errors without response', () => {

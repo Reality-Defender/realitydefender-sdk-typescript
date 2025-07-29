@@ -8,6 +8,8 @@
 export type ErrorCode =
   /** Invalid or missing API key */
   | 'unauthorized'
+  /** Invalid request parameters or format */
+  | 'invalid_request'
   /** Server-side error occurred */
   | 'server_error'
   /** Operation timed out */

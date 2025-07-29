@@ -8,13 +8,17 @@ export interface BasicResponse {
   /** Error number (0 if successful) */
   errno?: number;
   /** Response message, if any **/
-  message?: string;
+  response?: string;
 }
 
 /**
  * Response from the signed URL request
  */
-export interface SignedUrlResponse extends BasicResponse {
+export interface SignedUrlResponse {
+  /** Status code from the API */
+  code?: string;
+  /** Error number (0 if successful) */
+  errno?: number;
   /** Response containing the signed URL for upload */
   response: {
     /** URL where the file should be uploaded */

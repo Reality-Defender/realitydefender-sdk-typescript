@@ -99,24 +99,30 @@ export function handleAxiosError(error: unknown): RealityDefenderError {
       const status = axiosError.response.status;
       const responseData = axiosError.response.data as BasicResponse;
 
-      if (status === 400 && responseData.code?.includes('free-tier-not-allowed')) {
-        return new RealityDefenderError(
-          responseData.message || 'Free tier not allowed',
-          'unauthorized'
-        );
+      if (status === 400) {
+        if (
+          responseData.code?.includes('free-tier-not-allowed') ||
+          responseData.code?.includes('upload-limit-reached')
+        ) {
+          return new RealityDefenderError(
+            responseData.response || 'Free tier not allowed',
+            'unauthorized'
+          );
+        } else {
+          return new RealityDefenderError(
+            `Invalid request: ${responseData.response || 'Unknown error'}`,
+            'invalid_request'
+          );
+        }
       } else if (status === 401) {
-        return new RealityDefenderError('Unauthorized: Invalid API key', 'unauthorized');
+        return new RealityDefenderError('Invalid API key', 'unauthorized');
       } else if (status === 404) {
-        return new RealityDefenderError(
-          `Resource not found: ${axiosError.config?.url || ''}`,
-          'not_found'
-        );
-      } else if (status === 415) {
-        return new RealityDefenderError('Unsupported file type', 'invalid_file');
-      } else if (status >= 500) {
-        return new RealityDefenderError('Server error', 'server_error');
+        return new RealityDefenderError('Resource not found', 'not_found');
       } else {
-        return new RealityDefenderError(`API error: ${responseData}`, 'unknown_error');
+        return new RealityDefenderError(
+          `API error: ${responseData.response || 'Unknown error'}`,
+          'server_error'
+        );
       }
     }
 
