@@ -1,11 +1,10 @@
 /**
  * Tests for the main RealityDefender SDK class
  */
-import { RealityDefender } from '../src';
+import { RealityDefender, RealityDefenderError } from '../src';
 import { createHttpClient } from '../src/client';
 import { uploadFile } from '../src/detection/upload';
 import { getDetectionResult, getDetectionResults } from '../src/detection/results';
-import { RealityDefenderError } from '../src';
 import { DEFAULT_POLLING_INTERVAL, DEFAULT_TIMEOUT } from '../src/core/constants';
 import { DetectionResultList } from '../src/types';
 

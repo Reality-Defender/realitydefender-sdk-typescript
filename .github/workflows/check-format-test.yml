@@ -7,10 +7,6 @@ on:
         default: false
         type: boolean
         description: Whether this is a release run or not.
-    secrets:
-      codecov-token:
-        required: true
-        description: A token required by Codecov to upload code coverage to their platform.
 
 jobs:
   check-format-test-typescript-sdk:
@@ -50,5 +46,17 @@ jobs:
         with:
           directory: ./coverage
           flags: typescript
-          token: ${{ secrets.codecov-token }}
+          token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: ${{ inputs.is-release }}
+
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
