@@ -9,7 +9,8 @@
   },
   "scripts": {
     "example:basic": "ts-node basic.ts",
-    "example:getresults": "ts-node get_results.ts"
+    "example:getresults": "ts-node get_results.ts",
+    "example:social_media": "ts-node social_media.ts"
   },
   "dependencies": {
     "@realitydefender/realitydefender": "file:./../"

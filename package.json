@@ -30,6 +30,7 @@
     "prepare": "yarn build",
     "example:basic": "ts-node examples/basic.ts",
     "example:getresults": "ts-node examples/get_results.ts",
+    "example:social_media": "ts-node examples/social_media.ts",
     "lint": "eslint src tests --ext .ts",
     "lint:fix": "eslint src tests --ext .ts --fix",
     "format": "prettier --config .prettierrc --check .",
