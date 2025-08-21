@@ -7,10 +7,10 @@ __metadata:
 
 "@realitydefender/realitydefender@file:./../::locator=realitydefender-examples%40workspace%3A.":
   version: 0.1.8
-  resolution: "@realitydefender/realitydefender@file:./../#./../::hash=9ad1cc&locator=realitydefender-examples%40workspace%3A."
+  resolution: "@realitydefender/realitydefender@file:./../#./../::hash=a632bc&locator=realitydefender-examples%40workspace%3A."
   dependencies:
     axios: "npm:^1.9.0"
-  checksum: 10c0/3b0d68417410c4d6d54b952053b8d9415c2b5450fe6bcdc0a4fda0e0c12ada9dda10bc68ce289bc7d0156223fc28fb33789c8cdd8d33ff596acdb817cf85dfb1
+  checksum: 10c0/48e78f4b505d77bf7ee109a2c603646b9cb3504cd2be97bc69de2291da16bafe47d185f0d0b1637236917ca59df69f883a7746acf234b0b8f649386ccb137ca2
   languageName: node
   linkType: hard
 

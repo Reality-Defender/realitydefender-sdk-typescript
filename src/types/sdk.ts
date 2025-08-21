@@ -21,6 +21,14 @@ export interface UploadOptions {
 }
 
 /**
+ * Options for uploading social media
+ */
+export interface SocialUploadOptions {
+  /** Social media link */
+  socialLink: string;
+}
+
+/**
  * Options for retrieving results
  */
 export interface GetResultOptions {
@@ -47,7 +55,7 @@ export interface UploadResult {
   /** Request ID used to retrieve results */
   requestId: string;
   /** Media ID assigned by the system */
-  mediaId: string;
+  mediaId?: string;
 }
 
 export interface DetectionResult {

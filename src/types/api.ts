@@ -30,6 +30,11 @@ export interface SignedUrlResponse {
   requestId: string;
 }
 
+export interface SocialResponse extends BasicResponse {
+  /** Request ID to track the analysis */
+  requestId?: string;
+}
+
 /**
  * Individual model analysis result
  */

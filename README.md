@@ -256,6 +256,15 @@ There is a size limit for each of the supported file types.
 | Text      | .txt                                       | 5,242,880          | 5 MB            |
 
 
+## Supported social media platforms
+
+The Reality Defender API supports analysis of media from the following social media platforms:
+* Facebook
+* Instagram
+* Twitter
+* YouTube
+* TikTok
+
 ## Running Examples
 
 To run the example code in this SDK, follow these steps:
@@ -283,6 +292,7 @@ To run the example code in this SDK, follow these steps:
     export REALITY_DEFENDER_API_KEY='<your-api-key>' 
     yarn example:basic
     yarn example:getresults
+    yarn example:social_media
     ```
 
 The example code demonstrates how to upload a sample image and process the detection results.

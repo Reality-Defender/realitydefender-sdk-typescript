@@ -616,4 +616,131 @@ describe('RealityDefender SDK', () => {
       expect(mockGetDetectionResult).toHaveBeenCalledTimes(2);
     });
   });
+
+  describe('uploadSocialMedia', () => {
+    const mockPost = jest.fn();
+    const mockClient = { post: mockPost } as any;
+
+    beforeEach(() => {
+      (createHttpClient as jest.MockedFunction<typeof createHttpClient>).mockReturnValue(
+        mockClient
+      );
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    describe('successful uploads', () => {
+      test('should upload a valid social media link successfully', async () => {
+        const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+        const options = {
+          socialLink: 'https://twitter.com/user/status/123456',
+        };
+
+        const mockResponse = {
+          requestId: 'test-request-id-123',
+        };
+
+        mockPost.mockResolvedValueOnce(mockResponse);
+
+        const result = await sdk.uploadSocialMedia(options);
+
+        expect(mockPost).toHaveBeenCalledWith('/api/files/social', options);
+        expect(result).toEqual({
+          requestId: 'test-request-id-123',
+        });
+      });
+
+      test('should handle different social media platforms', async () => {
+        const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+        const platforms = [
+          'https://twitter.com/user/status/123',
+          'https://facebook.com/post/456',
+          'https://instagram.com/p/abc123/',
+          'https://tiktok.com/@user/video/789',
+          'https://youtube.com/watch?v=xyz',
+          'https://linkedin.com/post/activity-123',
+        ];
+
+        const mockResponse = { requestId: 'test-request-id' };
+        mockPost.mockResolvedValue(mockResponse);
+
+        for (const socialLink of platforms) {
+          const options = { socialLink };
+          const result = await sdk.uploadSocialMedia(options);
+          expect(result.requestId).toBe('test-request-id');
+        }
+
+        expect(mockPost).toHaveBeenCalledTimes(platforms.length);
+      });
+    });
+
+    describe('server errors', () => {
+      test('should throw error when API returns no requestId', async () => {
+        const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+        const options = {
+          socialLink: 'https://twitter.com/user/status/123',
+        };
+
+        const mockResponse = {}; // Missing requestId
+
+        mockPost.mockResolvedValueOnce(mockResponse);
+
+        await expect(sdk.uploadSocialMedia(options)).rejects.toThrow(
+          RealityDefenderError
+        );
+        expect(mockPost).toHaveBeenCalledWith('/api/files/social', options);
+      });
+
+      test('should wrap network errors in RealityDefenderError', async () => {
+        const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+        const options = {
+          socialLink: 'https://twitter.com/user/status/123',
+        };
+
+        const networkError = new Error('Network timeout');
+        mockPost.mockRejectedValueOnce(networkError);
+
+        await expect(sdk.uploadSocialMedia(options)).rejects.toThrow(
+          RealityDefenderError
+        );
+      });
+    });
+
+    describe('API integration', () => {
+      test('should use correct API endpoint', async () => {
+        const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+        const options = {
+          socialLink: 'https://twitter.com/user/status/123',
+        };
+
+        const mockResponse = { requestId: 'endpoint-test-id' };
+        mockPost.mockResolvedValueOnce(mockResponse);
+
+        await sdk.uploadSocialMedia(options);
+
+        expect(mockPost).toHaveBeenCalledWith('/api/files/social', options);
+      });
+
+      test('should pass options correctly to the API', async () => {
+        const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+        const options = {
+          socialLink: 'https://facebook.com/post/456789',
+        };
+
+        const mockResponse = { requestId: 'options-test-id' };
+        mockPost.mockResolvedValueOnce(mockResponse);
+
+        await sdk.uploadSocialMedia(options);
+
+        expect(mockPost).toHaveBeenCalledWith(
+          '/api/files/social',
+          expect.objectContaining({
+            socialLink: 'https://facebook.com/post/456789',
+          })
+        );
+      });
+    });
+  });
 });

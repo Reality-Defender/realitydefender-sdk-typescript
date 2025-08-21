@@ -20,9 +20,11 @@ import {
   DetectionResultList,
   GetResultOptions,
   RealityDefenderConfig,
+  SocialUploadOptions,
   UploadOptions,
   UploadResult,
 } from './types';
+import { uploadSocialMediaLink } from './detection/social';
 
 /**
  * Main SDK class for interacting with the Reality Defender API
@@ -65,6 +67,27 @@ export class RealityDefender extends TypedEventEmitter {
       }
       throw new RealityDefenderError(
         `Upload failed: ${(error as Error).message}`,
+        'upload_failed'
+      );
+    }
+  }
+
+  /**
+   * Upload a social media link to Reality Defender for analysis
+   *
+   * @param options Upload options including file path
+   * @returns Promise with the request ID
+   */
+  public async uploadSocialMedia(options: SocialUploadOptions): Promise<UploadResult> {
+    try {
+      // Upload the file and get tracking IDs
+      return await uploadSocialMediaLink(this.client, options);
+    } catch (error) {
+      if (error instanceof RealityDefenderError) {
+        throw error;
+      }
+      throw new RealityDefenderError(
+        `Social media link upload failed: ${(error as Error).message}`,
         'upload_failed'
       );
     }

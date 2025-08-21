@@ -151,7 +151,10 @@ export async function getDetectionResult(
     const mediaResult = await getMediaResult(client, requestId);
 
     // If the status is not ANALYZING, return the results immediately
-    if (mediaResult.resultsSummary.status !== 'ANALYZING') {
+    if (
+      mediaResult.resultsSummary !== null &&
+      mediaResult.resultsSummary?.status !== 'ANALYZING'
+    ) {
       return formatResult(mediaResult);
     }
 

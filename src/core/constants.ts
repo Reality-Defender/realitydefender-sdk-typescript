@@ -27,6 +27,8 @@ export const API_PATHS = {
   MEDIA_RESULT: '/api/media/users',
   /** Path for retrieving all media results */
   ALL_MEDIA_RESULTS: '/api/v2/media/users/pages',
+  /** Path for uploading social media */
+  SOCIAL_MEDIA: '/api/files/social',
 };
 
 export const SUPPORTED_FILE_TYPES = [
