@@ -1,6 +1,6 @@
 {
   "name": "@realitydefender/realitydefender",
-  "version": "0.1.9",
+  "version": "0.1.8",
   "description": "SDK for the Reality Defender API for deepfake detection",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

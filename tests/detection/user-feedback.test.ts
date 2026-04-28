@@ -28,7 +28,7 @@ describe('User feedback', () => {
   });
 
   it('includes comment when provided', async () => {
-    mockClient.post.mockResolvedValueOnce({ id: 'fb-2' });
+    mockClient.post.mockResolvedValueOnce({ id: 'fb-2', requestId: 'req-2' });
 
     await createUserFeedback(mockClient, {
       requestId: 'req-2',

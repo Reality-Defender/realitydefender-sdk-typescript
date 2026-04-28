@@ -102,12 +102,13 @@ export interface CreateUserFeedbackOptions {
 
 /**
  * Record returned when user feedback is created successfully (`201`).
- * Field availability depends on profile and backend defaults.
+ * The server always returns `id` and `requestId` for the created resource.
+ * Other fields may be omitted depending on profile, stored result, or whether a `comment` was sent (e.g. `text`).
  */
 export interface UserFeedback {
-  id?: string;
+  id: string;
+  requestId: string;
   userId?: string;
-  requestId?: string;
   institutionId?: string;
   text?: string;
   category?: UserFeedbackCategory;
@@ -117,7 +118,7 @@ export interface UserFeedback {
   mediaType?: string;
   mediaViewUrl?: string;
   mediaSource?: string;
-  label?: string | FeedbackLabel;
+  label?: FeedbackLabel;
   createdAt?: string;
 }
 
