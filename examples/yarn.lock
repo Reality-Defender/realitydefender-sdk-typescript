@@ -6,7 +6,7 @@ __metadata:
   cacheKey: 10c0
 
 "@realitydefender/realitydefender@file:./../::locator=realitydefender-examples%40workspace%3A.":
-  version: 0.1.8
+  version: 0.1.9
   resolution: "@realitydefender/realitydefender@file:./../#./../::hash=a632bc&locator=realitydefender-examples%40workspace%3A."
   dependencies:
     axios: "npm:^1.9.0"
