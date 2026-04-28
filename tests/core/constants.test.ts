@@ -27,6 +27,7 @@ describe('Constants', () => {
       SIGNED_URL: '/api/files/aws-presigned',
       MEDIA_RESULT: '/api/media/users',
       SOCIAL_MEDIA: '/api/files/social',
+      USER_FEEDBACK_V2: '/api/v2/user-feedback',
     });
   });
 });

@@ -76,6 +76,51 @@ export interface DetectionResult {
   }[];
 }
 
+/** Label values accepted by the user feedback V2 API */
+export type FeedbackLabel = 'REAL' | 'SYNTHETIC' | 'MANIPULATED' | 'UNKNOWN';
+
+/** Feedback category values for the user feedback V2 API */
+export type UserFeedbackCategory =
+  | 'FALSE_POSITIVE'
+  | 'FALSE_NEGATIVE'
+  | 'CONFIRMATION'
+  | 'OTHER';
+
+/**
+ * Payload for {@link RealityDefender.createUserFeedbackV2 | createUserFeedbackV2}
+ */
+export interface CreateUserFeedbackV2Options {
+  /** Media result ID (same as detection request ID) */
+  requestId: string;
+  /** Your judgment of the content */
+  label: FeedbackLabel;
+  /** Reason for flagging feedback */
+  feedbackCategory: UserFeedbackCategory;
+  /** Optional explanation */
+  comment?: string;
+}
+
+/**
+ * Record returned when user feedback V2 is created successfully (`201`).
+ * Field availability depends on profile and backend defaults.
+ */
+export interface UserFeedbackV2 {
+  id?: string;
+  userId?: string;
+  requestId?: string;
+  institutionId?: string;
+  text?: string;
+  category?: UserFeedbackCategory;
+  userName?: string;
+  userEmail?: string;
+  orgName?: string;
+  mediaType?: string;
+  mediaViewUrl?: string;
+  mediaSource?: string;
+  label?: string | FeedbackLabel;
+  createdAt?: string;
+}
+
 export interface DetectionResultList {
   /** Total number of detection results **/
   totalItems: number;

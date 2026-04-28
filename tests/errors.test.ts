@@ -30,6 +30,7 @@ describe('RealityDefenderError', () => {
       'timeout',
       'invalid_file',
       'upload_failed',
+      'feedback_failed',
       'not_found',
       'unknown_error',
     ];

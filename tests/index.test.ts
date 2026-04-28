@@ -743,4 +743,61 @@ describe('RealityDefender SDK', () => {
       });
     });
   });
+
+  describe('createUserFeedbackV2', () => {
+    const mockPost = jest.fn();
+    const mockClient = { post: mockPost } as any;
+
+    beforeEach(() => {
+      (createHttpClient as jest.MockedFunction<typeof createHttpClient>).mockReturnValue(
+        mockClient
+      );
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('submits feedback to the user-feedback V2 endpoint', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+      const apiBody = {
+        id: 'fb-id',
+        requestId: 'req-x',
+        label: 'REAL',
+      };
+      mockPost.mockResolvedValueOnce(apiBody);
+
+      const options = {
+        requestId: 'req-x',
+        label: 'REAL' as const,
+        feedbackCategory: 'CONFIRMATION' as const,
+        comment: 'ok',
+      };
+      const result = await sdk.createUserFeedbackV2(options);
+
+      expect(mockPost).toHaveBeenCalledWith('/api/v2/user-feedback', {
+        requestId: 'req-x',
+        label: 'REAL',
+        feedbackCategory: 'CONFIRMATION',
+        comment: 'ok',
+      });
+      expect(result).toEqual(apiBody);
+    });
+
+    it('wraps unexpected errors with feedback_failed', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+      mockPost.mockRejectedValueOnce(new Error('network error'));
+
+      await expect(
+        sdk.createUserFeedbackV2({
+          requestId: 'req-x',
+          label: 'REAL',
+          feedbackCategory: 'OTHER',
+        })
+      ).rejects.toMatchObject({
+        code: 'feedback_failed',
+        message: expect.stringContaining('network error'),
+      });
+    });
+  });
 });
