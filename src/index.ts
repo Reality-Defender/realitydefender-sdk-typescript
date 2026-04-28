@@ -16,7 +16,7 @@ import { RealityDefenderError } from './errors';
 
 // Import types from the types directory
 import {
-  CreateUserFeedbackV2Options,
+  CreateUserFeedbackOptions,
   DetectionResult,
   DetectionResultList,
   GetResultOptions,
@@ -24,10 +24,10 @@ import {
   SocialUploadOptions,
   UploadOptions,
   UploadResult,
-  UserFeedbackV2,
+  UserFeedback,
 } from './types';
 import { uploadSocialMediaLink } from './detection/social';
-import { createUserFeedbackV2 as internalCreateUserFeedbackV2 } from './detection/user-feedback';
+import { createUserFeedback as internalCreateUserFeedback } from './detection/user-feedback';
 
 /**
  * Main SDK class for interacting with the Reality Defender API
@@ -97,16 +97,16 @@ export class RealityDefender extends TypedEventEmitter {
   }
 
   /**
-   * Submit user feedback (V2) for a completed scan result.
+   * Submit user feedback for a completed scan result.
    *
    * @param options Payload including `requestId`, `label`, and `feedbackCategory`
    * @returns The created feedback record (`201 Created`)
    */
-  public async createUserFeedbackV2(
-    options: CreateUserFeedbackV2Options
-  ): Promise<UserFeedbackV2> {
+  public async createUserFeedback(
+    options: CreateUserFeedbackOptions
+  ): Promise<UserFeedback> {
     try {
-      return await internalCreateUserFeedbackV2(this.client, options);
+      return await internalCreateUserFeedback(this.client, options);
     } catch (error) {
       if (error instanceof RealityDefenderError) {
         throw error;
@@ -262,8 +262,8 @@ export {
   DetectionResult,
   GetResultOptions,
   DetectionOptions,
-  CreateUserFeedbackV2Options,
-  UserFeedbackV2,
+  CreateUserFeedbackOptions,
+  UserFeedback,
   FeedbackLabel,
   UserFeedbackCategory,
 } from './types/sdk';

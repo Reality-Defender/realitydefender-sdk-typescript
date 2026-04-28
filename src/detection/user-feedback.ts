@@ -1,9 +1,9 @@
 import { HttpClient } from '../client/types';
 import { API_PATHS } from '../core/constants';
 import { RealityDefenderError } from '../errors';
-import { CreateUserFeedbackV2Options, UserFeedbackV2 } from '../types';
+import { CreateUserFeedbackOptions, UserFeedback } from '../types';
 
-function assertUserFeedbackOptions(options: CreateUserFeedbackV2Options): void {
+function assertUserFeedbackOptions(options: CreateUserFeedbackOptions): void {
   if (!options.requestId.trim()) {
     throw new RealityDefenderError('requestId is required', 'invalid_request');
   }
@@ -16,17 +16,17 @@ function assertUserFeedbackOptions(options: CreateUserFeedbackV2Options): void {
 }
 
 /**
- * Submit user feedback (V2) for a completed scan result.
+ * Submit user feedback for a completed scan result.
  * Follows the same validation + POST pattern as {@link uploadSocialMediaLink}.
  *
  * @param client HTTP client
  * @param options Feedback payload
  * @returns Created feedback record from the API
  */
-export async function createUserFeedbackV2(
+export async function createUserFeedback(
   client: HttpClient,
-  options: CreateUserFeedbackV2Options
-): Promise<UserFeedbackV2> {
+  options: CreateUserFeedbackOptions
+): Promise<UserFeedback> {
   assertUserFeedbackOptions(options);
 
   const body: Record<string, string> = {
@@ -38,5 +38,5 @@ export async function createUserFeedbackV2(
     body.comment = options.comment;
   }
 
-  return client.post<UserFeedbackV2>(API_PATHS.USER_FEEDBACK_V2, body);
+  return client.post<UserFeedback>(API_PATHS.USER_FEEDBACK, body);
 }

@@ -221,10 +221,10 @@ Returns a `DetectionResult` object:
 
 Returns the same `DetectionResult` object as `getResult()`.
 
-### User feedback (V2)
+### User feedback
 
 ```typescript
-const feedback = await realityDefender.createUserFeedbackV2({
+const feedback = await realityDefender.createUserFeedback({
   requestId: 'your-request-id',
   label: 'REAL',
   feedbackCategory: 'CONFIRMATION',
@@ -232,7 +232,7 @@ const feedback = await realityDefender.createUserFeedbackV2({
 });
 ```
 
-Returns a `UserFeedbackV2` object:
+Returns a `UserFeedback` object:
 
 ```typescript
 {

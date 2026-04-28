@@ -1,10 +1,10 @@
 /**
- * Tests for user feedback V2 detection module
+ * Tests for user feedback detection module
  */
-import { createUserFeedbackV2 } from '../../src/detection/user-feedback';
+import { createUserFeedback } from '../../src/detection/user-feedback';
 import { mockClient } from '../setupTests';
 
-describe('User Feedback V2', () => {
+describe('User feedback', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -13,7 +13,7 @@ describe('User Feedback V2', () => {
     const apiResponse = { id: 'fb-1', requestId: 'req-1' };
     mockClient.post.mockResolvedValueOnce(apiResponse);
 
-    const result = await createUserFeedbackV2(mockClient, {
+    const result = await createUserFeedback(mockClient, {
       requestId: 'req-1',
       label: 'REAL',
       feedbackCategory: 'CONFIRMATION',
@@ -30,7 +30,7 @@ describe('User Feedback V2', () => {
   it('includes comment when provided', async () => {
     mockClient.post.mockResolvedValueOnce({ id: 'fb-2' });
 
-    await createUserFeedbackV2(mockClient, {
+    await createUserFeedback(mockClient, {
       requestId: 'req-2',
       label: 'SYNTHETIC',
       feedbackCategory: 'FALSE_NEGATIVE',

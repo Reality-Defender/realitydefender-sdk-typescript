@@ -20,7 +20,7 @@ export type ErrorCode =
   | 'file_too_large'
   /** Failed to upload the file */
   | 'upload_failed'
-  /** Failed to submit user feedback (V2) */
+  /** Failed to submit user feedback */
   | 'feedback_failed'
   /** Requested resource not found */
   | 'not_found'

@@ -744,7 +744,7 @@ describe('RealityDefender SDK', () => {
     });
   });
 
-  describe('createUserFeedbackV2', () => {
+  describe('createUserFeedback', () => {
     const mockPost = jest.fn();
     const mockClient = { post: mockPost } as any;
 
@@ -758,7 +758,7 @@ describe('RealityDefender SDK', () => {
       jest.clearAllMocks();
     });
 
-    it('submits feedback to the user-feedback V2 endpoint', async () => {
+    it('submits feedback to /api/v2/user-feedback', async () => {
       const sdk = new RealityDefender({ apiKey: 'test-api-key' });
       const apiBody = {
         id: 'fb-id',
@@ -773,7 +773,7 @@ describe('RealityDefender SDK', () => {
         feedbackCategory: 'CONFIRMATION' as const,
         comment: 'ok',
       };
-      const result = await sdk.createUserFeedbackV2(options);
+      const result = await sdk.createUserFeedback(options);
 
       expect(mockPost).toHaveBeenCalledWith('/api/v2/user-feedback', {
         requestId: 'req-x',
@@ -789,7 +789,7 @@ describe('RealityDefender SDK', () => {
       mockPost.mockRejectedValueOnce(new Error('network error'));
 
       await expect(
-        sdk.createUserFeedbackV2({
+        sdk.createUserFeedback({
           requestId: 'req-x',
           label: 'REAL',
           feedbackCategory: 'OTHER',
