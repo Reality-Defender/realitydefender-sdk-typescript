@@ -16,6 +16,7 @@ import { RealityDefenderError } from './errors';
 
 // Import types from the types directory
 import {
+  CreateUserFeedbackOptions,
   DetectionResult,
   DetectionResultList,
   GetResultOptions,
@@ -23,8 +24,10 @@ import {
   SocialUploadOptions,
   UploadOptions,
   UploadResult,
+  UserFeedback,
 } from './types';
 import { uploadSocialMediaLink } from './detection/social';
+import { createUserFeedback as internalCreateUserFeedback } from './detection/user-feedback';
 
 /**
  * Main SDK class for interacting with the Reality Defender API
@@ -89,6 +92,28 @@ export class RealityDefender extends TypedEventEmitter {
       throw new RealityDefenderError(
         `Social media link upload failed: ${(error as Error).message}`,
         'upload_failed'
+      );
+    }
+  }
+
+  /**
+   * Submit user feedback for a completed scan result.
+   *
+   * @param options Payload including `requestId`, `label`, and `feedbackCategory`
+   * @returns The created feedback record (`201 Created`)
+   */
+  public async createUserFeedback(
+    options: CreateUserFeedbackOptions
+  ): Promise<UserFeedback> {
+    try {
+      return await internalCreateUserFeedback(this.client, options);
+    } catch (error) {
+      if (error instanceof RealityDefenderError) {
+        throw error;
+      }
+      throw new RealityDefenderError(
+        `User feedback submission failed: ${(error as Error).message}`,
+        'feedback_failed'
       );
     }
   }
@@ -237,6 +262,10 @@ export {
   DetectionResult,
   GetResultOptions,
   DetectionOptions,
+  CreateUserFeedbackOptions,
+  UserFeedback,
+  FeedbackLabel,
+  UserFeedbackCategory,
 } from './types/sdk';
 
 // Export error classes and types

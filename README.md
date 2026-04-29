@@ -221,6 +221,38 @@ Returns a `DetectionResult` object:
 
 Returns the same `DetectionResult` object as `getResult()`.
 
+### User feedback
+
+```typescript
+const feedback = await realityDefender.createUserFeedback({
+  requestId: 'your-request-id',
+  label: 'REAL',
+  feedbackCategory: 'CONFIRMATION',
+  comment: 'Optional note',
+});
+```
+
+Returns a `UserFeedback` object:
+
+```typescript
+{
+  id: string,                    // Created feedback record id
+  userId: string,                // Authenticated user id
+  requestId: string,             // Media / detection request id
+  institutionId: string,        // Organization id
+  category: 'FALSE_POSITIVE' | 'FALSE_NEGATIVE' | 'CONFIRMATION' | 'OTHER',
+  label: 'REAL' | 'SYNTHETIC' | 'MANIPULATED' | 'UNKNOWN',
+  createdAt: string,             // ISO 8601 timestamp
+  mediaViewUrl: string,          // Link to result in the web app
+  mediaSource: string,           // e.g. file upload or API source label
+  text?: string,                 // Comment text (if request included `comment`)
+  userName?: string,             // Display name (if available)
+  userEmail?: string,            // Email (if available)
+  orgName?: string,              // Organization name (if available)
+  mediaType?: string,            // e.g. VIDEO, IMAGE (if available)
+}
+```
+
 ### Events
 
 The SDK extends `EventEmitter` and emits the following events:
@@ -238,8 +270,8 @@ try {
 } catch (error) {
   if (error instanceof RealityDefenderError) {
     console.error(`Error: ${error.message} (${error.code})`);
-    // Error codes: 'unauthorized', 'server_error', 'timeout', 
-    // 'invalid_file', 'upload_failed', 'not_found', 'unknown_error'
+    // Error codes: 'unauthorized', 'server_error', 'timeout',
+    // 'invalid_file', 'upload_failed', 'feedback_failed', 'not_found', 'unknown_error'
   }
 }
 ```
