@@ -1,0 +1,19 @@
+{
+  "name": "test-social-upload",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "ts-node run.ts",
+    "social": "ts-node social-media-links-scan.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.18",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@realitydefender/realitydefender": "^0.1.0"
+  }
+}
