@@ -118,6 +118,7 @@ describe('Type Definitions', () => {
     };
 
     const detectionResult: DetectionResult = {
+      requestId: 'request-123',
       status: 'MANIPULATED',
       score: 0.95,
       models: [
@@ -127,6 +128,7 @@ describe('Type Definitions', () => {
           score: 0.95,
         },
       ],
+      heatmaps: null,
     };
 
     expect(config.apiKey).toBe('test-key');

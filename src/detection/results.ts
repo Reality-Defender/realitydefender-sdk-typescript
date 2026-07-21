@@ -70,6 +70,51 @@ export async function getMediaResults(
 }
 
 /**
+ * Matches UI heatmap availability: IMAGE only, non-ensemble models with an
+ * artificial/manipulated result (API status `FAKE`, or `data.decision` of
+ * `ARTIFICIAL` / `FAKE`), and a non-empty pre-signed URL.
+ */
+function isArtificialModelResult(model: {
+  status: string;
+  data?: { decision?: string } | null;
+}): boolean {
+  if (model.status === 'FAKE') {
+    return true;
+  }
+  const decision = model.data?.decision?.toUpperCase();
+  return decision === 'ARTIFICIAL' || decision === 'FAKE';
+}
+
+function isEnsembleModelName(name: string): boolean {
+  return name.toLowerCase().includes('ensemble');
+}
+
+function extractHeatmaps(
+  mediaType: string | undefined,
+  heatmaps: Record<string, string> | undefined,
+  models: MediaResponse['models']
+): Record<string, string> | null {
+  if (!mediaType || mediaType.toUpperCase() !== 'IMAGE' || !heatmaps) {
+    return null;
+  }
+
+  const artificialModelNames = new Set(
+    models
+      .filter(model => isArtificialModelResult(model) && !isEnsembleModelName(model.name))
+      .map(model => model.name)
+  );
+
+  const usable = Object.fromEntries(
+    Object.entries(heatmaps).filter(
+      ([name, url]) =>
+        artificialModelNames.has(name) && typeof url === 'string' && url.length > 0
+    )
+  );
+
+  return Object.keys(usable).length ? usable : null;
+}
+
+/**
  * Format the raw API response into a user-friendly result
  * @param response Raw API response
  * @returns Simplified detection result
@@ -103,6 +148,7 @@ export function formatResult(response: MediaResponse): DetectionResult {
       // Score between 0-1 range or null if not available
       score: model.predictionNumber,
     })),
+    heatmaps: extractHeatmaps(response.mediaType, response.heatmaps, response.models),
   };
 }
 

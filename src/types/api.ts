@@ -99,6 +99,8 @@ export interface MediaResponse {
   resultsSummary: ResultsSummary;
   /** Individual model results */
   models: ModelResult[];
+  /** Pre-signed per-model heatmap URLs (`modelName` → signed URL or `""`) */
+  heatmaps?: Record<string, string>;
 }
 
 export interface AllMediaResponse {
