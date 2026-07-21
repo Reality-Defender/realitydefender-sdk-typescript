@@ -69,15 +69,7 @@ export async function getMediaResults(
   }
 }
 
-/** Artificial for heatmaps: API model status `FAKE` (UI ARTIFICIAL). */
-function isArtificialModelResult(model: { status: string }): boolean {
-  return model.status === 'FAKE';
-}
-
-function isEnsembleModelName(name: string): boolean {
-  return name.toLowerCase().includes('ensemble');
-}
-
+/** IMAGE heatmaps for non-ensemble models with API status FAKE and a non-empty URL. */
 function extractHeatmaps(
   mediaType: string | undefined,
   heatmaps: Record<string, string> | undefined,
@@ -89,7 +81,9 @@ function extractHeatmaps(
 
   const artificialModelNames = new Set(
     models
-      .filter(model => isArtificialModelResult(model) && !isEnsembleModelName(model.name))
+      .filter(
+        model => model.status === 'FAKE' && !model.name.toLowerCase().includes('ensemble')
+      )
       .map(model => model.name)
   );
 
