@@ -76,8 +76,7 @@ export interface DetectionResult {
   }[];
   /**
    * Pre-signed heatmap URLs for IMAGE media, keyed by model name.
-   * Only non-ensemble models with an artificial result (API status FAKE).
-   * Null when none apply.
+   * Only non-ensemble models with API status FAKE. Null when none apply.
    */
   heatmaps: Record<string, string> | null;
 }

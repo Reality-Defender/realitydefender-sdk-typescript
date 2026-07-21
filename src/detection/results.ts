@@ -69,20 +69,9 @@ export async function getMediaResults(
   }
 }
 
-/**
- * Matches UI heatmap availability: IMAGE only, non-ensemble models with an
- * artificial/manipulated result (API status `FAKE`, or `data.decision` of
- * `ARTIFICIAL` / `FAKE`), and a non-empty pre-signed URL.
- */
-function isArtificialModelResult(model: {
-  status: string;
-  data?: { decision?: string } | null;
-}): boolean {
-  if (model.status === 'FAKE') {
-    return true;
-  }
-  const decision = model.data?.decision?.toUpperCase();
-  return decision === 'ARTIFICIAL' || decision === 'FAKE';
+/** Artificial for heatmaps: API model status `FAKE` (UI ARTIFICIAL). */
+function isArtificialModelResult(model: { status: string }): boolean {
+  return model.status === 'FAKE';
 }
 
 function isEnsembleModelName(name: string): boolean {
