@@ -74,6 +74,11 @@ export interface DetectionResult {
     /** Model confidence score (0-1 range, null if not available) */
     score: number | null;
   }[];
+  /**
+   * Pre-signed heatmap URLs for IMAGE media, keyed by model name.
+   * Only non-ensemble models with status MANIPULATED. Null when none apply.
+   */
+  heatmaps: Record<string, string> | null;
 }
 
 /** Label values accepted by the user feedback API */

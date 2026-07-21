@@ -69,6 +69,35 @@ export async function getMediaResults(
   }
 }
 
+/** IMAGE heatmaps for non-ensemble models with status MANIPULATED and a non-empty URL. */
+function extractHeatmaps(
+  mediaType: string | undefined,
+  heatmaps: Record<string, string> | undefined,
+  models: DetectionResult['models']
+): Record<string, string> | null {
+  if (!mediaType || mediaType.toUpperCase() !== 'IMAGE' || !heatmaps) {
+    return null;
+  }
+
+  const artificialModelNames = new Set(
+    models
+      .filter(
+        model =>
+          model.status === 'MANIPULATED' && !model.name.toLowerCase().includes('ensemble')
+      )
+      .map(model => model.name)
+  );
+
+  const usable = Object.fromEntries(
+    Object.entries(heatmaps).filter(
+      ([name, url]) =>
+        artificialModelNames.has(name) && typeof url === 'string' && url.length > 0
+    )
+  );
+
+  return Object.keys(usable).length ? usable : null;
+}
+
 /**
  * Format the raw API response into a user-friendly result
  * @param response Raw API response
@@ -92,17 +121,20 @@ export function formatResult(response: MediaResponse): DetectionResult {
       ? response.resultsSummary.metadata.finalScore / 100
       : null;
 
+  const models = activeModels.map(model => ({
+    name: model.name,
+    // Replace FAKE with MANIPULATED in model status
+    status: model.status === 'FAKE' ? 'MANIPULATED' : model.status,
+    // Score between 0-1 range or null if not available
+    score: model.predictionNumber,
+  }));
+
   return {
     requestId: response.requestId,
     status: status,
     score: normalizedScore,
-    models: activeModels.map(model => ({
-      name: model.name,
-      // Replace FAKE with MANIPULATED in model status
-      status: model.status === 'FAKE' ? 'MANIPULATED' : model.status,
-      // Score between 0-1 range or null if not available
-      score: model.predictionNumber,
-    })),
+    models,
+    heatmaps: extractHeatmaps(response.mediaType, response.heatmaps, models),
   };
 }
 

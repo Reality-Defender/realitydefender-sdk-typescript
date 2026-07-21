@@ -214,10 +214,14 @@ Returns a `DetectionResult` object:
       status: string,   // Model-specific status
       score: number     // Model-specific score (0-1 range, null if not available)
     }
-    
-  ]
+  ],
+  // IMAGE heatmaps for artificial non-ensemble models only
+  // (API status FAKE / UI ARTIFICIAL; pre-signed URLs expire after 15 minutes; null otherwise):
+  heatmaps: Record<string, string> | null, // model slug → PNG URL
 }
 ```
+
+Re-fetch the result to refresh expired heatmap URLs.
 
 Returns the same `DetectionResult` object as `getResult()`.
 

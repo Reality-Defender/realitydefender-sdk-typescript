@@ -99,6 +99,7 @@ describe('Results Module', () => {
 
       expect(formattedResult).toEqual({
         requestId: 'request-123',
+        heatmaps: null,
         status: 'MANIPULATED',
         score: 0.95,
         models: [
@@ -114,6 +115,60 @@ describe('Results Module', () => {
           },
         ],
       });
+    });
+
+    it('should include heatmaps only for artificial non-ensemble IMAGE models', () => {
+      const responseWithHeatmaps: MediaResponse = {
+        ...mockMediaResponse,
+        mediaType: 'IMAGE',
+        models: [
+          ...mockMediaResponse.models,
+          {
+            name: 'rd-img-ensemble',
+            data: { score: 0.95, decision: 'ARTIFICIAL', raw_score: 0.95 },
+            status: 'FAKE',
+            predictionNumber: 0.95,
+            normalizedPredictionNumber: 95,
+            rollingAvgNumber: null,
+            finalScore: 95,
+          },
+        ],
+        heatmaps: {
+          'model-1': 'https://example.com/heatmap.png',
+          'model-2': '',
+          'model-3': 'https://example.com/authentic.png',
+          'rd-img-ensemble': 'https://example.com/ensemble.png',
+          'rd-vid-ensemble': 'https://example.com/vid.png',
+        },
+      };
+
+      const formattedResult = formatResult(responseWithHeatmaps);
+
+      expect(formattedResult.heatmaps).toEqual({
+        'model-1': 'https://example.com/heatmap.png',
+      });
+    });
+
+    it('should null empty heatmaps for IMAGE', () => {
+      const responseWithEmptyHeatmaps: MediaResponse = {
+        ...mockMediaResponse,
+        mediaType: 'IMAGE',
+        heatmaps: { 'model-1': '' },
+      };
+
+      const formattedResult = formatResult(responseWithEmptyHeatmaps);
+
+      expect(formattedResult.heatmaps).toBeNull();
+    });
+
+    it('should ignore heatmaps for non-IMAGE media', () => {
+      const videoResponse: MediaResponse = {
+        ...mockMediaResponse,
+        mediaType: 'VIDEO',
+        heatmaps: { 'model-1': 'https://example.com/heatmap.png' },
+      };
+
+      expect(formatResult(videoResponse).heatmaps).toBeNull();
     });
 
     it('should convert FAKE status to MANIPULATED in response status', () => {
@@ -198,6 +253,7 @@ describe('Results Module', () => {
 
       expect(formattedResult).toEqual({
         requestId: 'request-123',
+        heatmaps: null,
         status: 'MANIPULATED',
         score: 0.95,
         models: [],
@@ -225,6 +281,7 @@ describe('Results Module', () => {
 
       expect(formattedResult).toEqual({
         requestId: 'request-123',
+        heatmaps: null,
         status: 'MANIPULATED',
         score: 0.95,
         models: [],
@@ -257,6 +314,7 @@ describe('Results Module', () => {
 
       expect(formattedResult).toEqual({
         requestId: 'request-123',
+        heatmaps: null,
         status: 'PROCESSING',
         score: null,
         models: [
@@ -300,6 +358,7 @@ describe('Results Module', () => {
 
       expect(formattedResult).toEqual({
         requestId: 'request-123',
+        heatmaps: null,
         status: 'MANIPULATED',
         score: 0.95,
         models: [
@@ -353,6 +412,7 @@ describe('Results Module', () => {
       expect(mockClient.get).toHaveBeenCalledWith('/api/media/users/request-123');
       expect(result).toEqual({
         requestId: 'request-123',
+        heatmaps: null,
         status: 'MANIPULATED',
         score: 0.95,
         models: [
@@ -420,6 +480,7 @@ describe('Results Module', () => {
       // Should return the completed result
       expect(result).toEqual({
         requestId: 'request-123',
+        heatmaps: null,
         status: 'MANIPULATED',
         score: 0.9,
         models: expect.any(Array),
@@ -460,6 +521,7 @@ describe('Results Module', () => {
       // Should still return the analyzing result after max attempts
       expect(result).toEqual({
         requestId: 'request-123',
+        heatmaps: null,
         status: 'ANALYZING',
         score: null,
         models: expect.any(Array),
