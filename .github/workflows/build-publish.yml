@@ -17,6 +17,9 @@ on:
 jobs:
   build-publish-typescript-sdk:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
