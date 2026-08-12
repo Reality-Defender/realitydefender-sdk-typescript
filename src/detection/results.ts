@@ -69,6 +69,20 @@ export async function getMediaResults(
   }
 }
 
+/** In-progress statuses that require continued polling */
+export const IN_PROGRESS_STATUSES = new Set(['ANALYZING', 'DOWNLOADING']);
+
+function resolveStatus(response: MediaResponse): string {
+  const summaryStatus = response.resultsSummary?.status;
+  if (summaryStatus) {
+    return summaryStatus === 'FAKE' ? 'MANIPULATED' : summaryStatus;
+  }
+  if (response.overallStatus) {
+    return response.overallStatus;
+  }
+  return 'UNKNOWN';
+}
+
 /** IMAGE heatmaps for non-ensemble models with status MANIPULATED and a non-empty URL. */
 function extractHeatmaps(
   mediaType: string | undefined,
@@ -109,15 +123,11 @@ export function formatResult(response: MediaResponse): DetectionResult {
     model => model.status !== 'NOT_APPLICABLE' && model.code !== 'not_applicable'
   );
 
-  // Replace FAKE with MANIPULATED in response status
-  const status =
-    response.resultsSummary.status === 'FAKE'
-      ? 'MANIPULATED'
-      : response.resultsSummary.status;
+  const status = resolveStatus(response);
 
   // Normalize the final score from 0-100 to 0-1 range
   const normalizedScore =
-    response.resultsSummary.metadata.finalScore !== null
+    response.resultsSummary?.metadata?.finalScore != null
       ? response.resultsSummary.metadata.finalScore / 100
       : null;
 
@@ -181,12 +191,10 @@ export async function getDetectionResult(
 
   while (attempts < maxAttempts) {
     const mediaResult = await getMediaResult(client, requestId);
+    const resolvedStatus = resolveStatus(mediaResult);
 
-    // If the status is not ANALYZING, return the results immediately
-    if (
-      mediaResult.resultsSummary !== null &&
-      mediaResult.resultsSummary?.status !== 'ANALYZING'
-    ) {
+    // Keep polling while the scan is still in progress
+    if (!IN_PROGRESS_STATUSES.has(resolvedStatus)) {
       return formatResult(mediaResult);
     }
 

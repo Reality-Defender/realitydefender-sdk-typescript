@@ -633,5 +633,48 @@ describe('Results Module', () => {
       expect(mockClient.get).toHaveBeenCalledTimes(2);
       expect(result.status).toBe('ANALYZING');
     });
+
+    it('should format null resultsSummary using overallStatus DOWNLOADING', () => {
+      const response = {
+        ...mockMediaResponse,
+        overallStatus: 'DOWNLOADING',
+        resultsSummary: null,
+        models: [],
+      } as MediaResponse;
+
+      const result = formatResult(response);
+
+      expect(result.status).toBe('DOWNLOADING');
+    });
+
+    it('should keep polling when overallStatus is DOWNLOADING and resultsSummary is null', async () => {
+      const downloadingResponse = {
+        ...mockMediaResponse,
+        overallStatus: 'DOWNLOADING',
+        resultsSummary: null,
+        models: [],
+      } as MediaResponse;
+
+      const completedResponse = {
+        ...mockMediaResponse,
+        overallStatus: 'FAKE',
+        resultsSummary: {
+          status: 'FAKE',
+          metadata: { finalScore: 90 },
+        },
+      } as MediaResponse;
+
+      mockClient.get
+        .mockResolvedValueOnce(downloadingResponse)
+        .mockResolvedValueOnce(completedResponse);
+
+      const result = await getDetectionResult(mockClient, 'request-123', {
+        maxAttempts: 5,
+        pollingInterval: 10,
+      });
+
+      expect(mockClient.get).toHaveBeenCalledTimes(2);
+      expect(result.status).toBe('MANIPULATED');
+    });
   });
 });

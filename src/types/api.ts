@@ -95,8 +95,8 @@ export interface MediaResponse {
   mediaType: string;
   /** Overall analysis status */
   overallStatus: string;
-  /** Summary of results */
-  resultsSummary: ResultsSummary;
+  /** Summary of results; null while social media is downloading or models are running */
+  resultsSummary: ResultsSummary | null;
   /** Individual model results */
   models: ModelResult[];
   /** Pre-signed per-model heatmap URLs (`modelName` → signed URL or `""`) */
