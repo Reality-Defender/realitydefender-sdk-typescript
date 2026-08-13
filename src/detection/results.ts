@@ -77,10 +77,7 @@ function resolveStatus(response: MediaResponse): string {
   if (summaryStatus) {
     return summaryStatus === 'FAKE' ? 'MANIPULATED' : summaryStatus;
   }
-  if (response.overallStatus) {
-    return response.overallStatus;
-  }
-  return 'UNKNOWN';
+  return response.overallStatus;
 }
 
 /** IMAGE heatmaps for non-ensemble models with status MANIPULATED and a non-empty URL. */
