@@ -224,9 +224,8 @@ export class RealityDefender extends TypedEventEmitter {
         // Use the built-in polling mechanism with just a single attempt per call
         const result = await this.getResult(requestId);
 
-        // If the status is still ANALYZING and we haven't exceeded the timeout,
-        // continue polling after a delay
-        if (result.status === 'ANALYZING') {
+        // Keep polling while the scan is still in progress
+        if (result.status === 'ANALYZING' || result.status === 'DOWNLOADING') {
           elapsed += pollingInterval;
           await sleep(pollingInterval);
         } else {
