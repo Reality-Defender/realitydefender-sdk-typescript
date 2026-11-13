@@ -28,6 +28,7 @@ import {
 } from './types';
 import { uploadSocialMediaLink } from './detection/social';
 import { createUserFeedback as internalCreateUserFeedback } from './detection/user-feedback';
+import { deleteRequest as internalDeleteRequest } from './detection/delete';
 
 /**
  * Main SDK class for interacting with the Reality Defender API
@@ -116,6 +117,17 @@ export class RealityDefender extends TypedEventEmitter {
         'feedback_failed'
       );
     }
+  }
+
+  /**
+   * Delete a scan request (`DELETE /api/media/{requestId}`).
+   *
+   * The API responds with 204 No Content.
+   *
+   * @param requestId Request ID returned by upload or social media upload
+   */
+  public async deleteRequest(requestId: string): Promise<void> {
+    return internalDeleteRequest(this.client, requestId);
   }
 
   /**
