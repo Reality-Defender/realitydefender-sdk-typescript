@@ -20,6 +20,7 @@ jest.mock('axios', () => {
     get: jest.MockedFunction<any>;
     post: jest.MockedFunction<any>;
     put: jest.MockedFunction<any>;
+    delete: jest.MockedFunction<any>;
     isAxiosError: jest.MockedFunction<any>;
   };
 
@@ -28,6 +29,7 @@ jest.mock('axios', () => {
     get: jest.fn(),
     post: jest.fn(),
     put: jest.fn(),
+    delete: jest.fn(),
     isAxiosError: jest.fn(),
   };
   return mockAxios;
@@ -44,6 +46,7 @@ export const mockClient = {
   get: jest.fn(),
   post: jest.fn(),
   put: jest.fn(),
+  delete: jest.fn(),
 };
 
 // DO NOT mock detection modules or client module - use the real implementations

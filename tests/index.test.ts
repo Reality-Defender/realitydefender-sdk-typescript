@@ -19,6 +19,7 @@ describe('RealityDefender SDK', () => {
     get: jest.fn(),
     post: jest.fn(),
     put: jest.fn(),
+    delete: jest.fn(),
   };
 
   // Mock the createHttpClient function
@@ -741,6 +742,26 @@ describe('RealityDefender SDK', () => {
           })
         );
       });
+    });
+  });
+
+  describe('deleteRequest', () => {
+    it('deletes the scan request', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+      mockHttpClient.delete.mockResolvedValueOnce(undefined);
+
+      await sdk.deleteRequest('req-1');
+
+      expect(mockHttpClient.delete).toHaveBeenCalledWith('/api/media/req-1');
+    });
+
+    it('rejects a blank request id', async () => {
+      const sdk = new RealityDefender({ apiKey: 'test-api-key' });
+
+      await expect(sdk.deleteRequest('')).rejects.toMatchObject({
+        code: 'invalid_request',
+      });
+      expect(mockHttpClient.delete).not.toHaveBeenCalled();
     });
   });
 

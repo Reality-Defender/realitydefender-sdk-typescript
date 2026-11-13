@@ -25,6 +25,8 @@ export const API_PATHS = {
   SIGNED_URL: '/api/files/aws-presigned',
   /** Path for retrieving media results */
   MEDIA_RESULT: '/api/media/users',
+  /** Path for deleting a scan request (`DELETE /api/media/{requestId}`) */
+  DELETE_MEDIA: '/api/media',
   /** Path for retrieving all media results */
   ALL_MEDIA_RESULTS: '/api/v2/media/users/pages',
   /** Path for uploading social media */

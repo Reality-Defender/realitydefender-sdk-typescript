@@ -48,12 +48,13 @@ describe('HTTP Client', () => {
   });
 
   describe('createHttpClient', () => {
-    it('should create HTTP client with get, post and put methods', () => {
+    it('should create HTTP client with get, post, put and delete methods', () => {
       const client = createHttpClient({ apiKey: 'test-key' });
 
       expect(client).toHaveProperty('get');
       expect(client).toHaveProperty('post');
       expect(client).toHaveProperty('put');
+      expect(client).toHaveProperty('delete');
     });
 
     it('should handle successful GET requests', async () => {
@@ -174,6 +175,29 @@ describe('HTTP Client', () => {
       const client = createHttpClient({ apiKey: 'test-key' });
 
       await expect(client.post('/test-path', { data: 'test' })).rejects.toThrow();
+    });
+
+    it('should handle successful DELETE requests', async () => {
+      const deleteMock = jest.fn().mockResolvedValueOnce({ data: '' });
+      mockedAxios.create.mockReturnValueOnce({
+        delete: deleteMock,
+      } as any);
+
+      const client = createHttpClient({ apiKey: 'test-key' });
+      await client.delete('/api/media/req-1');
+
+      expect(deleteMock).toHaveBeenCalledWith('/api/media/req-1');
+    });
+
+    it('should handle errors in DELETE requests', async () => {
+      const error = new Error('Delete error');
+      mockedAxios.create.mockReturnValueOnce({
+        delete: jest.fn().mockRejectedValueOnce(error),
+      } as any);
+
+      const client = createHttpClient({ apiKey: 'test-key' });
+
+      await expect(client.delete('/api/media/req-1')).rejects.toThrow();
     });
 
     it('should handle errors in PUT requests', async () => {
