@@ -745,12 +745,12 @@ describe('RealityDefender SDK', () => {
     });
   });
 
-  describe('deleteRequest', () => {
-    it('deletes the scan request', async () => {
+  describe('deleteAnalysis', () => {
+    it('deletes the scan analysis', async () => {
       const sdk = new RealityDefender({ apiKey: 'test-api-key' });
       mockHttpClient.delete.mockResolvedValueOnce(undefined);
 
-      await sdk.deleteRequest('req-1');
+      await sdk.deleteAnalysis('req-1');
 
       expect(mockHttpClient.delete).toHaveBeenCalledWith('/api/media/req-1');
     });
@@ -758,7 +758,7 @@ describe('RealityDefender SDK', () => {
     it('rejects a blank request id', async () => {
       const sdk = new RealityDefender({ apiKey: 'test-api-key' });
 
-      await expect(sdk.deleteRequest('')).rejects.toMatchObject({
+      await expect(sdk.deleteAnalysis('')).rejects.toMatchObject({
         code: 'invalid_request',
       });
       expect(mockHttpClient.delete).not.toHaveBeenCalled();

@@ -1,5 +1,5 @@
 /**
- * Delete a scan request
+ * Delete a scan analysis
  */
 
 import { HttpClient } from '../client/types';
@@ -7,12 +7,12 @@ import { API_PATHS } from '../core/constants';
 import { RealityDefenderError } from '../errors';
 
 /**
- * Delete a scan request. The API responds with 204 No Content.
+ * Delete a scan analysis. The API responds with 204 No Content.
  *
  * @param client HTTP client
  * @param requestId Request ID returned by upload or social media upload
  */
-export async function deleteRequest(
+export async function deleteAnalysis(
   client: HttpClient,
   requestId: string
 ): Promise<void> {

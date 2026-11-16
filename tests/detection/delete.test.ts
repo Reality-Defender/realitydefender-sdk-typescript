@@ -1,11 +1,11 @@
 /**
  * Tests for deleting a scan request
  */
-import { deleteRequest } from '../../src/detection/delete';
+import { deleteAnalysis } from '../../src/detection/delete';
 import { RealityDefenderError } from '../../src/errors';
 import { mockClient } from '../setupTests';
 
-describe('deleteRequest', () => {
+describe('deleteAnalysis', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -13,7 +13,7 @@ describe('deleteRequest', () => {
   it('deletes /api/media/{requestId}', async () => {
     mockClient.delete.mockResolvedValueOnce(undefined);
 
-    await deleteRequest(mockClient, 'req-1');
+    await deleteAnalysis(mockClient, 'req-1');
 
     expect(mockClient.delete).toHaveBeenCalledWith('/api/media/req-1');
   });
@@ -21,13 +21,13 @@ describe('deleteRequest', () => {
   it('trims the request id', async () => {
     mockClient.delete.mockResolvedValueOnce(undefined);
 
-    await deleteRequest(mockClient, '  req-2  ');
+    await deleteAnalysis(mockClient, '  req-2  ');
 
     expect(mockClient.delete).toHaveBeenCalledWith('/api/media/req-2');
   });
 
   it('rejects a blank request id without calling the API', async () => {
-    await expect(deleteRequest(mockClient, '   ')).rejects.toMatchObject({
+    await expect(deleteAnalysis(mockClient, '   ')).rejects.toMatchObject({
       code: 'invalid_request',
     });
     expect(mockClient.delete).not.toHaveBeenCalled();
@@ -38,7 +38,7 @@ describe('deleteRequest', () => {
       new RealityDefenderError('Resource not found', 'not_found')
     );
 
-    await expect(deleteRequest(mockClient, 'missing')).rejects.toMatchObject({
+    await expect(deleteAnalysis(mockClient, 'missing')).rejects.toMatchObject({
       code: 'not_found',
     });
   });

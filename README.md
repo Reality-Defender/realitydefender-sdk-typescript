@@ -225,12 +225,12 @@ Re-fetch the result to refresh expired heatmap URLs.
 
 Returns the same `DetectionResult` object as `getResult()`.
 
-### Delete a request
+### Delete an analysis
 
-Deletes a scan (`DELETE /api/media/{requestId}`). The API responds with 204 No Content.
+Deletes a scan analysis (`DELETE /api/media/{requestId}`). The API responds with 204 No Content.
 
 ```typescript
-await realityDefender.deleteRequest(requestId);
+await realityDefender.deleteAnalysis(requestId);
 ```
 
 ### User feedback
