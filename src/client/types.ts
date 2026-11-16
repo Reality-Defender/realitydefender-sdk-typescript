@@ -33,6 +33,13 @@ export interface HttpClient {
    * @returns Promise resolving to the response data
    */
   put(url: string, data: any, contentType?: string): Promise<void>;
+
+  /**
+   * Send a DELETE request
+   * @param path API endpoint path
+   * @returns Promise that resolves when the server accepts the delete
+   */
+  delete(path: string): Promise<void>;
 }
 
 /**

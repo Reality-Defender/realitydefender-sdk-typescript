@@ -83,6 +83,17 @@ export function createHttpClient(config: HttpClientConfig): HttpClient {
         throw handleAxiosError(error);
       }
     },
+
+    /**
+     * Send a DELETE request.
+     */
+    async delete(path: string): Promise<void> {
+      try {
+        await client.delete(path);
+      } catch (error) {
+        throw handleAxiosError(error);
+      }
+    },
   };
 }
 

@@ -26,6 +26,7 @@ describe('Constants', () => {
       ALL_MEDIA_RESULTS: '/api/v2/media/users/pages',
       SIGNED_URL: '/api/files/aws-presigned',
       MEDIA_RESULT: '/api/media/users',
+      DELETE_MEDIA: '/api/media',
       SOCIAL_MEDIA: '/api/files/social',
       USER_FEEDBACK: '/api/v2/user-feedback',
     });

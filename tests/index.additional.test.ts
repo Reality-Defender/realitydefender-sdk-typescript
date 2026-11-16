@@ -25,6 +25,7 @@ describe('RealityDefender SDK Additional Tests', () => {
     get: jest.fn(),
     post: jest.fn(),
     put: jest.fn(),
+    delete: jest.fn(),
   };
 
   // Mock the createHttpClient function
